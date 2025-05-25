@@ -35,12 +35,12 @@ export class ProjectsComponent {
     {
       id: '4',
       title: 'Baradero-Costa Parana',
-      imageAfter: '/assets/images/work-done/baradero-costa-parana/costa-parana.jpg'
+      imageAfter: '/assets/images/work-done/baradero-costa-parana/portada.jpg'
     },
     {
       id: '5',
       title: 'Las Toninas-Trearie',
-      imageAfter: '/assets/images/work-done/las-toninos-trearie/shop-express.png'
+      imageAfter: '/assets/images/work-done/las-toninos-trearie/portada.png'
     },
     {
       id: '6',
