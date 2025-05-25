@@ -34,7 +34,7 @@
             ],
             "scripts": [],
             "server": "src/main.server.ts",
-            "outputMode": "server",
+            "outputMode": "browser",
             "ssr": {
               "entry": "src/server.ts"
             }
