@@ -1,0 +1,51 @@
+import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+
+interface Project {
+  id: string;
+  title: string;
+  imageAfter?: string;
+}
+
+@Component({
+  selector: 'app-projects',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
+  templateUrl: './projects.component.html',
+  styleUrls: ['./projects.component.scss']
+})
+export class ProjectsComponent {
+  projects: Project[] = [
+    {
+      id: '1',
+      title: 'Puma CQ-Necochea',
+      imageAfter: '/assets/images/work-done/necochea-cq/necochea-cq.jpg'
+    },
+    {
+      id: '2',
+      title: 'B.AGRO-Bahia Blanca',
+      imageAfter: '/assets/images/work-done/bahia-blanca/after/construction-site.jpg'
+    },
+    {
+      id: '3',
+      title: 'Azul-Sapeda',
+      imageAfter: '/assets/images/work-done/azul-sapeda/After/station.jpg'
+    },
+    {
+      id: '4',
+      title: 'Baradero-Costa Parana',
+      imageAfter: '/assets/images/work-done/baradero-costa-parana/costa-parana.jpg'
+    },
+    {
+      id: '5',
+      title: 'Las Toninas-Trearie',
+      imageAfter: '/assets/images/work-done/las-toninos-trearie/shop-express.png'
+    },
+    {
+      id: '6',
+      title: 'Zarate-Traslux',
+      imageAfter: '/assets/images/work-done/zarate-traslux/traslux.jpg'
+    }
+  ];
+}

@@ -1,0 +1,40 @@
+<section id="proyectos" class="py-16 md:py-24 bg-black relative overflow-hidden">
+  <div class="container mx-auto px-4 relative z-10">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl font-bold mb-4 text-white">Proyectos realizados</h2>
+      <p class="text-gray-400 max-w-2xl mx-auto">
+        Más de 30 negocios construidos en todo el país. Conocé una selección de obras listas para operar,
+        entregadas en tiempo récord.
+      </p>
+    </div>
+
+    <!-- Project Showcase -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      @for (project of projects; track project.id) {
+        <a [routerLink]="['/proyectos', project.id]" class="block">
+          <div class="bg-gray-800 border border-gray-700 hover:border-[#195764] rounded-lg overflow-hidden transition-all duration-300 cursor-pointer h-[300px] relative">
+            <div class="relative h-full w-full overflow-hidden">
+              <img
+                [src]="project.imageAfter || '/assets/images/placeholder.svg'"
+                [alt]="project.title"
+                class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+              />
+              <div class="absolute bottom-0 left-0 right-0 bg-black/60 p-4 opacity-80">
+                <h3 class="text-lg font-bold text-white text-center">{{ project.title }}</h3>
+              </div>
+            </div>
+          </div>
+        </a>
+      }
+    </div>
+
+    <!-- Botón "Ver más" -->
+<!--     <div class="flex flex-col items-center mt-8">
+      <button class="bg-white text-[#195764] hover:bg-gray-100 border border-[#195764] px-6 py-2 rounded-md transition-colors duration-200 flex items-center gap-2">
+        Ver más proyectos
+        <i class="fas fa-chevron-down h-4 w-4"></i>
+      </button>
+      <p class="text-sm text-gray-400 mt-2">Mostrando 6 de 30 proyectos</p>
+    </div> -->
+  </div>
+</section>

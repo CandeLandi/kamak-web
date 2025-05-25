@@ -1,0 +1,60 @@
+<section class="relative h-screen flex items-center bg-transparent">
+  <!-- Background image -->
+  <div class="absolute inset-0 z-0">
+    <img
+      [src]="heroImage"
+      alt="Interior de construcción en proceso con estructura metálica y techo de madera"
+      class="w-full h-full object-cover"
+    />
+    <!-- Opacity layer for better text readability -->
+    <div class="absolute inset-0 bg-black/70"></div>
+  </div>
+
+  <div class="container mx-auto px-4 relative z-10">
+    <div class="max-w-2xl mx-auto text-center">
+      <!-- Logo -->
+      <div class="flex justify-center mb-2">
+        <img
+          src="assets/logos/logo-kamak.svg"
+          alt="Kamak Desarrollos"
+          width="400"
+          height="160"
+          class="object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] w-40 md:w-[35rem]"
+        />
+      </div>
+      <h1 class="text-2xl sm:text-3xl md:text-4xl font-semibold text-white mb-4 leading-tight drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
+        La forma más rápida y eficiente de construir tu negocio
+      </h1>
+      <p class="text-base sm:text-lg text-white/90 mb-4 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
+        Nos ocupamos del proyecto, dirección y ejecución completa de tu obra.
+      </p>
+
+      <div class="mb-4 max-w-full">
+        <div class="flex items-center gap-3 bg-[#195764]/50 rounded-lg p-3 border border-[#195764]/70">
+          <i class="fas fa-clock h-5 w-5 text-white flex-shrink-0"></i>
+          <p class="text-white text-xs sm:text-sm font-medium">
+            Trabajamos 24/7 para cumplir con los plazos más exigentes sin comprometer la calidad del resultado.
+          </p>
+        </div>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
+        <a
+          href="https://wa.me/5491112345678?text=Hola%2C%20me%20interesa%20solicitar%20un%20presupuesto"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="w-full sm:w-auto"
+        >
+          <button class="w-full bg-[#195764] hover:bg-[#124450] text-white font-medium text-base px-6 py-2 rounded-md transition-colors duration-200 flex items-center justify-center gap-2">
+            <i class="fas fa-comment"></i>
+            Hablemos
+          </button>
+        </a>
+        <a href="#proyectos" class="w-full sm:w-auto">
+          <button class="w-full bg-white hover:bg-gray-50 text-[#195764] font-medium text-base px-6 py-2 rounded-md transition-colors duration-200">
+            Ver proyectos
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

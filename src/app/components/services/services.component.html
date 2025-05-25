@@ -1,0 +1,54 @@
+<section id="servicios" class="py-16 md:py-24 bg-black relative">
+  <div class="container mx-auto px-4 relative z-10">
+    <div class="text-center mb-12 relative overflow-hidden rounded-lg p-6">
+      <div class="relative z-10">
+        <h2 class="text-3xl font-bold mb-4 text-white">Nuestros Servicios</h2>
+        <p class="text-gray-300 max-w-3xl mx-auto mb-8">
+          Nos especializamos en la arquitectura comercial, brindando un servicio completo que abarca desde el
+          diseño inicial hasta la entrega final.
+        </p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+      @for (service of services; track service.id) {
+        <div class="bg-black border border-white/50 rounded-lg overflow-hidden flex flex-col h-full">
+          <div class="p-6 flex-1 flex flex-col justify-start">
+            <h3 class="text-xl font-bold text-white mb-3">{{ service.title }}</h3>
+            <p class="text-gray-300">{{ service.description }}</p>
+          </div>
+          <div class="relative h-[250px] w-full p-4">
+            @if (service.video) {
+              @if (service.video.url.endsWith('.mp4')) {
+                <video
+                  [src]="service.video.url"
+                  class="w-full h-full rounded-b-lg object-cover"
+                  controls
+                  preload="metadata"
+                ></video>
+              } @else {
+                <iframe
+                  [src]="getEmbedUrl(service.video.url, service.video.startTime)"
+                  class="w-full h-full rounded-b-lg"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen>
+                </iframe>
+              }
+            } @else if (service.images) {
+              <img-carousel [images]="service.images" [height]="250" class="rounded-b-lg"></img-carousel>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="text-center mt-12">
+      <p class="text-xl font-semibold text-white bg-[#195764] inline-block px-6 py-3 rounded-lg shadow-md">
+        Nos encargamos de todo, para que vos no tengas que preocuparte por nada.
+      </p>
+    </div>
+  </div>
+</section>
+
+<app-team></app-team>
