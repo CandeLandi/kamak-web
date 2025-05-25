@@ -1,21 +1,21 @@
-name: Deploy to GitHub Pages
+name: Build and Deploy to /docs
 
 on:
   push:
     branches:
-      - main  # Set this to your default branch
+      - main
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 jobs:
-  build-and-deploy:
+  build-and-commit-docs:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -26,11 +26,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
-        run: npm run build -- --configuration production --base-href=/kamak-web/
+      - name: Build Angular app to /docs
+        run: npx ng build --output-path=docs --base-href=/
 
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: dist/kamak-web/browser
-          branch: gh-pages
+      - name: Add and commit docs
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add docs
+          git commit -m 'Deploy to GitHub Pages [skip ci]' || echo "No changes to commit"
+          git push origin main
