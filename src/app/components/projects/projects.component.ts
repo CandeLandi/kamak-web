@@ -20,32 +20,32 @@ export class ProjectsComponent {
     {
       id: '1',
       title: 'Puma CQ-Necochea',
-      imageAfter: '/assets/images/work-done/necochea-cq/necochea-cq.jpg'
+      imageAfter: 'assets/images/work-done/necochea-cq/necochea-cq.jpg'
     },
     {
       id: '2',
       title: 'B.AGRO-Bahia Blanca',
-      imageAfter: '/assets/images/work-done/bahia-blanca/after/construction-site.jpg'
+      imageAfter: 'assets/images/work-done/bahia-blanca/after/construction-site.jpg'
     },
     {
       id: '3',
       title: 'Azul-Sapeda',
-      imageAfter: '/assets/images/work-done/azul-sapeda/After/station.jpg'
+      imageAfter: 'assets/images/work-done/azul-sapeda/After/station.jpg'
     },
     {
       id: '4',
       title: 'Baradero-Costa Parana',
-      imageAfter: '/assets/images/work-done/baradero-costa-parana/portada.jpg'
+      imageAfter: 'assets/images/work-done/baradero-costa-parana/portada.jpg'
     },
     {
       id: '5',
       title: 'Las Toninas-Trearie',
-      imageAfter: '/assets/images/work-done/las-toninos-trearie/portada.png'
+      imageAfter: 'assets/images/work-done/las-toninos-trearie/portada.png'
     },
     {
       id: '6',
       title: 'Zarate-Traslux',
-      imageAfter: '/assets/images/work-done/zarate-traslux/traslux.jpg'
+      imageAfter: 'assets/images/work-done/zarate-traslux/traslux.jpg'
     }
   ];
 }
