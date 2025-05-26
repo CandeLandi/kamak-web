@@ -9,5 +9,5 @@ import { CommonModule } from '@angular/common';
   templateUrl: './hero.component.html',
 })
 export class HeroComponent {
-  heroImage = 'assets/hero/hero.jpg';
+  heroImage = '/assets/hero/hero.jpg';
 }
