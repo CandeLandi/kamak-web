@@ -37,12 +37,12 @@ export class ServicesComponent {
       title: 'Diseño del proyecto',
       description: 'Diseñamos un layout funcional y personalizado, adaptado a las necesidades operativas y comerciales. Presentamos planos, renders y visualizaciones que permiten entender con claridad cómo será el resultado final antes de comenzar la obra.',
       images: [
-        '/assets/images/project-design/one.webp',
-        '/assets/images/project-design/two.webp',
-        '/assets/images/project-design/three.webp',
-        '/assets/images/project-design/four.webp',
-        '/assets/images/project-design/five.webp',
-        '/assets/images/project-design/six.webp',
+        'assets/images/project-design/one.webp',
+        'assets/images/project-design/two.webp',
+        'assets/images/project-design/three.webp',
+        'assets/images/project-design/four.webp',
+        'assets/images/project-design/five.webp',
+        'assets/images/project-design/six.webp',
       ]
     },
     {
@@ -50,8 +50,8 @@ export class ServicesComponent {
       title: 'Dirección de obra',
       description: 'Coordinamos todos los gremios necesarios y designamos un arquitecto encargado que estará in situ durante todo el transcurso de la obra.',
       images: [
-        '/assets/images/construction-site/kamak-developments.webp',
-        '/assets/images/construction-site/kamak.webp',
+        'assets/images/construction-site/kamak-developments.webp',
+        'assets/images/construction-site/kamak.webp',
       ]
     },
     {
@@ -68,7 +68,7 @@ export class ServicesComponent {
       title: 'Fabricación de muebles',
       description: 'Contamos con fábrica propia equipada con tecnología de producción automatizada, donde producimos muebles a medida para cada proyecto. Garantizamos precisión, calidad y diseño funcional, adaptado a las necesidades y estética de cada espacio.',
       video: {
-        url: '/assets/images/gastronomic-equipment/fabrication.mp4',
+        url: 'assets/images/gastronomic-equipment/fabrication.mp4',
         startTime: 0
       }
     },
@@ -77,10 +77,10 @@ export class ServicesComponent {
       title: 'Equipamiento gastronómico',
       description: 'Proveemos el equipamiento gastronómico que tu negocio necesita, con soluciones a medida y productos de calidad.',
       images: [
-        '/assets/images/gastronomic-equipment/big-fridge.webp',
-        '/assets/images/gastronomic-equipment/fridge.webp',
-        '/assets/images/gastronomic-equipment/refrigerator.webp',
-        '/assets/images/gastronomic-equipment/oven.webp',
+        'assets/images/gastronomic-equipment/big-fridge.webp',
+        'assets/images/gastronomic-equipment/fridge.webp',
+        'assets/images/gastronomic-equipment/refrigerator.webp',
+        'assets/images/gastronomic-equipment/oven.webp',
       ]
     },
     {
@@ -88,7 +88,7 @@ export class ServicesComponent {
       title: 'Opciones de financiamiento',
       description: 'Ofrecemos diversas opciones de financiamiento para hacer tu obra realidad, adaptándonos a tus posibilidades y facilitando la concreción de tu proyecto.',
       images: [
-        '/assets/images/financing/financing.webp',
+        'assets/images/financing/financing.webp',
       ]
     }
   ];
