@@ -1,0 +1,76 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-900 p-4">
+  <div class="w-full max-w-md bg-gray-800 border border-gray-700 rounded-lg shadow-lg">
+    <div class="text-center p-6">
+      <img
+        src="assets/logos/logo-kamak.png"
+        alt="Kamak Desarrollos"
+        class="mx-auto mb-6"
+        style="max-width: 320px; max-height: 220px;"
+      />
+    </div>
+    <div class="px-6 pb-6">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-4">
+        <div class="space-y-2 relative">
+          <label for="email" class="text-white block">Email</label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="admin@example.com"
+            required
+            autocomplete="username"
+            class="bg-gray-700 border border-gray-600 text-white rounded-md w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#195764] focus:border-[#195764] hover:border-[#195764] transition-all duration-150 shadow-sm focus:shadow-lg"
+          />
+        </div>
+        <div class="space-y-2 relative">
+          <label for="password" class="text-white block">Contraseña</label>
+          <div class="relative flex items-center">
+            <input
+              id="password"
+              [type]="showPassword ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="••••••••"
+              required
+              autocomplete="current-password"
+              class="bg-gray-700 border border-gray-600 text-white rounded-md w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#195764] focus:border-[#195764] hover:border-[#195764] transition-all duration-150 shadow-sm focus:shadow-lg pr-10"
+            />
+            <button type="button" (click)="togglePasswordVisibility()" tabindex="-1"
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white focus:outline-none flex items-center justify-center h-6 w-6">
+              <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-.274.832-.64 1.627-1.09 2.372M15.54 15.54A8.963 8.963 0 0112 17c-4.478 0-8.268-2.943-9.542-7a9.014 9.014 0 012.042-3.362" />
+              </svg>
+              <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.014 9.014 0 012.042-3.362m1.664-2.486A8.963 8.963 0 0112 5c4.478 0 8.268 2.943 9.542 7-.274.832-.64 1.627-1.09 2.372M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        @if (error) {
+          <div class="bg-red-500/10 text-red-500 p-3 rounded-md text-sm mt-2">
+            {{ error }}
+          </div>
+        }
+        <button
+          type="submit"
+          class="w-full flex items-center justify-center bg-[#195764] hover:bg-[#124450] text-white font-semibold py-2 rounded-md transition-colors duration-200 gap-2"
+          [disabled]="isLoading"
+        >
+          @if (isLoading) {
+            <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          } @else {
+            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 11V7a5 5 0 00-10 0v4" />
+              <rect x="5" y="11" width="14" height="8" rx="2" />
+            </svg>
+            Iniciar sesión
+          }
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
