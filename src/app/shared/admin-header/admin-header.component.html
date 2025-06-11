@@ -1,0 +1,12 @@
+<header class="w-full py-3 px-6 md:px-16 flex items-center justify-between fixed top-0 left-0 z-30 bg-black bg-opacity-90">
+  <img src="/assets/logos/logo-kamak.svg" alt="Kamak" class="h-8">
+  <div class="flex items-center gap-6">
+    <a href="/" target="_blank">
+      <button class="text-white border border-gray-600 hover:bg-gray-700 px-4 py-1.5 rounded transition-colors text-sm font-medium">Ver sitio</button>
+    </a>
+    <button type="button" (click)="logout.emit()" class="text-white bg-black border border-gray-600 hover:bg-gray-900 px-4 py-1.5 rounded flex items-center gap-2 transition-colors text-sm font-medium">
+      <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1"/></svg>
+      Cerrar sesión
+    </button>
+  </div>
+</header>

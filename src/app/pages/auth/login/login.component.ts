@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -35,14 +35,15 @@ export class LoginComponent {
     if (this.loginForm.invalid) return;
     this.isLoading = true;
     this.error = null;
-
-    this.authService.login(this.loginForm.value).subscribe({
-      next: (res) => {
-        this.isLoading = false;
-        this.authService.setToken(res.accessToken);
-        this.router.navigate(['/home']);
+    const { email, password } = this.loginForm.value;
+    this.authService.login(email, password).subscribe({
+      next: () => {
+        setTimeout(() => {
+          this.isLoading = false;
+          this.router.navigate(['/admin/dashboard']);
+        }, 2000);
       },
-      error: (err) => {
+      error: (err: any) => {
         this.isLoading = false;
         this.error = err?.error?.message || 'Error al iniciar sesión';
       }

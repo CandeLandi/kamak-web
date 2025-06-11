@@ -1,1 +1,3 @@
-<router-outlet></router-outlet>
+<main [@fade]="prepareRoute(outlet)" class="relative min-h-screen">
+  <router-outlet #outlet="outlet"></router-outlet>
+</main>

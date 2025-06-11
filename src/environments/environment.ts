@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://rakium-backend-production.up.railway.app'
+  apiUrl: 'https://rakium-be-production.up.railway.app'
 };

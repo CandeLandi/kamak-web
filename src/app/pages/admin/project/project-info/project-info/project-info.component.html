@@ -1,0 +1,108 @@
+<div class="p-6">
+  <form [formGroup]="projectForm" (ngSubmit)="saveForm()" class="space-y-8">
+    <div class="flex items-center gap-3 mb-6">
+      <i-lucide name="file-text" class="w-5 h-5" style="color:#195764"></i-lucide>
+      <h3 class="text-xl font-bold text-white">General</h3>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="space-y-2">
+        <mat-form-field class="w-full rounded-xl">
+          <mat-label>Nombre del proyecto</mat-label>
+          <input matInput formControlName="name" placeholder="Nombre del proyecto" />
+          <mat-error *ngIf="projectForm.get('name')?.hasError('required') && projectForm.get('name')?.touched">
+            El nombre es obligatorio
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-full rounded-xl">
+          <mat-label>Categoría</mat-label>
+          <mat-select formControlName="category">
+            <mat-option [value]="projectCategories.ESTACIONES">Estaciones de Servicio</mat-option>
+            <mat-option [value]="projectCategories.TIENDAS">Tiendas</mat-option>
+            <mat-option [value]="projectCategories.COMERCIALES">Comerciales</mat-option>
+          </mat-select>
+          <mat-error *ngIf="projectForm.get('category')?.hasError('required') && projectForm.get('category')?.touched">
+            La categoría es obligatoria
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-full rounded-xl">
+          <mat-label>Descripción corta</mat-label>
+          <textarea matInput formControlName="description" rows="3" placeholder="Breve descripción del proyecto"></textarea>
+          <mat-error *ngIf="projectForm.get('description')?.hasError('required') && projectForm.get('description')?.touched">
+            La descripción es obligatoria
+          </mat-error>
+        </mat-form-field>
+        <div class="flex items-center justify-between px-2 ">
+          <span class="text-sm font-medium text-white">Mostrar en página principal</span>
+          <mat-slide-toggle formControlName="showOnHomepage" color="primary"></mat-slide-toggle>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <mat-form-field class="w-full rounded-xl">
+          <mat-label>Ubicación</mat-label>
+          <input matInput formControlName="address" placeholder="Ubicación del proyecto" />
+          <mat-error *ngIf="projectForm.get('address')?.hasError('required') && projectForm.get('address')?.touched">
+            La ubicación es obligatoria
+          </mat-error>
+        </mat-form-field>
+        <div class="grid grid-cols-2 gap-4">
+          <mat-form-field class="w-full rounded-xl ">
+            <mat-label>Superficie</mat-label>
+            <input matInput formControlName="area" placeholder="Ej: 250 m²" />
+            <mat-error *ngIf="projectForm.get('area')?.hasError('required') && projectForm.get('area')?.touched">
+              La superficie es obligatoria
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="w-full rounded-xl">
+            <mat-label>Fecha</mat-label>
+            <input matInput formControlName="date" placeholder="Ej: Enero 2024" />
+            <mat-error *ngIf="projectForm.get('date')?.hasError('required') && projectForm.get('date')?.touched">
+              La fecha es obligatoria
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <mat-form-field class="w-full rounded-xl">
+          <mat-label>Duración</mat-label>
+          <input matInput formControlName="duration" placeholder="Ej: 45 días" />
+          <mat-error *ngIf="projectForm.get('duration')?.hasError('required') && projectForm.get('duration')?.touched">
+            La duración es obligatoria
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="flex items-center mb-6 mt-12">
+      <i-lucide name="file-text" class="w-5 h-5" style="color:#195764"></i-lucide>
+      <h3 class="text-xl font-bold text-white">Detalles</h3>
+    </div>
+    <div class="mt-8 pt-6 border-t border-white/10">
+      <mat-form-field class="w-full rounded-xl px-2">
+        <mat-label>Descripción Detallada</mat-label>
+        <textarea matInput formControlName="longDescription" rows="5" placeholder="Descripción detallada del proyecto"></textarea>
+        <mat-error *ngIf="projectForm.get('longDescription')?.hasError('required') && projectForm.get('longDescription')?.touched">
+          La descripción detallada es obligatoria
+        </mat-error>
+      </mat-form-field>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <mat-form-field class="w-full rounded-xl px-2">
+          <mat-label>El Desafío</mat-label>
+          <textarea matInput formControlName="challenge" rows="4" placeholder="Descripción del desafío del proyecto"></textarea>
+          <mat-error *ngIf="projectForm.get('challenge')?.hasError('required') && projectForm.get('challenge')?.touched">
+            El desafío es obligatorio
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-full rounded-xl px-2">
+          <mat-label>Nuestra Solución</mat-label>
+          <textarea matInput formControlName="solution" rows="4" placeholder="Descripción de la solución implementada"></textarea>
+          <mat-error *ngIf="projectForm.get('solution')?.hasError('required') && projectForm.get('solution')?.touched">
+            La solución es obligatoria
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="mt-6 flex justify-end gap-4">
+      <button mat-stroked-button type="button" (click)="cancel()">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="isSubmitting">Guardar</button>
+    </div>
+  </form>
+</div>

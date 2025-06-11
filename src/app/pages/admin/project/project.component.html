@@ -1,0 +1,33 @@
+  <app-admin-header (logout)="handleLogout()"></app-admin-header>
+
+<div
+  class="min-h-screen flex w-full flex-col bg-black text-white md:px-16 pt-16"
+>
+  <div>
+    <h1 class="text-3xl font-bold text-white mb-6">
+      {{ isEditMode ? "Editar Proyecto" : "Crear Proyecto" }}
+    </h1>
+        </div>
+
+  <mat-tab-group
+    [selectedIndex]="selectedTabIndex"
+    (selectedIndexChange)="onTabChange($event)"
+    animationDuration="0ms"
+    class="bg-[#23272f]/80 border border-white/10 rounded-xl shadow-lg overflow-hiddens"
+  >
+    <mat-tab label="Información">
+      <app-project-info
+        [projectId]="projectId"
+        [isEditMode]="isEditMode"
+      ></app-project-info>
+    </mat-tab>
+
+    <mat-tab label="Imágenes">
+      <app-project-images></app-project-images>
+    </mat-tab>
+
+    <mat-tab label="Videos">
+      <app-project-videos></app-project-videos>
+    </mat-tab>
+  </mat-tab-group>
+</div>

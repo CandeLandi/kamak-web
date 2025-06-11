@@ -5,6 +5,7 @@ import { HeroComponent } from '../../components/hero/hero.component';
 import { ServicesComponent } from '../../components/services/services.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { ProjectsComponent } from '../../components/projects/projects.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +16,8 @@ import { ProjectsComponent } from '../../components/projects/projects.component'
     HeroComponent,
     ServicesComponent,
     FooterComponent,
-    ProjectsComponent
+    ProjectsComponent,
+    RouterModule
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
