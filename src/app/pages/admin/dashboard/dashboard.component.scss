@@ -1,0 +1,98 @@
+// Material Overrides
+::ng-deep {
+  // Chip Listbox
+  .mat-mdc-chip-listbox {
+    .mdc-evolution-chip {
+      background-color: rgba(255, 255, 255, 0.05) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+      }
+
+      &.mat-mdc-chip-selected {
+        background-color: #195764 !important;
+        border-color: #195764 !important;
+      }
+    }
+  }
+
+  // Paginator
+  .mat-mdc-paginator {
+    background-color: #181c23 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+
+    .mat-mdc-paginator-navigation-previous,
+    .mat-mdc-paginator-navigation-next {
+      color: white !important;
+    }
+
+    .mat-mdc-paginator-range-label {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+  }
+
+  // Menu
+  .mat-mdc-menu-panel {
+    background-color: #181c23 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    .mat-mdc-menu-item {
+      color: white !important;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+      }
+
+      .mat-icon {
+        color: rgba(255, 255, 255, 0.7) !important;
+      }
+    }
+  }
+
+  // Button
+  .mat-mdc-raised-button.mat-primary {
+    background-color: #195764 !important;
+
+    &:hover {
+      background-color: #1a6b7a !important;
+    }
+  }
+
+  // Snackbar
+  .mat-mdc-snack-bar-container {
+    &.success-snackbar {
+      --mdc-snackbar-container-color: #195764;
+      --mat-mdc-snack-bar-button-color: white;
+      --mdc-snackbar-supporting-text-color: white;
+    }
+
+    &.error-snackbar {
+      --mdc-snackbar-container-color: #dc2626;
+      --mat-mdc-snack-bar-button-color: white;
+      --mdc-snackbar-supporting-text-color: white;
+    }
+  }
+}
+
+// Custom Styles
+.project-card {
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+// Loading Spinner
+.mat-mdc-progress-spinner {
+  --mdc-circular-progress-active-indicator-color: #195764;
+}
+
+// Responsive Adjustments
+@media (max-width: 768px) {
+  .mat-mdc-chip-listbox {
+    justify-content: center;
+  }
+}

@@ -1,0 +1,30 @@
+
+  <div class="bg-[#181c23] border border-white/10 rounded-b-lg p-6">
+    <label class="block text-sm font-medium text-white mb-2">Videos de YouTube</label>
+    <div class="space-y-4 mb-4">
+      @for (video of videos; track video) {
+        <mat-card class="bg-black/40">
+          <mat-card-content class="flex items-center gap-4">
+            <div class="flex-1 overflow-hidden">
+              <p class="text-white truncate">{{ video }}</p>
+            </div>
+            <button mat-icon-button color="warn" (click)="handleRemoveVideo($index)">
+              <i-lucide name="x" class="w-5 h-5 text-white"></i-lucide>
+            </button>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+    <div class="flex gap-2">
+      <form [formGroup]="videoForm" class="flex-1">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>URL de YouTube (embed)</mat-label>
+          <input matInput formControlName="newVideo" placeholder="URL de YouTube (embed)">
+          <button matSuffix mat-icon-button (click)="handleAddVideo()">
+            <i-lucide name="plus" class="w-5 h-5 text-white/70"></i-lucide>
+          </button>
+        </mat-form-field>
+      </form>
+    </div>
+    <p class="text-xs text-gray-400 mt-2">Ejemplo: https://www.youtube.com/embed/VIDEO_ID</p>
+  </div>

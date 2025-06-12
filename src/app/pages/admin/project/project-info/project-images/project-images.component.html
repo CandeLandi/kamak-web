@@ -1,0 +1,67 @@
+<div class="p-6">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Imagen Antes -->
+    <div>
+      <label class="block text-white mb-2">Imagen Antes</label>
+      <div *ngIf="before" class="relative h-40 mb-4 rounded-lg overflow-hidden">
+        <img [src]="before" alt="Imagen Antes" class="w-full h-full object-cover rounded-lg" />
+      </div>
+      <div class="flex flex-col gap-2">
+        <input type="file" id="imageBefore" accept="image/*" (change)="handleImageBeforeChange($event)" class="hidden" #imageBeforeInput>
+        <button mat-raised-button color="primary" (click)="imageBeforeInput.click()" class="flex items-center gap-2">
+          <i-lucide name="upload" class="w-5 h-5"></i-lucide>
+          {{ before ? 'Cambiar imagen' : 'Subir imagen' }}
+        </button>
+        <p *ngIf="before" class="text-xs text-gray-400">Haz clic en el botón para cambiar la imagen</p>
+      </div>
+    </div>
+
+    <!-- Imagen Después -->
+    <div>
+      <label class="block text-white mb-2">Imagen Después</label>
+      <div *ngIf="after" class="relative h-40 mb-4 rounded-lg overflow-hidden">
+        <img [src]="after" alt="Imagen Después" class="w-full h-full object-cover rounded-lg" />
+      </div>
+      <div class="flex flex-col gap-2">
+        <input type="file" id="imageAfter" accept="image/*" (change)="handleImageAfterChange($event)" class="hidden" #imageAfterInput>
+        <button mat-raised-button color="primary" (click)="imageAfterInput.click()" class="flex items-center gap-2">
+          <i-lucide name="upload" class="w-5 h-5"></i-lucide>
+          {{ after ? 'Cambiar imagen' : 'Subir imagen' }}
+        </button>
+        <p *ngIf="after" class="text-xs text-gray-400">Haz clic en el botón para cambiar la imagen</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Galería de Imágenes -->
+  <div class="mt-8">
+    <label class="text-white mb-4 block text-lg font-semibold">Galería de Imágenes</label>
+
+    <!-- Imágenes existentes -->
+    <div *ngIf="gallery.length > 0">
+      <h4 class="text-white mb-2">Nuevas imágenes</h4>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div *ngFor="let img of gallery; let i = index" class="relative group rounded-lg overflow-hidden">
+          <div class="relative h-32 rounded-lg overflow-hidden">
+            <img [src]="img" [alt]="'Galería ' + (i + 1)" class="w-full h-full object-cover rounded-lg" />
+          </div>
+          <button mat-icon-button color="warn" (click)="handleRemoveGalleryImage(i)" class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/60 rounded-full p-1">
+            <i-lucide name="x" class="w-5 h-5 text-white"></i-lucide>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input para subir nuevas imágenes -->
+    <div class="mt-4">
+      <input type="file" id="galleryImages" accept="image/*" multiple (change)="handleGalleryImagesChange($event)" class="hidden" #galleryImagesInput>
+      <div class="flex justify-center">
+        <button mat-raised-button color="primary" (click)="galleryImagesInput.click()" class="flex items-center gap-2 w-full">
+          <i-lucide name="upload" class="w-5 h-5"></i-lucide>
+          Añadir imágenes a la galería
+        </button>
+      </div>
+      <p class="text-xs text-gray-400 mt-2">Puedes seleccionar múltiples imágenes a la vez</p>
+    </div>
+  </div>
+</div>
