@@ -33,7 +33,11 @@
         </mat-form-field>
         <div class="flex items-center justify-between px-2 ">
           <span class="text-sm font-medium text-white">Mostrar en página principal</span>
-          <mat-slide-toggle formControlName="showOnHomepage" color="primary"></mat-slide-toggle>
+          <mat-slide-toggle
+            [checked]="isPublished()"
+            (change)="toggleStatus()"
+            color="primary">
+          </mat-slide-toggle>
         </div>
       </div>
       <div class="space-y-2">
@@ -44,37 +48,62 @@
             La ubicación es obligatoria
           </mat-error>
         </mat-form-field>
+       <!--  <mat-form-field class="w-full rounded-xl">
+          <mat-label>Cliente</mat-label>
+          <input matInput formControlName="client" placeholder="Nombre del cliente" />
+          <mat-error *ngIf="projectForm.get('client')?.hasError('required') && projectForm.get('client')?.touched">
+            El cliente es obligatorio
+          </mat-error>
+        </mat-form-field> -->
         <div class="grid grid-cols-2 gap-4">
-          <mat-form-field class="w-full rounded-xl ">
+          <mat-form-field class="w-full rounded-xl">
             <mat-label>Superficie</mat-label>
-            <input matInput formControlName="area" placeholder="Ej: 250 m²" />
+            <input
+              matInput
+              formControlName="area"
+              placeholder="Ej: 250"
+              type="number"
+              min="0"
+              (input)="formatArea($event)"
+            />
+            <span matSuffix>m²</span>
             <mat-error *ngIf="projectForm.get('area')?.hasError('required') && projectForm.get('area')?.touched">
               La superficie es obligatoria
             </mat-error>
           </mat-form-field>
           <mat-form-field class="w-full rounded-xl">
-            <mat-label>Fecha</mat-label>
-            <input matInput formControlName="date" placeholder="Ej: Enero 2024" />
-            <mat-error *ngIf="projectForm.get('date')?.hasError('required') && projectForm.get('date')?.touched">
-              La fecha es obligatoria
+            <mat-label>Fecha de inicio</mat-label>
+            <input matInput [matDatepicker]="pickerInicio" formControlName="startDate" placeholder="Selecciona la fecha de inicio" readonly />
+            <mat-datepicker-toggle matSuffix [for]="pickerInicio"></mat-datepicker-toggle>
+            <mat-datepicker #pickerInicio></mat-datepicker>
+            <mat-error *ngIf="projectForm.get('startDate')?.hasError('required') && projectForm.get('startDate')?.touched">
+              La fecha de inicio es obligatoria
             </mat-error>
           </mat-form-field>
         </div>
-        <mat-form-field class="w-full rounded-xl">
-          <mat-label>Duración</mat-label>
-          <input matInput formControlName="duration" placeholder="Ej: 45 días" />
-          <mat-error *ngIf="projectForm.get('duration')?.hasError('required') && projectForm.get('duration')?.touched">
-            La duración es obligatoria
-          </mat-error>
-        </mat-form-field>
+        <div class="grid grid-cols-2 gap-4">
+          <mat-form-field class="w-full rounded-xl ">
+            <mat-label>Fecha de fin</mat-label>
+            <input matInput [matDatepicker]="pickerFin" formControlName="endDate" placeholder="Selecciona la fecha de fin" readonly />
+            <mat-datepicker-toggle matSuffix [for]="pickerFin"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFin></mat-datepicker>
+            <mat-error *ngIf="projectForm.get('endDate')?.hasError('required') && projectForm.get('endDate')?.touched">
+              La fecha de fin es obligatoria
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="w-full rounded-xl ">
+            <mat-label>Duración</mat-label>
+            <input matInput formControlName="duration" readonly />
+          </mat-form-field>
+        </div>
       </div>
     </div>
 
-    <div class="flex items-center mb-6 mt-12">
+    <div class="flex items-center mb-4 mt-4 gap-3">
       <i-lucide name="file-text" class="w-5 h-5" style="color:#195764"></i-lucide>
       <h3 class="text-xl font-bold text-white">Detalles</h3>
     </div>
-    <div class="mt-8 pt-6 border-t border-white/10">
+    <div class="mt-8 pt-4">
       <mat-form-field class="w-full rounded-xl px-2">
         <mat-label>Descripción Detallada</mat-label>
         <textarea matInput formControlName="longDescription" rows="5" placeholder="Descripción detallada del proyecto"></textarea>
@@ -97,6 +126,78 @@
             La solución es obligatoria
           </mat-error>
         </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Información Interna -->
+    <div class="mt-6 pt-4">
+      <div class="flex items-center gap-3 mb-6">
+        <i-lucide name="file-text" class="w-5 h-5" style="color:#195764"></i-lucide>
+        <h3 class="text-xl font-bold text-white">Información Interna</h3>
+      </div>
+
+      <div class="px-1">
+        <mat-accordion multi="false" class="w-full no-padding-expansion" displayMode="flat">
+          <mat-expansion-panel [expanded]="expandedPanel === 'contact'" (opened)="expandedPanel = 'contact'" (closed)="expandedPanel = null" class="!bg-transparent !shadow-none">
+            <mat-expansion-panel-header class="!min-h-0 !bg-transparent">
+              <div class="flex items-center gap-2">
+                <i-lucide name="user" class="h-4 w-4" style="color:#195764"></i-lucide>
+                <span>Información de Contacto</span>
+              </div>
+            </mat-expansion-panel-header>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+              <mat-form-field class="w-full">
+                <mat-label>Nombre de Contacto</mat-label>
+                <input matInput formControlName="contactName" />
+              </mat-form-field>
+              <mat-form-field class="w-full">
+                <mat-label>Teléfono</mat-label>
+                <input matInput formControlName="contactPhone" />
+              </mat-form-field>
+              <mat-form-field class="w-full">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="contactEmail" type="email" />
+              </mat-form-field>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel [expanded]="expandedPanel === 'financial'" (opened)="expandedPanel = 'financial'" (closed)="expandedPanel = null" class="!bg-transparent !shadow-none">
+            <mat-expansion-panel-header class="!min-h-0  !bg-transparent">
+              <div class="flex items-center gap-2">
+                <i-lucide name="dollar-sign" class="h-4 w-4" style="color:#195764"></i-lucide>
+                <span>Información Financiera</span>
+              </div>
+            </mat-expansion-panel-header>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+              <mat-form-field class="w-full">
+                <mat-label>Presupuesto</mat-label>
+                <input matInput formControlName="budget" />
+              </mat-form-field>
+              <mat-form-field class="w-full">
+                <mat-label>Estado de Facturación</mat-label>
+                <mat-select formControlName="invoiceStatus">
+                  <mat-option value="Pendiente">Pendiente</mat-option>
+                  <mat-option value="Facturado">Facturado</mat-option>
+                  <mat-option value="Pagado">Pagado</mat-option>
+                  <mat-option value="Vencido">Vencido</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel [expanded]="expandedPanel === 'notes'" (opened)="expandedPanel = 'notes'" (closed)="expandedPanel = null" class="!bg-transparent !shadow-none">
+            <mat-expansion-panel-header class="!min-h-0 !bg-transparent">
+              <div class="flex items-center gap-2">
+                <i-lucide name="file-text" class="h-4 w-4" style="color:#195764"></i-lucide>
+                <span>Notas Internas</span>
+              </div>
+            </mat-expansion-panel-header>
+            <div class="pt-2">
+              <mat-form-field class="w-full">
+                <mat-label>Notas</mat-label>
+                <textarea matInput formControlName="notes" rows="5" placeholder="Información interna sobre el cliente o proyecto..."></textarea>
+              </mat-form-field>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
       </div>
     </div>
 

@@ -25,7 +25,7 @@
     </div>
     <div class="flex flex-col md:flex-row items-start md:items-center gap-4">
       <div class="flex items-center gap-2">
-        <span class="text-gray-400">🔎</span>
+        <i-lucide name="search" class="w-4 h-4 text-gray-400"></i-lucide>
         <span class="text-sm text-gray-400">Filtrar por:</span>
       </div>
       <select class="w-[180px] bg-[#181c23] border border-white/10 text-white rounded-lg px-3 py-2" [value]="categoryFilter()" (change)="onCategoryChange($event)">
@@ -39,7 +39,14 @@
 
   <!-- Contador de resultados -->
   <div class="mb-4 text-sm text-gray-400">
-    Mostrando {{ indexOfFirstProject() + 1 }}-{{ indexOfLastProject() }} de {{ filteredProjects().length }} proyectos
+    @if (filteredProjects().length > projectsPerPage) {
+      <span>Mostrando {{ indexOfFirstProject() + 1 }}-{{ indexOfLastProject() }} de {{ filteredProjects().length }} proyectos</span>
+    } @else {
+      <span>
+        Mostrando {{ filteredProjects().length }}
+        {{ filteredProjects().length === 1 ? 'proyecto' : 'proyectos' }}
+      </span>
+    }
   </div>
 
   <!-- Loading State -->
@@ -64,51 +71,56 @@
     @if (currentProjects().length > 0) {
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         @for (project of currentProjects(); track project.id) {
-          <div class="bg-[#181c23] rounded-lg overflow-hidden border border-white/10 hover:border-white/20 transition-colors flex flex-col h-full">
-            <!-- Project Image -->
-            <div class="relative aspect-video bg-black/50">
-              <img *ngIf="project.imageAfter; else noImage" [src]="project.imageAfter" [alt]="project.name" class="w-full h-full object-cover">
-              <ng-template #noImage>
-                <div class="w-full h-full flex items-center justify-center">
-                  <div class="flex flex-col items-center">
-                    <i-lucide name="image" class="text-white/30 w-8 h-8 mb-2"></i-lucide>
-                    <span class="text-white/30">Sin imagen</span>
+          @if (project.status === 'PUBLISHED') {
+            <div class="bg-[#181c23] rounded-lg overflow-hidden border border-white/10 hover:border-white/20 transition-colors flex flex-col h-full">
+              <!-- Project Image -->
+              <div class="relative aspect-video bg-black/50">
+                @if (project.imageAfter) {
+                  <img [src]="project.imageAfter" [alt]="project.name" class="w-full h-full object-cover">
+                } @else {
+                  <div class="w-full h-full flex items-center justify-center">
+                    <div class="flex flex-col items-center">
+                      <i-lucide name="image" class="text-white/30 w-8 h-8 mb-2"></i-lucide>
+                      <span class="text-white/30">Sin imagen</span>
+                    </div>
+                  </div>
+                }
+              </div>
+              <!-- Project Info & Actions -->
+              <div class="flex flex-col flex-1 p-4 justify-between">
+                <div>
+                  <div class="flex justify-between items-start mb-2">
+                    <h3 class="text-lg font-bold text-white">{{ project.name }}</h3>
+                    <div class="flex items-center gap-2">
+                      @if (project.status !== 'PUBLISHED') {
+                        <span class="bg-yellow-600/20 text-yellow-400 p-1 rounded-full" title="Oculto en página principal">
+                          <i-lucide name="eye-off" class="w-3 h-3"></i-lucide>
+                        </span>
+                      }
+                      <span class="text-xs bg-[#222733] text-gray-300 px-2 py-1 rounded-full">
+                        {{ project.category | titlecase }}
+                      </span>
+                    </div>
+                  </div>
+                  <p class="text-sm text-gray-400 mb-4 line-clamp-2">{{ project.description }}</p>
+                </div>
+                <div class="flex justify-between items-center mt-auto pt-2">
+                  <a [href]="'/proyectos/' + project.id" target="_blank" class="text-gray-300 hover:text-white flex items-center gap-1">
+                    <i-lucide name="eye" class="w-4 h-4"></i-lucide>
+                    Ver
+                  </a>
+                  <div class="flex gap-2">
+                    <button mat-icon-button color="primary" [routerLink]="['/admin/project', project.id]">
+                      <i-lucide name="edit" class="w-4 h-4"></i-lucide>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="handleDeleteProject(project.id)">
+                      <i-lucide name="trash-2" class="w-4 h-4 text-red-400"></i-lucide>
+                    </button>
                   </div>
                 </div>
-              </ng-template>
-            </div>
-            <!-- Project Info & Actions -->
-            <div class="flex flex-col flex-1 p-4 justify-between">
-              <div>
-                <div class="flex justify-between items-start mb-2">
-                  <h3 class="text-lg font-bold text-white">{{ project.name }}</h3>
-                  <div class="flex items-center gap-2">
-                    <span *ngIf="project.showOnHomepage === false" class="bg-yellow-600/20 text-yellow-400 p-1 rounded-full" title="Oculto en página principal">
-                      <i-lucide name="eye-off" class="w-3 h-3"></i-lucide>
-                    </span>
-                    <span class="text-xs bg-[#222733] text-gray-300 px-2 py-1 rounded-full">
-                      {{ project.category | titlecase }}
-                    </span>
-                  </div>
-                </div>
-                <p class="text-sm text-gray-400 mb-4 line-clamp-2">{{ project.description }}</p>
-              </div>
-              <div class="flex justify-between items-center mt-auto pt-2">
-                <a [href]="'/proyectos/' + project.id" target="_blank" class="text-gray-300 hover:text-white flex items-center gap-1">
-                  <i-lucide name="eye" class="w-4 h-4"></i-lucide>
-                  Ver
-                </a>
-                <div class="flex gap-2">
-                  <button mat-icon-button color="primary" [routerLink]="['/admin/project', project.id]">
-                    <i-lucide name="edit" class="w-4 h-4"></i-lucide>
-                  </button>
-                  <button mat-icon-button color="warn" (click)="handleDeleteProject(project.id)">
-                    <i-lucide name="trash-2" class="w-4 h-4 text-red-400"></i-lucide>
-                  </button>
-                </div>
               </div>
             </div>
-          </div>
+          }
         }
       </div>
       <!-- Pagination -->

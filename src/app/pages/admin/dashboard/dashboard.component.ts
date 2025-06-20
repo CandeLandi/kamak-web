@@ -1,8 +1,9 @@
-import { Component, OnInit, signal, computed, effect } from '@angular/core';
+import { Component, OnInit, signal, computed, effect, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AdminHeaderComponent } from '../../../shared/admin-header/admin-header.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { AdminHeaderComponent } from '../../../shared/components/admin-header/admin-header.component';
 import { ProjectsService } from '../../../core/services/projects.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -15,7 +16,8 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { Project } from '../interfaces/project.interface';
 import { ProjectCategory } from '../../../core/models/enums';
 import { LucideAngularModule } from 'lucide-angular';
-import { DashboardStatsComponent } from '../components/dashboard-stats.component';
+import { DashboardStatsComponent } from '../components/dashboard-stats/dashboard-stats.component';
+import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -33,40 +35,39 @@ import { DashboardStatsComponent } from '../components/dashboard-stats.component
     MatChipsModule,
     MatPaginatorModule,
     LucideAngularModule,
-    DashboardStatsComponent
+    DashboardStatsComponent,
+    MatDialogModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit {
-  // Expose ProjectCategory to template
+
   protected readonly ProjectCategory = ProjectCategory;
 
-  // Variables normales
-  loading: boolean = true;
+  loading = false;
   error: string | null = null;
   currentPage = signal<number>(1);
   projectsPerPage = 9;
   categoryFilter = signal<string>('todos');
-  projects = signal<Project[]>([]);
+  private readonly dialog = inject(MatDialog);
 
   constructor(
     private router: Router,
     private projectsService: ProjectsService,
     private authService: AuthService,
     private snackBar: MatSnackBar
-  ) {
-    // Suscribirse a los cambios del signal de proyectos del servicio
-    effect(() => {
-      this.projects.set(this.projectsService.projects());
-    });
+  ) {}
+
+  get projects() {
+    return this.projectsService.projectsOfClientId;
   }
 
   // Computed values
   filteredProjects = computed(() => {
     const filter = this.categoryFilter();
     if (filter === 'todos') return this.projects();
-    return this.projects().filter(p => p.category === filter);
+    return this.projects().filter((p: Project) => p.category === filter);
   });
 
   totalPages = computed(() =>
@@ -88,6 +89,7 @@ export class DashboardComponent implements OnInit {
   loadProjects(): void {
     this.loading = true;
     this.error = null;
+    this.projectsService.projectsOfClientId.set([]);
 
     const clientId = this.authService.getClientId?.();
     if (!clientId) {
@@ -96,8 +98,15 @@ export class DashboardComponent implements OnInit {
       return;
     }
 
-    this.projectsService.refreshProjects(clientId, () => {
-      this.loading = false;
+    this.projectsService.getProjectsByClientId(clientId).subscribe({
+      next: (projects) => {
+        this.projectsService.projectsOfClientId.set(projects || []);
+        this.loading = false;
+      },
+      error: (err) => {
+        this.error = 'Error al cargar proyectos';
+        this.loading = false;
+      }
     });
   }
 
@@ -106,23 +115,31 @@ export class DashboardComponent implements OnInit {
   }
 
   handleDeleteProject(projectId: string): void {
-    if (confirm('¿Estás seguro de que deseas eliminar este proyecto?')) {
-      this.projectsService.deleteProject(projectId).subscribe({
-        next: () => {
-          this.snackBar.open('Proyecto eliminado correctamente', 'Cerrar', {
-            duration: 3000,
-            panelClass: ['success-snackbar']
-          });
-        },
-        error: () => {
-          this.error = 'Error al eliminar el proyecto';
-          this.snackBar.open('Error al eliminar el proyecto', 'Cerrar', {
-            duration: 3000,
-            panelClass: ['error-snackbar']
-          });
-        }
-      });
-    }
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        title: 'Confirmar Eliminación',
+        message: '¿Estás seguro de que deseas eliminar este proyecto? Esta acción no se puede deshacer.',
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.projectsService.deleteProject(projectId).subscribe({
+          next: () => {
+            this.snackBar.open('Proyecto eliminado correctamente', 'Cerrar', {
+              duration: 3000,
+              panelClass: ['success-snackbar']
+            });
+          },
+          error: () => {
+            this.snackBar.open('Error al eliminar el proyecto', 'Cerrar', {
+              duration: 3000,
+              panelClass: ['error-snackbar']
+            });
+          }
+        });
+      }
+    });
   }
 
   setCategoryFilter(value: string): void {
