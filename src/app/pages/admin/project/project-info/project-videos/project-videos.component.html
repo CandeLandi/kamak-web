@@ -1,30 +1,45 @@
+<div class="bg-[#181c23] border border-white/10 rounded-b-lg p-6">
+  <label class="block text-sm font-medium text-white mb-4">Videos de YouTube</label>
 
-  <div class="bg-[#181c23] border border-white/10 rounded-b-lg p-6">
-    <label class="block text-sm font-medium text-white mb-2">Videos de YouTube</label>
-    <div class="space-y-4 mb-4">
-      @for (video of videos; track video) {
+  @if (loading) {
+    <div class="flex justify-center items-center py-8">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  } @else {
+    <div class="space-y-4 mb-6">
+      @for (video of videos; track video.id) {
         <mat-card class="bg-black/40">
-          <mat-card-content class="flex items-center gap-4">
+          <mat-card-content class="flex items-center gap-4 p-3">
             <div class="flex-1 overflow-hidden">
-              <p class="text-white truncate">{{ video }}</p>
+              <p class="text-white truncate" title="{{ video.url }}">{{ video.url }}</p>
             </div>
-            <button mat-icon-button color="warn" (click)="handleRemoveVideo($index)">
-              <i-lucide name="x" class="w-5 h-5 text-white"></i-lucide>
+            <button mat-icon-button color="warn" (click)="handleRemoveVideo(video.id)">
+              <i-lucide name="x" class="w-5 h-5"></i-lucide>
             </button>
           </mat-card-content>
         </mat-card>
+      } @empty {
+        <div class="text-center py-8 border-2 border-dashed border-white/10 rounded-lg">
+          <p class="text-gray-400">Aún no se han agregado videos.</p>
+        </div>
       }
     </div>
-    <div class="flex gap-2">
-      <form [formGroup]="videoForm" class="flex-1">
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-label>URL de YouTube (embed)</mat-label>
-          <input matInput formControlName="newVideo" placeholder="URL de YouTube (embed)">
-          <button matSuffix mat-icon-button (click)="handleAddVideo()">
-            <i-lucide name="plus" class="w-5 h-5 text-white/70"></i-lucide>
-          </button>
-        </mat-form-field>
-      </form>
-    </div>
-    <p class="text-xs text-gray-400 mt-2">Ejemplo: https://www.youtube.com/embed/VIDEO_ID</p>
-  </div>
+  }
+
+  <form [formGroup]="videoForm" (ngSubmit)="handleAddVideo()" class="flex gap-2 items-start">
+    <mat-form-field appearance="outline" class="w-full flex-1">
+      <mat-label>URL de YouTube</mat-label>
+      <input matInput formControlName="newVideo" placeholder="https://www.youtube.com/watch?v=...">
+      @if (videoForm.get('newVideo')?.hasError('pattern')) {
+        <mat-error>La URL no parece ser un video de YouTube válido.</mat-error>
+      }
+    </mat-form-field>
+    <button mat-flat-button color="primary" type="submit" [disabled]="videoForm.invalid" class="h-[52px] !px-5">
+      <div class="flex items-center gap-2">
+        <i-lucide name="plus" class="w-5 h-5"></i-lucide>
+        Agregar
+      </div>
+    </button>
+  </form>
+  <p class="text-xs text-gray-400 mt-2">Pega la URL completa del video de YouTube.</p>
+</div>

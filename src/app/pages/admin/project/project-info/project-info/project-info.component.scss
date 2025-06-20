@@ -1,0 +1,9 @@
+::ng-deep .no-padding-expansion .mat-expansion-panel-body {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+::ng-deep .no-padding-expansion .mat-expansion-panel-header {
+  padding-left: 0 !important;
+  padding-right: 16px !important;
+}
