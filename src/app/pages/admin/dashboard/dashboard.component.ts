@@ -1,159 +1,222 @@
-import { Component, OnInit, signal, computed, effect, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { RouterModule, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { AdminHeaderComponent } from '../../../shared/components/admin-header/admin-header.component';
+// This file will be replaced.
+
+import { Component, OnInit, OnDestroy, signal, inject, computed } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterModule, NavigationEnd } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
+import { Project, PaginationDto } from '../interfaces/project.interface';
 import { ProjectsService } from '../../../core/services/projects.service';
 import { AuthService } from '../../../core/services/auth.service';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { Project } from '../interfaces/project.interface';
 import { ProjectCategory } from '../../../core/models/enums';
+
+// Componentes y Módulos
+import { CommonModule } from '@angular/common';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LucideAngularModule } from 'lucide-angular';
-import { DashboardStatsComponent } from '../components/dashboard-stats/dashboard-stats.component';
-import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { AdminHeaderComponent } from '../../../shared/components/admin-header/admin-header.component';
+import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
+import { DashboardStatsComponent } from '../../../shared/components/dashboard-stats/dashboard-stats.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
-    FormsModule,
-    RouterModule,
     CommonModule,
-    AdminHeaderComponent,
+    RouterModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatFormFieldModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule,
-    MatButtonModule,
-    MatIconModule,
-    MatMenuModule,
-    MatChipsModule,
-    MatPaginatorModule,
     LucideAngularModule,
+    AdminHeaderComponent,
+    SearchInputComponent,
     DashboardStatsComponent,
-    MatDialogModule
   ],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss',
+  styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
+  // --- Inyección de Servicios ---
+  public projectsService = inject(ProjectsService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private snackBar = inject(MatSnackBar);
 
-  protected readonly ProjectCategory = ProjectCategory;
+  // --- Estado del Componente (Signals) ---
+  public loading = signal(true);
+  public error = signal<string | null>(null);
 
-  loading = false;
-  error: string | null = null;
-  currentPage = signal<number>(1);
-  projectsPerPage = 9;
-  categoryFilter = signal<string>('todos');
-  private readonly dialog = inject(MatDialog);
+  // Filtros
+  public searchQuery = signal('');
+  public categoryControl = new FormControl('todos');
+  public selectedCategory = signal('todos');
 
-  constructor(
-    private router: Router,
-    private projectsService: ProjectsService,
-    private authService: AuthService,
-    private snackBar: MatSnackBar
-  ) {}
+  // Datos
+  public allProjects = signal<Project[]>([]);
 
-  get projects() {
-    return this.projectsService.projectsOfClientId;
-  }
-
-  // Computed values
-  filteredProjects = computed(() => {
-    const filter = this.categoryFilter();
-    if (filter === 'todos') return this.projects();
-    return this.projects().filter((p: Project) => p.category === filter);
+  // Paginación
+  public pagination = signal({
+    pageIndex: 0,
+    pageSize: 6,
   });
 
-  totalPages = computed(() =>
-    Math.ceil(this.filteredProjects().length / this.projectsPerPage)
-  );
+  private destroy$ = new Subject<void>();
+  private clientId!: string;
 
-  indexOfFirstProject = computed(() => (this.currentPage() - 1) * this.projectsPerPage);
-  indexOfLastProject = computed(() => Math.min(this.indexOfFirstProject() + this.projectsPerPage, this.filteredProjects().length));
+  // --- Selectores (Computed Signals) ---
 
-  currentProjects = computed(() => {
-    const start = this.indexOfFirstProject();
-    return this.filteredProjects().slice(start, start + this.projectsPerPage);
-  });
+  // 1. Filtra por categoría y búsqueda
+  public filteredProjects = computed(() => {
+    const query = this.searchQuery().toLowerCase();
+    const category = this.selectedCategory();
+    let projects = this.allProjects();
 
-  ngOnInit(): void {
-    this.loadProjects();
-  }
-
-  loadProjects(): void {
-    this.loading = true;
-    this.error = null;
-    this.projectsService.projectsOfClientId.set([]);
-
-    const clientId = this.authService.getClientId?.();
-    if (!clientId) {
-      this.error = 'No se pudo obtener el ID del cliente';
-      this.loading = false;
-      return;
+    // Filtrar por categoría
+    if (category && category !== 'todos') {
+      projects = projects.filter(p => p.category === category);
     }
 
-    this.projectsService.getProjectsByClientId(clientId).subscribe({
-      next: (projects) => {
-        this.projectsService.projectsOfClientId.set(projects || []);
-        this.loading = false;
+    // Filtrar por búsqueda
+    if (query) {
+      projects = projects.filter(p =>
+        p.name.toLowerCase().includes(query) ||
+        p.description.toLowerCase().includes(query)
+      );
+    }
+
+    return projects;
+  });
+
+  // 2. Aplica la paginación a los proyectos filtrados
+  public paginatedProjects = computed(() => {
+    const projects = this.filteredProjects();
+    const { pageIndex, pageSize } = this.pagination();
+    const start = pageIndex * pageSize;
+    const end = start + pageSize;
+    return projects.slice(start, end);
+  });
+
+  // 3. Calcula el total de páginas
+  public totalPages = computed(() => {
+    const length = this.filteredProjects().length;
+    const pageSize = this.pagination().pageSize;
+    if (!length || !pageSize) return 0;
+    return Math.ceil(length / pageSize);
+  });
+
+  // 4. Genera los números de página a mostrar
+  public displayedPages = computed(() => {
+    const total = this.totalPages();
+    const current = this.pagination().pageIndex + 1;
+    if (total <= 7) {
+      return Array.from({ length: total }, (_, i) => i + 1);
+    }
+    const delta = 2;
+    const range: (number | string)[] = [];
+    for (let i = Math.max(2, current - delta); i <= Math.min(total - 1, current + delta); i++) {
+      range.push(i);
+    }
+    if (current - delta > 2) range.unshift('...');
+    if (current + delta < total - 1) range.push('...');
+    range.unshift(1);
+    range.push(total);
+    return range;
+  });
+
+  // --- Ciclo de Vida ---
+  ngOnInit(): void {
+    const clientId = this.authService.getClientId();
+    if (!clientId) {
+      this.error.set('Error crítico: No se pudo identificar al cliente.');
+      this.loading.set(false);
+      return;
+    }
+    this.clientId = clientId;
+    this.loadProjects();
+
+    // Escucha eventos de navegación para recargar los datos si se vuelve al dashboard.
+    // Esto soluciona el problema de datos obsoletos cuando el componente se reutiliza.
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+      takeUntil(this.destroy$)
+    ).subscribe((event: NavigationEnd) => {
+      if (event.urlAfterRedirects.includes('/admin/dashboard')) {
+        this.loadProjects();
+      }
+    });
+
+    // Resetear paginación y actualizar la señal de categoría cuando el filtro cambia.
+    this.categoryControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+      this.selectedCategory.set(value || 'todos');
+      this.goToPage(0);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  // --- Carga de Datos ---
+  loadProjects(): void {
+    this.loading.set(true);
+    const paginationDto: PaginationDto = { page: 1, limit: 100 }; // Cargar todo
+
+    this.projectsService.getProjectsByClientId(this.clientId, paginationDto).subscribe({
+      next: (response) => {
+        this.allProjects.set(response.data);
+        this.loading.set(false);
       },
       error: (err) => {
-        this.error = 'Error al cargar proyectos';
-        this.loading = false;
-      }
+        this.error.set('No se pudieron cargar los proyectos.');
+        this.snackBar.open('Error al cargar proyectos.', 'Cerrar', { duration: 4000 });
+        this.loading.set(false);
+        console.error(err);
+      },
     });
   }
 
-  handlePageChange(event: PageEvent): void {
-    this.currentPage.set(event.pageIndex + 1);
+  // --- Manejadores de Eventos ---
+  onSearch(query: string): void {
+    this.searchQuery.set(query);
+    this.goToPage(0); // Resetear a la primera página con cada búsqueda
   }
 
-  handleDeleteProject(projectId: string): void {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      data: {
-        title: 'Confirmar Eliminación',
-        message: '¿Estás seguro de que deseas eliminar este proyecto? Esta acción no se puede deshacer.',
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.projectsService.deleteProject(projectId).subscribe({
-          next: () => {
-            this.snackBar.open('Proyecto eliminado correctamente', 'Cerrar', {
-              duration: 3000,
-              panelClass: ['success-snackbar']
-            });
-          },
-          error: () => {
-            this.snackBar.open('Error al eliminar el proyecto', 'Cerrar', {
-              duration: 3000,
-              panelClass: ['error-snackbar']
-            });
-          }
-        });
-      }
-    });
+  // --- Navegación de Paginación ---
+  goToPage(pageIndex: number): void {
+    const total = this.totalPages();
+    const newPageIndex = Math.max(0, Math.min(pageIndex, total > 0 ? total - 1 : 0));
+    this.pagination.update(p => ({ ...p, pageIndex: newPageIndex }));
   }
 
-  setCategoryFilter(value: string): void {
-    this.categoryFilter.set(value);
-    this.currentPage.set(1);
+  previousPage(): void {
+    if (this.pagination().pageIndex > 0) {
+      this.goToPage(this.pagination().pageIndex - 1);
+    }
   }
 
-  onCategoryChange(event: Event): void {
-    const value = (event.target as HTMLSelectElement).value;
-    this.setCategoryFilter(value);
+  nextPage(): void {
+    if (this.pagination().pageIndex < this.totalPages() - 1) {
+      this.goToPage(this.pagination().pageIndex + 1);
+    }
   }
 
-  protected handleLogout(): void {
+  // --- Otros Métodos ---
+  handleLogout(): void {
     this.authService.logout();
     this.router.navigate(['/admin/login']);
   }
+
+  deleteProject(id: string): void {
+    this.snackBar.open('Funcionalidad de eliminación no implementada aún.', 'Cerrar', { duration: 3000 });
+  }
+
+  protected readonly ProjectCategory = ProjectCategory;
+  public readonly projectCategories = Object.values(ProjectCategory);
 }
+

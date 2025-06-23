@@ -1,7 +1,7 @@
 import { Component, Input, Signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Project } from '../../interfaces/project.interface';
-import { ProjectCategory } from '../../../../core/models/enums';
+import { Project } from '../../../pages/admin/interfaces/project.interface';
+import { ProjectCategory } from '../../../core/models/enums';
 
 @Component({
   selector: 'app-dashboard-stats',

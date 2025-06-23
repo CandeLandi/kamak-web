@@ -20,7 +20,7 @@ export const routes: Routes = [
     data: { animation: 'fade' }
   },
   {
-    path: 'proyecto/:id',
+    path: 'projects/:id',
     component: LandingProjectComponent,
     data: { animation: 'fade' }
   },

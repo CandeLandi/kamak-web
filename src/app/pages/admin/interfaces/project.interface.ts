@@ -75,3 +75,20 @@ export interface ProjectVideo {
   url: string;
   order: number;
 }
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+  hasNext: boolean;
+  hasPrev: boolean;
+}
+
+export interface PaginationDto {
+  page?: number | string;
+  limit?: number | string;
+  search?: string;
+  category?: string;
+}

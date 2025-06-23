@@ -1,124 +1,91 @@
-import { Injectable, signal, effect } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
-import { Project, CreateProjectDto, UpdateProjectDto, ProjectVideo } from '../../pages/admin/interfaces/project.interface';
+import { Injectable, signal, effect, inject, WritableSignal } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable, tap, map } from 'rxjs';
+import { Project, CreateProjectDto, UpdateProjectDto, ProjectVideo, PaginatedResponse, PaginationDto } from '../../pages/admin/interfaces/project.interface';
 import { environment } from '../../../environments/environment';
 import { ProjectCategory } from '../models/enums';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectsService {
   private readonly baseUrl = environment.apiUrl;
-  projectsOfClientId = signal<Project[]>([]);
-  lastClientId: string | null = null;
+  public projectsSignal: WritableSignal<Project[]> = signal([]);
+  private lastClientId: string | null = null;
+  private authService = inject(AuthService);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    // Cuando el usuario cambia (login/logout), reseteamos los proyectos.
+    effect(() => {
+      const currentId = this.authService.getClientId();
+      if (this.lastClientId && this.lastClientId !== currentId) {
+        this.projectsSignal.set([]);
+      }
+      this.lastClientId = currentId;
+    });
+  }
 
   /** Signal reactivo global de proyectos */
   get projects() {
-    return this.projectsOfClientId;
+    return this.projectsSignal;
   }
 
-  /** Obtiene un proyecto específico por su ID */
+
+  getProjectsByClientId(clientId: string, pagination: PaginationDto): Observable<PaginatedResponse<Project>> {
+    let params = new HttpParams();
+
+    if (pagination.page) {
+      params = params.set('page', pagination.page.toString());
+    }
+    if (pagination.limit) {
+      params = params.set('limit', pagination.limit.toString());
+    }
+    if (pagination.search) {
+      params = params.set('search', pagination.search);
+    }
+    if (pagination.category && pagination.category !== 'todos') {
+      params = params.set('category', pagination.category);
+    }
+
+    return this.http.get<PaginatedResponse<Project>>(`${this.baseUrl}/projects/client/${clientId}`, { params });
+  }
+
+  /**
+   * Refresca la lista de proyectos usando la última página y búsqueda conocidas.
+   * Útil para recargar después de una operación CRUD.
+   * @deprecated Este método puede ser confuso. Considere llamar directamente a getProjectsByClientId con el estado de paginación deseado.
+   */
+  refreshProjects(clientId: string, pagination: PaginationDto, onComplete?: () => void): void {
+    this.getProjectsByClientId(clientId, pagination).subscribe({
+      next: () => {
+        if (onComplete) onComplete();
+      },
+      error: (err) => {
+        console.error("Error refreshing projects", err);
+        if (onComplete) onComplete();
+      }
+    });
+  }
+
   getProjectById(id: string): Observable<Project> {
     return this.http.get<Project>(`${this.baseUrl}/projects/${id}`);
   }
 
-  /** Obtiene todos los proyectos de un cliente */
-  getProjectsByClientId(clientId: string): Observable<Project[]> {
-    return this.http.get<Project[]>(`${this.baseUrl}/projects`, { params: { clientId } });
-  }
-
-  /** Carga y actualiza el signal de proyectos para un clientId */
-  refreshProjects(clientId: string, onComplete?: () => void): void {
-    this.lastClientId = clientId;
-    this.getProjectsByClientId(clientId).subscribe({
-      next: (projects) => {
-        this.projectsOfClientId.set(projects);
-        if (onComplete) onComplete();
-      },
-      error: () => {
-        this.projectsOfClientId.set([]);
-        if (onComplete) onComplete();
-      },
-    });
-  }
+  // =================================================================
+  // == PUBLIC METHODS (No Auth Required) - DEPRECATED
+  // =================================================================
 
   createProject(project: CreateProjectDto): Observable<Project> {
-    return this.http.post<Project>(`${this.baseUrl}/projects`, project).pipe(
-      tap((newProject) => {
-        if (this.lastClientId) {
-          const currentProjects = this.projectsOfClientId();
-          this.projectsOfClientId.set([newProject, ...currentProjects]);
-        }
-      })
-    );
+    return this.http.post<Project>(`${this.baseUrl}/projects`, project);
   }
 
   updateProject(id: string, project: UpdateProjectDto): Observable<Project> {
-    return this.http.patch<Project>(`${this.baseUrl}/projects/${id}`, project).pipe(
-      tap((updatedProject) => {
-        const currentProjects = this.projectsOfClientId();
-        const updatedProjects = currentProjects.map(p =>
-          p.id === id ? updatedProject : p
-        );
-        this.projectsOfClientId.set(updatedProjects);
-      })
-    );
+    return this.http.patch<Project>(`${this.baseUrl}/projects/${id}`, project);
   }
 
   deleteProject(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/projects/${id}`).pipe(
-      tap(() => {
-        const currentProjects = this.projectsOfClientId();
-        const filteredProjects = currentProjects.filter(p => p.id !== id);
-        this.projectsOfClientId.set(filteredProjects);
-      })
-    );
-  }
-
-  /**
-   * Elimina una imagen de la galería de un proyecto.
-   * @param projectId El ID del proyecto.
-   * @param imageId El ID de la imagen en la galería.
-   * @returns Un observable que se completa cuando la operación finaliza.
-   */
-  deleteGalleryImage(projectId: string, imageId: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/projects/${projectId}/gallery/${imageId}`);
-  }
-
-  // =================================================================
-  // == VIDEO METHODS
-  // =================================================================
-
-  /**
-   * Obtiene todos los videos de un proyecto.
-   * @param projectId El ID del proyecto.
-   * @returns Un observable con el array de videos del proyecto.
-   */
-  getProjectVideos(projectId: string): Observable<ProjectVideo[]> {
-    return this.http.get<ProjectVideo[]>(`${this.baseUrl}/projects/${projectId}/videos`);
-  }
-
-  /**
-   * Agrega un nuevo video de YouTube a un proyecto.
-   * @param projectId El ID del proyecto.
-   * @param url La URL del video de YouTube.
-   * @returns Un observable con el objeto del video recién creado.
-   */
-  addProjectVideo(projectId: string, url: string): Observable<ProjectVideo> {
-    return this.http.post<ProjectVideo>(`${this.baseUrl}/projects/${projectId}/videos`, { url });
-  }
-
-  /**
-   * Elimina un video de un proyecto.
-   * @param projectId El ID del proyecto.
-   * @param videoId El ID del video a eliminar.
-   * @returns Un observable que se completa cuando la operación finaliza.
-   */
-  deleteProjectVideo(projectId: string, videoId: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/projects/${projectId}/videos/${videoId}`);
+    return this.http.delete<void>(`${this.baseUrl}/projects/${id}`);
   }
 
   getFeaturedProjects(): Observable<Project[]> {
@@ -128,7 +95,27 @@ export class ProjectsService {
   /** Llama a refreshProjects con el último clientId usado */
   refreshLast(): void {
     if (this.lastClientId) {
-      this.refreshProjects(this.lastClientId);
+      this.refreshProjects(this.lastClientId, { page: 1, limit: 10 });
     }
+  }
+
+  // =================================================================
+  // == MULTIMEDIA METHODS (Auth Required)
+  // =================================================================
+
+  deleteGalleryImage(projectId: string, imageId: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/projects/${projectId}/gallery/${imageId}`);
+  }
+
+  getProjectVideos(projectId: string): Observable<ProjectVideo[]> {
+    return this.http.get<ProjectVideo[]>(`${this.baseUrl}/projects/${projectId}/videos`);
+  }
+
+  addProjectVideo(projectId: string, url: string): Observable<ProjectVideo> {
+    return this.http.post<ProjectVideo>(`${this.baseUrl}/projects/${projectId}/videos`, { url });
+  }
+
+  deleteProjectVideo(projectId: string, videoId: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/projects/${projectId}/videos/${videoId}`);
   }
 }

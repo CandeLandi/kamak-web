@@ -231,15 +231,18 @@ export class ProjectInfoComponent implements OnInit {
         status: this.showOnHomePage ? ProjectStatus.PUBLISHED : ProjectStatus.DRAFT,
         startDate: formValue.startDate,
         endDate: formValue.endDate
-      };
+    };
+
+      console.log('Enviando para actualizar:', updateDto);
 
       this.projectsService.updateProject(this.projectId, updateDto).subscribe({
-        next: () => {
-          this.isSubmitting = false;
+      next: () => {
+        this.isSubmitting = false;
           this.snackBar.open('Proyecto actualizado correctamente', 'Cerrar', {
-            duration: 2500,
-            panelClass: ['success-snackbar']
-          });
+          duration: 2500,
+          panelClass: ['success-snackbar']
+        });
+        this.router.navigate(['/admin/dashboard']);
         },
         error: (err) => {
           this.isSubmitting = false;
@@ -278,18 +281,18 @@ export class ProjectInfoComponent implements OnInit {
             panelClass: ['success-snackbar']
           });
           this.projectCreated.emit(newProject);
-        },
-        error: (err) => {
-          this.isSubmitting = false;
-          this.error = err.error?.message || 'Error al crear el proyecto';
-          this.snackBar.open(
-            `${this.error || 'Error al crear el proyecto'}`,
-            'Cerrar',
-            { duration: 3000, panelClass: ['error-snackbar'] }
-          );
-          console.error('Error al crear el proyecto:', err);
-        }
-      });
+      },
+      error: (err) => {
+        this.isSubmitting = false;
+        this.error = err.error?.message || 'Error al crear el proyecto';
+        this.snackBar.open(
+          `${this.error || 'Error al crear el proyecto'}`,
+          'Cerrar',
+          { duration: 3000, panelClass: ['error-snackbar'] }
+        );
+        console.error('Error al crear el proyecto:', err);
+      }
+    });
     }
   }
 
