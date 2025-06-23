@@ -55,8 +55,7 @@ export class ProjectsComponent implements OnInit {
   // --- Selectores (Signals Computados) ---
   public filteredProjects = computed(() => {
     const query = this.searchQuery().toLowerCase();
-    // Empezamos con todos los proyectos y filtramos solo los publicados para la vista pública
-    const projects = this.allProjects().filter(p => p.status === 'PUBLISHED');
+    const projects = this.allProjects();
 
     if (!query) {
       return projects;
@@ -112,19 +111,16 @@ export class ProjectsComponent implements OnInit {
   loadProjects(): void {
     this.loading.set(true);
     this.error.set(null);
-    const clientId = environment.clientId;
-
+    const clientId = this.authService.getClientId();
     if (!clientId) {
-      this.error.set('No se pudo identificar al cliente.');
+      this.error.set('No se pudo obtener el cliente actual.');
       this.loading.set(false);
       return;
     }
-
     const pagination: PaginationDto = { page: 1, limit: 100 };
 
     this.projectsService.getProjectsByClientId(clientId, pagination).subscribe({
       next: (response) => {
-        // Almacenamos TODOS los proyectos, el computed signal se encarga de filtrar
         this.allProjects.set(response.data);
         this.loading.set(false);
       },

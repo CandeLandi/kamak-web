@@ -21,6 +21,7 @@ import { LucideAngularModule } from 'lucide-angular';
 import { AdminHeaderComponent } from '../../../shared/components/admin-header/admin-header.component';
 import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
 import { DashboardStatsComponent } from '../../../shared/components/dashboard-stats/dashboard-stats.component';
+import { ConfirmationDialogComponent, ConfirmationDialogData } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -36,6 +37,7 @@ import { DashboardStatsComponent } from '../../../shared/components/dashboard-st
     AdminHeaderComponent,
     SearchInputComponent,
     DashboardStatsComponent,
+    ConfirmationDialogComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
@@ -46,6 +48,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private authService = inject(AuthService);
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
+  private dialog = inject(MatDialog);
 
   // --- Estado del Componente (Signals) ---
   public loading = signal(true);
@@ -165,21 +168,26 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // --- Carga de Datos ---
   loadProjects(): void {
     this.loading.set(true);
-    const paginationDto: PaginationDto = { page: 1, limit: 100 }; // Cargar todo
+    this.error.set(null);
 
-    this.projectsService.getProjectsByClientId(this.clientId, paginationDto).subscribe({
+    // Usar el endpoint correcto para proyectos del cliente
+    const pagination: PaginationDto = {
+      page: 1,
+      limit: 100,
+    };
+    this.projectsService.getProjectsByClientId(this.clientId, pagination).subscribe({
       next: (response) => {
         this.allProjects.set(response.data);
         this.loading.set(false);
-      },
+        },
       error: (err) => {
         this.error.set('No se pudieron cargar los proyectos.');
         this.snackBar.open('Error al cargar proyectos.', 'Cerrar', { duration: 4000 });
         this.loading.set(false);
         console.error(err);
       },
-    });
-  }
+      });
+    }
 
   // --- Manejadores de Eventos ---
   onSearch(query: string): void {
@@ -203,7 +211,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   nextPage(): void {
     if (this.pagination().pageIndex < this.totalPages() - 1) {
       this.goToPage(this.pagination().pageIndex + 1);
-    }
+  }
   }
 
   // --- Otros Métodos ---
@@ -213,7 +221,33 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   deleteProject(id: string): void {
-    this.snackBar.open('Funcionalidad de eliminación no implementada aún.', 'Cerrar', { duration: 3000 });
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        title: 'Eliminar proyecto',
+        message: '¿Estás seguro que deseas eliminar este proyecto? Esta acción no se puede deshacer.',
+        confirmText: 'Eliminar',
+        cancelText: 'Cancelar',
+      } as ConfirmationDialogData
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) return;
+      this.projectsService.deleteProject(id).subscribe({
+        next: () => {
+          this.snackBar.open('Proyecto eliminado correctamente.', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['success-snackbar']
+          });
+          this.loadProjects();
+        },
+        error: () => {
+          this.snackBar.open('Error al eliminar el proyecto.', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['error-snackbar']
+          });
+        }
+      });
+    });
   }
 
   protected readonly ProjectCategory = ProjectCategory;

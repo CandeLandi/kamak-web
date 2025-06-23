@@ -42,11 +42,8 @@ export class LandingProjectComponent implements OnInit {
         if (!id) {
           throw new Error('Project ID not found');
         }
-        return this.projectsService.getProjectById(id).pipe(
+        return this.projectsService.getPublicProjectById(id).pipe(
           tap(project => {
-            if (project.status !== 'PUBLISHED') {
-              throw new Error('Project not found or not published');
-            }
             this.project = project;
           }),
           switchMap(project => {

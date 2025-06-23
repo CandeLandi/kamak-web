@@ -23,13 +23,16 @@
         </a>
       </div>
 
-      <!-- Título, descripción e información del proyecto -->
-      <div class="space-y-6">
+      <!-- Bloque: Nombre y stats principales -->
+      <div class="space-y-6 mb-10">
         <div>
-          <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white">{{ project.name }}</h1>
-          <p class="text-base sm:text-lg text-gray-300 max-w-3xl mt-2">{{ project.description }}</p>
+          <h1 class="text-3xl md:text-4xl font-bold text-white flex items-center gap-3">
+            <i-lucide name="star" class="w-7 h-7 text-[#195764]"></i-lucide>
+            {{ project.name }}
+          </h1>
+          <p class="text-base sm:text-lg text-gray-300 max-w-3xl mt-6">{{ project.description }}</p>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6 rounded-xl p-4 border border-white/10 flex justify-center">
           <div class="flex items-center gap-2">
             <i-lucide name="map-pin" class="w-5 h-5 text-[#195764]"></i-lucide>
             <div>
@@ -37,13 +40,7 @@
               <p class="font-medium text-white">{{ project.address }}</p>
             </div>
           </div>
-          <div class="flex items-center gap-2">
-            <i-lucide name="user" class="w-5 h-5 text-[#195764]"></i-lucide>
-            <div>
-              <span class="text-xs text-gray-400">Cliente:</span>
-              <p class="font-medium text-white">{{ project.clientId }}</p> <!-- TODO: Fetch client name -->
-            </div>
-          </div>
+
           <div class="flex items-center gap-2">
             <i-lucide name="ruler" class="w-5 h-5 text-[#195764]"></i-lucide>
             <div>
@@ -75,37 +72,14 @@
         </div>
       </div>
 
-      <!-- Antes y Después -->
-      @if(project.imageBefore && project.imageAfter) {
-        <div class="pt-6 pb-6 md:pt-8 md:pb-12">
-          <h2 class="text-2xl font-bold mb-4 text-white">Antes y Después</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Imagen Antes -->
-            <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-md">
-              <div class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm font-semibold bg-white text-[#181c23] border border-[#195764] shadow">Antes</div>
-              <div class="relative h-[300px] sm:h-[350px] md:h-[400px] rounded-md overflow-hidden">
-                <img [src]="project.imageBefore" [alt]="project.name + ' - Antes'" class="w-full h-full object-cover" />
-              </div>
-            </div>
-            <!-- Imagen Después -->
-            <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-md">
-              <div class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm font-semibold bg-white text-[#181c23] border border-[#195764] shadow">Después</div>
-              <div class="relative h-[300px] sm:h-[350px] md:h-[400px] rounded-md overflow-hidden">
-                <img [src]="project.imageAfter" [alt]="project.name + ' - Después'" class="w-full h-full object-cover" />
-              </div>
-            </div>
-          </div>
-        </div>
-      }
-
-      <!-- Galería de imágenes -->
+      <!-- Bloque: Galería de imágenes -->
       @if (project.gallery && project.gallery.length > 0) {
-        <div class="pt-6 pb-6 md:pt-8 md:pb-12">
-          <h2 class="text-2xl font-bold mb-4 text-white">Galería de Imágenes</h2>
+        <div class="pt-6 pb-6 md:pt-8 md:pb-12 mb-10">
+          <h2 class="text-2xl font-bold mb-4 text-white flex items-center gap-2"><i-lucide name="image" class="w-6 h-6 text-[#195764]"></i-lucide></h2>
           <div class="mb-8">
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               @for (image of displayedGallery; track image.id; let index = $index) {
-                <div class="relative h-48 rounded-lg overflow-hidden cursor-pointer group bg-[#181c23] shadow-md flex items-center justify-center">
+                <div class="relative h-48 rounded-lg overflow-hidden cursor-pointer group flex items-center justify-center">
                   <img [src]="image.url || '/placeholder.svg'" [alt]="project.name + ' - Imagen ' + (index + 1)"
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 rounded-lg" />
                   <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center bg-black/50">
@@ -131,26 +105,26 @@
         </div>
       }
 
-      <!-- Descripción del Proyecto -->
-      <div class="mb-8 md:mb-12">
-        <h2 class="text-2xl font-bold mb-4 text-white">Descripción del Proyecto</h2>
+      <!-- Bloque: Descripciones -->
+      <div class="mb-10 md:mb-12">
+        <h2 class="text-2xl font-bold mb-4 text-white flex items-center gap-2"><i-lucide name="file-text" class="w-6 h-6 text-[#195764]"></i-lucide>Descripción del proyecto</h2>
         <p class="text-gray-300 mb-6 whitespace-pre-wrap">{{ project.longDescription }}</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h3 class="text-xl font-semibold mb-3 text-white">El Desafío</h3>
+            <h3 class="text-xl font-semibold mb-3 text-white flex items-center gap-2"><i-lucide name="alert-circle" class="w-5 h-5 text-[#195764]"></i-lucide>El desafío</h3>
             <p class="text-gray-300 whitespace-pre-wrap">{{ project.challenge }}</p>
           </div>
           <div>
-            <h3 class="text-xl font-semibold mb-3 text-white">Nuestra Solución</h3>
+            <h3 class="text-xl font-semibold mb-3 text-white flex items-center gap-2"><i-lucide name="star" class="w-5 h-5 text-[#195764]"></i-lucide>Nuestra solución</h3>
             <p class="text-gray-300 whitespace-pre-wrap">{{ project.solution }}</p>
           </div>
         </div>
       </div>
 
-      <!-- Videos -->
+      <!-- Bloque: Videos -->
       @if (videos.length > 0) {
-        <div class="mb-8 md:mb-12">
-          <h2 class="text-2xl font-bold mb-4 text-white">Videos del Proyecto</h2>
+        <div class="mb-10 md:mb-12">
+          <h2 class="text-2xl font-bold mb-4 text-white flex items-center gap-2"><i-lucide name="video" class="w-6 h-6 text-[#195764]"></i-lucide>Videos del Proyecto</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @for (video of videos; track video.id; let index = $index) {
               <div class="aspect-video w-full rounded-lg overflow-hidden border border-white/10">
@@ -159,6 +133,29 @@
                   allowfullscreen></iframe>
               </div>
             }
+          </div>
+        </div>
+      }
+
+      <!-- Bloque: Antes y Después -->
+      @if(project.imageBefore && project.imageAfter) {
+        <div class="pt-6 pb-6 md:pt-8 md:pb-12 mb-10">
+          <h2 class="text-2xl font-bold mb-4 text-white flex items-center gap-2"><i-lucide name="image" class="w-6 h-6 text-[#195764]"></i-lucide>Antes y Después</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Imagen Antes -->
+            <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-md">
+              <div class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm font-semibold bg-white text-[#181c23] border border-[#195764] shadow">Antes</div>
+              <div class="relative h-[350px] md:h-[450px] rounded-md overflow-hidden">
+                <img [src]="project.imageBefore" [alt]="project.name + ' - Antes'" class="w-full h-full object-cover" style="object-fit:cover; width:100%; height:100%;" />
+              </div>
+            </div>
+            <!-- Imagen Después -->
+            <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-md">
+              <div class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm font-semibold bg-white text-[#181c23] border border-[#195764] shadow">Después</div>
+              <div class="relative h-[350px] md:h-[450px] rounded-md overflow-hidden">
+                <img [src]="project.imageAfter" [alt]="project.name + ' - Después'" class="w-full h-full object-cover" style="object-fit:cover; width:100%; height:100%;" />
+              </div>
+            </div>
           </div>
         </div>
       }

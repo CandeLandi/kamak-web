@@ -7,7 +7,7 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import {
-  LucideAngularModule, ChevronLeft, ChevronRight, FolderSearch, Eye, Edit, Trash2, Plus, EyeOff, Image, AlertCircle, FileText, Upload, X, ImageOff, MoreVertical, Star, User, DollarSign, Folder, Search, ArrowLeft
+  LucideAngularModule, ChevronLeft, ChevronRight, FolderSearch, Eye, Edit, Trash2, Plus, EyeOff, Image, AlertCircle, FileText, Upload, X, ImageOff, MoreVertical, Star, User, DollarSign, Folder, Search, ArrowLeft, MapPin, Building, Ruler, Clock, Calendar, CalendarCheck, ChevronDown, Expand
 } from 'lucide-angular';
 
 export const appConfig: ApplicationConfig = {
@@ -39,7 +39,15 @@ export const appConfig: ApplicationConfig = {
       DollarSign,
       Folder,
       Search,
-      ArrowLeft
+      ArrowLeft,
+      MapPin,
+      Building,
+      Ruler,
+      Clock,
+      Calendar,
+      CalendarCheck,
+      ChevronDown,
+      Expand
     })),
     // Restaurar la configuración global para los campos de formulario
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } }

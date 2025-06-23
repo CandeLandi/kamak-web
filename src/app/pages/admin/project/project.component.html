@@ -30,7 +30,7 @@
     </mat-tab>
 
     <mat-tab label="Imágenes" [disabled]="!isEditMode">
-      <app-project-images [project]="project"></app-project-images>
+      <app-project-images [project]="project" (imageUpdated)="loadProject(projectId!)"></app-project-images>
     </mat-tab>
 
     <mat-tab label="Videos" [disabled]="!isEditMode">

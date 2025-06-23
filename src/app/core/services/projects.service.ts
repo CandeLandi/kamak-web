@@ -31,10 +31,8 @@ export class ProjectsService {
     return this.projectsSignal;
   }
 
-
   getProjectsByClientId(clientId: string, pagination: PaginationDto): Observable<PaginatedResponse<Project>> {
     let params = new HttpParams();
-
     if (pagination.page) {
       params = params.set('page', pagination.page.toString());
     }
@@ -47,34 +45,21 @@ export class ProjectsService {
     if (pagination.category && pagination.category !== 'todos') {
       params = params.set('category', pagination.category);
     }
-
     return this.http.get<PaginatedResponse<Project>>(`${this.baseUrl}/projects/client/${clientId}`, { params });
-  }
-
-  /**
-   * Refresca la lista de proyectos usando la última página y búsqueda conocidas.
-   * Útil para recargar después de una operación CRUD.
-   * @deprecated Este método puede ser confuso. Considere llamar directamente a getProjectsByClientId con el estado de paginación deseado.
-   */
-  refreshProjects(clientId: string, pagination: PaginationDto, onComplete?: () => void): void {
-    this.getProjectsByClientId(clientId, pagination).subscribe({
-      next: () => {
-        if (onComplete) onComplete();
-      },
-      error: (err) => {
-        console.error("Error refreshing projects", err);
-        if (onComplete) onComplete();
-      }
-    });
   }
 
   getProjectById(id: string): Observable<Project> {
     return this.http.get<Project>(`${this.baseUrl}/projects/${id}`);
   }
 
-  // =================================================================
-  // == PUBLIC METHODS (No Auth Required) - DEPRECATED
-  // =================================================================
+  getPublicProjects(): Observable<PaginatedResponse<Project>> {
+    const params = new HttpParams().set('limit', '100');
+    return this.http.get<PaginatedResponse<Project>>(`${this.baseUrl}/projects`, { params });
+  }
+
+  getPublicProjectById(id: string): Observable<Project> {
+    return this.http.get<Project>(`${this.baseUrl}/projects/${id}/published`);
+  }
 
   createProject(project: CreateProjectDto): Observable<Project> {
     return this.http.post<Project>(`${this.baseUrl}/projects`, project);
@@ -92,17 +77,7 @@ export class ProjectsService {
     return this.http.get<Project[]>(`${this.baseUrl}/projects/featured`);
   }
 
-  /** Llama a refreshProjects con el último clientId usado */
-  refreshLast(): void {
-    if (this.lastClientId) {
-      this.refreshProjects(this.lastClientId, { page: 1, limit: 10 });
-    }
-  }
-
-  // =================================================================
-  // == MULTIMEDIA METHODS (Auth Required)
-  // =================================================================
-
+  // MULTIMEDIA METHODS
   deleteGalleryImage(projectId: string, imageId: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/projects/${projectId}/gallery/${imageId}`);
   }
