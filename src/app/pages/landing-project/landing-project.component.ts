@@ -7,7 +7,10 @@ import { ProjectsService } from '../../core/services/projects.service';
 import { Project, ProjectVideo } from '../admin/interfaces/project.interface';
 import { switchMap, tap } from 'rxjs/operators';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialog } from '@angular/material/dialog';
 import { LucideAngularModule } from 'lucide-angular';
+import { ImageLightboxDialogComponent, ImageLightboxData } from '../../shared/components/image-lightbox-dialog/image-lightbox-dialog.component';
+
 @Component({
   selector: 'app-landing-project',
   standalone: true,
@@ -28,6 +31,7 @@ export class LandingProjectComponent implements OnInit {
   private projectsService = inject(ProjectsService);
   private sanitizer = inject(DomSanitizer);
   private viewportScroller = inject(ViewportScroller);
+  private dialog = inject(MatDialog);
 
   ngOnInit() {
     this.viewportScroller.scrollToPosition([0, 0]);
@@ -75,9 +79,53 @@ export class LandingProjectComponent implements OnInit {
     return this.project.gallery.length > this.initialImageCount;
   }
 
-  openImageModal(index: number) {
-    // Lógica para abrir modal de imagen (mockup)
-    alert('Abrir imagen modal: ' + index);
+  openImageLightbox(index: number): void {
+    if (!this.project?.gallery || this.project.gallery.length === 0) return;
+
+    // Obtener las URLs de las imágenes de la galería
+    const imageUrls = this.project.gallery.map(img => img.url).filter(url => url);
+
+    if (imageUrls.length === 0) return;
+
+    // Ajustar el índice para que coincida con las imágenes mostradas
+    const actualIndex = this.showAllImages ? index : Math.min(index, this.initialImageCount - 1);
+
+    const dialogData: ImageLightboxData = {
+      images: imageUrls,
+      currentIndex: actualIndex,
+      projectName: this.project.name
+    };
+
+    this.dialog.open(ImageLightboxDialogComponent, {
+      data: dialogData,
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      width: '100%',
+      height: '100%',
+      panelClass: 'lightbox-dialog'
+    });
+  }
+
+  openBeforeAfterLightbox(index: number): void {
+    if (!this.project?.imageBefore || !this.project?.imageAfter) return;
+
+    const images = [this.project.imageBefore, this.project.imageAfter];
+    const labels = ['Antes', 'Después'];
+
+    const dialogData: ImageLightboxData = {
+      images: images,
+      currentIndex: index,
+      projectName: `${this.project.name} - ${labels[index]}`
+    };
+
+    this.dialog.open(ImageLightboxDialogComponent, {
+      data: dialogData,
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      width: '100%',
+      height: '100%',
+      panelClass: 'lightbox-dialog'
+    });
   }
 
   generatePlaceholderUrl(text: string): string {

@@ -1,0 +1,63 @@
+<div class="lightbox-container" (click)="close()">
+  <button
+    class="close-button"
+    (click)="close()"
+    aria-label="Cerrar galería">
+    <i-lucide name="x" class="w-6 h-6"></i-lucide>
+  </button>
+
+  @if (hasMultipleImages) {
+    <button
+      class="nav-button nav-button-left"
+      (click)="$event.stopPropagation(); previous()"
+      aria-label="Imagen anterior">
+      <i-lucide name="chevron-left" class="w-8 h-8"></i-lucide>
+    </button>
+
+    <button
+      class="nav-button nav-button-right"
+      (click)="$event.stopPropagation(); next()"
+      aria-label="Siguiente imagen">
+      <i-lucide name="chevron-right" class="w-8 h-8"></i-lucide>
+    </button>
+  }
+
+  <div class="image-container" (click)="$event.stopPropagation()">
+    <img
+      [src]="currentImage"
+      [alt]="projectName ? projectName + ' - Imagen ' + (currentIndex + 1) : 'Imagen ' + (currentIndex + 1)"
+      class="main-image"
+      loading="lazy" />
+  </div>
+
+  <div class="bottom-controls" (click)="$event.stopPropagation()">
+    @if (hasMultipleImages) {
+      <div class="position-indicator">
+        <span class="position-text">{{ currentIndex + 1 }} de {{ images.length }}</span>
+      </div>
+    }
+
+    @if (hasMultipleImages && images.length <= 8) {
+      <div class="thumbnails-container">
+        @for (image of images; track $index; let index = $index) {
+          <button
+            class="thumbnail-button"
+            [class.active]="index === currentIndex"
+            (click)="goToImage(index)"
+            [attr.aria-label]="'Ir a imagen ' + (index + 1)">
+            <img
+              [src]="image"
+              [alt]="'Miniatura ' + (index + 1)"
+              class="thumbnail-image" />
+          </button>
+        }
+      </div>
+    }
+
+    @if (hasMultipleImages) {
+      <div class="navigation-hint">
+        <span class="hint-text">Usa las flechas del teclado o haz clic en las flechas para navegar</span>
+      </div>
+    }
+  </div>
+</div>

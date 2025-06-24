@@ -75,11 +75,12 @@
       <!-- Bloque: Galería de imágenes -->
       @if (project.gallery && project.gallery.length > 0) {
         <div class="pt-6 pb-6 md:pt-8 md:pb-12 mb-10">
-          <h2 class="text-2xl font-bold mb-4 text-white flex items-center gap-2"><i-lucide name="image" class="w-6 h-6 text-[#195764]"></i-lucide></h2>
+          <h2 class="text-2xl font-bold mb-4 text-white flex items-center gap-2"><i-lucide name="image" class="w-6 h-6 text-[#195764]"></i-lucide>Galería del Proyecto</h2>
           <div class="mb-8">
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               @for (image of displayedGallery; track image.id; let index = $index) {
-                <div class="relative h-48 rounded-lg overflow-hidden cursor-pointer group flex items-center justify-center">
+                <div class="relative h-48 rounded-lg overflow-hidden cursor-pointer group flex items-center justify-center"
+                     (click)="openImageLightbox(index)">
                   <img [src]="image.url || '/placeholder.svg'" [alt]="project.name + ' - Imagen ' + (index + 1)"
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 rounded-lg" />
                   <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center bg-black/50">
@@ -143,17 +144,25 @@
           <h2 class="text-2xl font-bold mb-4 text-white flex items-center gap-2"><i-lucide name="image" class="w-6 h-6 text-[#195764]"></i-lucide>Antes y Después</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <!-- Imagen Antes -->
-            <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-md">
+            <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-md cursor-pointer group"
+                 (click)="openBeforeAfterLightbox(0)">
               <div class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm font-semibold bg-white text-[#181c23] border border-[#195764] shadow">Antes</div>
               <div class="relative h-[350px] md:h-[450px] rounded-md overflow-hidden">
-                <img [src]="project.imageBefore" [alt]="project.name + ' - Antes'" class="w-full h-full object-cover" style="object-fit:cover; width:100%; height:100%;" />
+                <img [src]="project.imageBefore" [alt]="project.name + ' - Antes'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" style="object-fit:cover; width:100%; height:100%;" />
+              </div>
+              <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center bg-black/30">
+                <i-lucide name="expand" class="w-8 h-8 text-white"></i-lucide>
               </div>
             </div>
             <!-- Imagen Después -->
-            <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-md">
+            <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-md cursor-pointer group"
+                 (click)="openBeforeAfterLightbox(1)">
               <div class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm font-semibold bg-white text-[#181c23] border border-[#195764] shadow">Después</div>
               <div class="relative h-[350px] md:h-[450px] rounded-md overflow-hidden">
-                <img [src]="project.imageAfter" [alt]="project.name + ' - Después'" class="w-full h-full object-cover" style="object-fit:cover; width:100%; height:100%;" />
+                <img [src]="project.imageAfter" [alt]="project.name + ' - Después'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" style="object-fit:cover; width:100%; height:100%;" />
+              </div>
+              <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center bg-black/30">
+                <i-lucide name="expand" class="w-8 h-8 text-white"></i-lucide>
               </div>
             </div>
           </div>

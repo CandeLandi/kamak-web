@@ -34,3 +34,23 @@ $angular-dark-theme: mat.m2-define-dark-theme((
 }
 
 .mdc-notched-outline__notch { border-right: none; }
+
+// Estilos para el diálogo del lightbox
+.lightbox-dialog {
+  .mat-mdc-dialog-container {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .mat-mdc-dialog-surface {
+    background: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  .mat-mdc-dialog-content {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-height: none !important;
+  }
+}

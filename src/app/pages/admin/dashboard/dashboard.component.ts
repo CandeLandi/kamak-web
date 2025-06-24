@@ -205,7 +205,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   previousPage(): void {
     if (this.pagination().pageIndex > 0) {
       this.goToPage(this.pagination().pageIndex - 1);
-    }
+  }
   }
 
   nextPage(): void {
@@ -252,5 +252,5 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   protected readonly ProjectCategory = ProjectCategory;
   public readonly projectCategories = Object.values(ProjectCategory);
-}
+  }
 
