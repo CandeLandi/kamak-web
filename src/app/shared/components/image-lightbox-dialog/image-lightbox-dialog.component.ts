@@ -21,8 +21,7 @@ export interface ImageLightboxData {
     MatIconModule,
     LucideAngularModule
   ],
-  templateUrl: './image-lightbox-dialog.component.html',
-  styleUrls: ['./image-lightbox-dialog.component.scss']
+  templateUrl: './image-lightbox-dialog.component.html'
 })
 export class ImageLightboxDialogComponent implements OnInit {
   currentIndex: number = 0;
