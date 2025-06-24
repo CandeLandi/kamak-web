@@ -61,6 +61,10 @@ export class ProjectsService {
     return this.http.get<Project>(`${this.baseUrl}/projects/${id}/published`);
   }
 
+  getPublicProjectVideos(projectId: string): Observable<ProjectVideo[]> {
+    return this.http.get<ProjectVideo[]>(`${this.baseUrl}/projects/${projectId}/videos/published`);
+  }
+
   createProject(project: CreateProjectDto): Observable<Project> {
     return this.http.post<Project>(`${this.baseUrl}/projects`, project);
   }

@@ -49,16 +49,14 @@ export class LandingProjectComponent implements OnInit {
         return this.projectsService.getPublicProjectById(id).pipe(
           tap(project => {
             this.project = project;
-          }),
-          switchMap(project => {
-            if (!project) throw new Error('Project not available');
-            return this.projectsService.getProjectVideos(project.id);
+            this.loading = false;
           })
         );
       })
     ).subscribe({
-      next: videos => {
-        this.videos = videos;
+      next: () => {
+        // Videos cargados temporalmente deshabilitados
+        this.videos = [];
         this.loading = false;
       },
       error: err => {
