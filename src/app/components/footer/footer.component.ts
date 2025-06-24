@@ -25,11 +25,11 @@ export class FooterComponent {
   contactInfo = {
     sales: {
       phone: '2262559474',
-      email: 'kamakdesarrollos@gmail.com'
+      email: 'direccion@kamak.com.ar'
     },
     admin: {
       phone: '2262223704',
-      email: 'admkamakdesarrollos@gmail.com'
+      email: 'administracion@kamak.com.ar'
     },
     location: 'Avenida 42 N°3703 Necochea, Buenos Aires, Argentina.'
   };
