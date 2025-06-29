@@ -7,6 +7,12 @@ export interface Gallery {
   description?: string;
 }
 
+export interface ProjectAddress {
+  address: string;
+  lat: number;
+  lng: number;
+}
+
 export interface Project {
   id: string;
   name: string;
@@ -17,7 +23,7 @@ export interface Project {
   imageBefore?: string;
   imageAfter?: string;
   videoUrl?: string;
-  address: string;
+  address: ProjectAddress;
   area: string;
   duration: string;
   status: ProjectStatus;
@@ -41,7 +47,7 @@ export interface CreateProjectDto {
   imageBefore?: string;
   imageAfter?: string;
   videoUrl?: string;
-  address: string;
+  address: ProjectAddress;
   area: string;
   duration: string;
   status: ProjectStatus;
@@ -60,7 +66,7 @@ export interface UpdateProjectDto {
   imageBefore?: string;
   imageAfter?: string;
   videoUrl?: string;
-  address?: string;
+  address?: ProjectAddress;
   area?: string;
   duration?: string;
   status?: ProjectStatus;
@@ -74,6 +80,8 @@ export interface ProjectVideo {
   id: string;
   url: string;
   order: number;
+  description?: string;
+  features?: string[];
 }
 
 export interface PaginatedResponse<T> {

@@ -41,20 +41,12 @@
         </div>
       </div>
       <div class="space-y-2">
-        <mat-form-field class="w-full rounded-xl">
-          <mat-label>Ubicación</mat-label>
-          <input matInput formControlName="address" placeholder="Ubicación del proyecto" />
+        <div class="w-full rounded-xl">
+          <google-place-autocomplete formControlName="address"></google-place-autocomplete>
           <mat-error *ngIf="projectForm.get('address')?.hasError('required') && projectForm.get('address')?.touched">
             La ubicación es obligatoria
           </mat-error>
-        </mat-form-field>
-       <!--  <mat-form-field class="w-full rounded-xl">
-          <mat-label>Cliente</mat-label>
-          <input matInput formControlName="client" placeholder="Nombre del cliente" />
-          <mat-error *ngIf="projectForm.get('client')?.hasError('required') && projectForm.get('client')?.touched">
-            El cliente es obligatorio
-          </mat-error>
-        </mat-form-field> -->
+        </div>
         <div class="grid grid-cols-2 gap-4">
           <mat-form-field class="w-full rounded-xl">
             <mat-label>Superficie</mat-label>

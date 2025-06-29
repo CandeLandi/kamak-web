@@ -22,6 +22,8 @@ import { AdminHeaderComponent } from '../../../shared/components/admin-header/ad
 import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
 import { DashboardStatsComponent } from '../../../shared/components/dashboard-stats/dashboard-stats.component';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { ProjectCardComponent } from '../../../shared/components/project-card/project-card.component';
+import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -37,32 +39,30 @@ import { ConfirmationDialogComponent, ConfirmationDialogData } from '../../../sh
     AdminHeaderComponent,
     SearchInputComponent,
     DashboardStatsComponent,
-    ConfirmationDialogComponent,
+    ProjectCardComponent,
+    PaginationComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  // --- Inyección de Servicios ---
+
   public projectsService = inject(ProjectsService);
   private authService = inject(AuthService);
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
   private dialog = inject(MatDialog);
 
-  // --- Estado del Componente (Signals) ---
   public loading = signal(true);
   public error = signal<string | null>(null);
+  public clientReady = signal(false);
 
-  // Filtros
   public searchQuery = signal('');
   public categoryControl = new FormControl('todos');
   public selectedCategory = signal('todos');
 
-  // Datos
   public allProjects = signal<Project[]>([]);
 
-  // Paginación
   public pagination = signal({
     pageIndex: 0,
     pageSize: 6,
@@ -71,7 +71,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private clientId!: string;
 
-  // --- Selectores (Computed Signals) ---
+
 
   // 1. Filtra por categoría y búsqueda
   public filteredProjects = computed(() => {
@@ -131,19 +131,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return range;
   });
 
-  // --- Ciclo de Vida ---
   ngOnInit(): void {
+    this.error.set(null);
     const clientId = this.authService.getClientId();
     if (!clientId) {
-      this.error.set('Error crítico: No se pudo identificar al cliente.');
-      this.loading.set(false);
+      this.clientReady.set(false);
       return;
     }
     this.clientId = clientId;
+    this.clientReady.set(true);
     this.loadProjects();
 
-    // Escucha eventos de navegación para recargar los datos si se vuelve al dashboard.
-    // Esto soluciona el problema de datos obsoletos cuando el componente se reutiliza.
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd),
       takeUntil(this.destroy$)
@@ -153,7 +151,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }
     });
 
-    // Resetear paginación y actualizar la señal de categoría cuando el filtro cambia.
     this.categoryControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
       this.selectedCategory.set(value || 'todos');
       this.goToPage(0);
@@ -165,12 +162,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  // --- Carga de Datos ---
   loadProjects(): void {
     this.loading.set(true);
     this.error.set(null);
 
-    // Usar el endpoint correcto para proyectos del cliente
     const pagination: PaginationDto = {
       page: 1,
       limit: 100,
@@ -189,13 +184,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
     }
 
-  // --- Manejadores de Eventos ---
   onSearch(query: string): void {
     this.searchQuery.set(query);
-    this.goToPage(0); // Resetear a la primera página con cada búsqueda
+    this.goToPage(0);
   }
 
-  // --- Navegación de Paginación ---
   goToPage(pageIndex: number): void {
     const total = this.totalPages();
     const newPageIndex = Math.max(0, Math.min(pageIndex, total > 0 ? total - 1 : 0));
@@ -214,7 +207,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
   }
 
-  // --- Otros Métodos ---
   handleLogout(): void {
     this.authService.logout();
     this.router.navigate(['/admin/login']);
@@ -248,6 +240,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }
       });
     });
+  }
+
+  editProject(id: string) {
+    this.router.navigate(['/admin/project', id]);
+  }
+
+  viewProject(id: string) {
+    window.open(`/projects/${id}`, '_blank');
   }
 
   protected readonly ProjectCategory = ProjectCategory;

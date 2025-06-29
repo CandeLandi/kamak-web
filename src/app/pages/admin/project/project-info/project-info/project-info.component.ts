@@ -19,6 +19,7 @@ import { AuthService } from '../../../../../core/services/auth.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
+import { GooglePlaceAutocompleteComponent } from './google-place-autocomplete.component';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -49,7 +50,8 @@ export const MY_DATE_FORMATS = {
     MatExpansionModule,
     LucideAngularModule,
     MatDatepickerModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    GooglePlaceAutocompleteComponent
   ],
   templateUrl: './project-info.component.html',
   styleUrl: './project-info.component.scss',
@@ -95,7 +97,7 @@ export class ProjectInfoComponent implements OnInit {
             imageAfter: project.imageAfter || '',
             videoUrl: project.videoUrl || '',
             address: project.address,
-            area: project.area,
+            area: typeof project.area === 'string' ? project.area.replace(/\s*m²$/, '').trim() : project.area,
             startDate: startDate,
             endDate: endDate,
             duration: project.duration,
@@ -127,7 +129,7 @@ export class ProjectInfoComponent implements OnInit {
       imageBefore: [''],
       imageAfter: [''],
       videoUrl: [''],
-      address: ['', Validators.required],
+      address: [null, Validators.required],
       area: ['', Validators.required],
       startDate: [null],
       endDate: [null],

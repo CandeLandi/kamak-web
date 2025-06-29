@@ -15,17 +15,17 @@
         </a>
       </div>
     } @else if (project) {
-      <!-- Botón Volver a Proyectos -->
-      <div class="mb-4">
-        <a routerLink="/" class="flex items-center text-gray-300 hover:text-white transition-colors gap-2 text-sm font-medium">
-          <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+    <!-- Botón Volver a Proyectos -->
+    <div class="mb-4">
+      <a routerLink="/" class="flex items-center text-gray-300 hover:text-white transition-colors gap-2 text-sm font-medium">
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
           Volver a Proyectos
-        </a>
+      </a>
       </div>
 
       <!-- Bloque: Nombre y stats principales -->
       <div class="space-y-6 mb-10">
-        <div>
+          <div>
           <h1 class="text-3xl md:text-4xl font-bold text-white flex items-center gap-3">
             <i-lucide name="star" class="w-7 h-7 text-[#195764]"></i-lucide>
             {{ project.name }}
@@ -33,39 +33,39 @@
           <p class="text-base sm:text-lg text-gray-300 max-w-3xl mt-6">{{ project.description }}</p>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6 rounded-xl p-4 border border-white/10 flex justify-center">
-          <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2">
             <i-lucide name="map-pin" class="w-5 h-5 text-[#195764]"></i-lucide>
-            <div>
+          <div>
               <span class="text-xs text-gray-400">Ubicación:</span>
               <p class="font-medium text-white">{{ project.address }}</p>
             </div>
           </div>
 
-          <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2">
             <i-lucide name="ruler" class="w-5 h-5 text-[#195764]"></i-lucide>
-            <div>
-              <span class="text-xs text-gray-400">Superficie:</span>
-              <p class="font-medium text-white">{{ project.area }}</p>
-            </div>
+          <div>
+            <span class="text-xs text-gray-400">Superficie:</span>
+            <p class="font-medium text-white">{{ project.area }}</p>
           </div>
-          <div class="flex items-center gap-2">
+        </div>
+        <div class="flex items-center gap-2">
             <i-lucide name="clock" class="w-5 h-5 text-[#195764]"></i-lucide>
-            <div>
-              <span class="text-xs text-gray-400">Duración:</span>
-              <p class="font-medium text-white">{{ project.duration }}</p>
-            </div>
+          <div>
+            <span class="text-xs text-gray-400">Duración:</span>
+            <p class="font-medium text-white">{{ project.duration }}</p>
           </div>
-          <div class="flex items-center gap-2">
+        </div>
+        <div class="flex items-center gap-2">
             <i-lucide name="calendar" class="w-5 h-5 text-[#195764]"></i-lucide>
-            <div>
-              <span class="text-xs text-gray-400">Fecha inicio:</span>
+          <div>
+            <span class="text-xs text-gray-400">Fecha inicio:</span>
               <p class="font-medium text-white">{{ project.startDate | date: 'dd/MM/yyyy' }}</p>
-            </div>
           </div>
-          <div class="flex items-center gap-2">
+        </div>
+        <div class="flex items-center gap-2">
             <i-lucide name="calendar-check" class="w-5 h-5 text-[#195764]"></i-lucide>
-            <div>
-              <span class="text-xs text-gray-400">Fecha fin:</span>
+          <div>
+            <span class="text-xs text-gray-400">Fecha fin:</span>
               <p class="font-medium text-white">{{ project.endDate | date: 'dd/MM/yyyy' }}</p>
             </div>
           </div>
@@ -76,8 +76,8 @@
       @if (project.gallery && project.gallery.length > 0) {
         <div class="pt-6 pb-6 md:pt-8 md:pb-12 mb-10">
           <h2 class="text-2xl font-bold mb-4 text-white flex items-center gap-2"><i-lucide name="image" class="w-6 h-6 text-[#195764]"></i-lucide>Galería del Proyecto</h2>
-          <div class="mb-8">
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div class="mb-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               @for (image of displayedGallery; track image.id; let index = $index) {
                 <div class="relative h-48 rounded-lg overflow-hidden cursor-pointer group flex items-center justify-center"
                      (click)="openImageLightbox(index)">
@@ -87,22 +87,22 @@
                     <i-lucide name="expand" class="w-8 h-8 text-white"></i-lucide>
                   </div>
                 </div>
-              }
-            </div>
-            @if (hasMoreImages && !showAllImages) {
-              <div class="mt-6 text-center">
-                <button (click)="showAllImages = true" class="border border-[#195764] text-[#195764] hover:bg-[#195764]/10 px-4 py-2 rounded-md font-semibold transition-colors flex items-center justify-center mx-auto">
-                  Ver más imágenes
+          }
+        </div>
+        @if (hasMoreImages && !showAllImages) {
+          <div class="mt-6 text-center">
+            <button (click)="showAllImages = true" class="border border-[#195764] text-[#195764] hover:bg-[#195764]/10 px-4 py-2 rounded-md font-semibold transition-colors flex items-center justify-center mx-auto">
+              Ver más imágenes
                   <i-lucide name="chevron-down" class="w-4 h-4 ml-2"></i-lucide>
-                </button>
+            </button>
                 @if(project.gallery) {
-                <p class="text-sm text-gray-400 mt-2">
-                  Mostrando {{ initialImageCount }} de {{ project.gallery.length }} imágenes
-                </p>
+            <p class="text-sm text-gray-400 mt-2">
+              Mostrando {{ initialImageCount }} de {{ project.gallery.length }} imágenes
+            </p>
                 }
-              </div>
-            }
           </div>
+        }
+      </div>
         </div>
       }
 
@@ -142,22 +142,22 @@
       @if(project.imageBefore && project.imageAfter) {
         <div class="pt-6 pb-6 md:pt-8 md:pb-12 mb-10">
           <h2 class="text-2xl font-bold mb-4 text-white flex items-center gap-2"><i-lucide name="image" class="w-6 h-6 text-[#195764]"></i-lucide>Antes y Después</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Imagen Antes -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Imagen Antes -->
             <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-md cursor-pointer group"
                  (click)="openBeforeAfterLightbox(0)">
-              <div class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm font-semibold bg-white text-[#181c23] border border-[#195764] shadow">Antes</div>
+            <div class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm font-semibold bg-white text-[#181c23] border border-[#195764] shadow">Antes</div>
               <div class="relative h-[350px] md:h-[450px] rounded-md overflow-hidden">
                 <img [src]="project.imageBefore" [alt]="project.name + ' - Antes'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" style="object-fit:cover; width:100%; height:100%;" />
               </div>
               <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center bg-black/30">
                 <i-lucide name="expand" class="w-8 h-8 text-white"></i-lucide>
               </div>
-            </div>
-            <!-- Imagen Después -->
+          </div>
+          <!-- Imagen Después -->
             <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-md cursor-pointer group"
                  (click)="openBeforeAfterLightbox(1)">
-              <div class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm font-semibold bg-white text-[#181c23] border border-[#195764] shadow">Después</div>
+            <div class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm font-semibold bg-white text-[#181c23] border border-[#195764] shadow">Después</div>
               <div class="relative h-[350px] md:h-[450px] rounded-md overflow-hidden">
                 <img [src]="project.imageAfter" [alt]="project.name + ' - Después'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" style="object-fit:cover; width:100%; height:100%;" />
               </div>

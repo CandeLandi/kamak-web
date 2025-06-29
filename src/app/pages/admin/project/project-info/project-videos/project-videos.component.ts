@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { LucideAngularModule } from 'lucide-angular';
 import { Project, ProjectVideo } from '../../../interfaces/project.interface';
 import { ProjectsService } from '../../../../../core/services/projects.service';
@@ -26,7 +27,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatCardModule,
     ReactiveFormsModule,
     CommonModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatChipsModule
   ],
   templateUrl: './project-videos.component.html',
   styleUrl: './project-videos.component.scss'
@@ -38,13 +40,17 @@ export class ProjectVideosComponent implements OnInit {
   videoForm: FormGroup;
   loading = false;
 
+  features: string[] = [];
+  readonly separatorKeysCodes: number[] = [13, 188]; // Enter, comma
+
   private projectsService = inject(ProjectsService);
   private snackBar = inject(MatSnackBar);
   private fb = inject(FormBuilder);
 
   constructor() {
     this.videoForm = this.fb.group({
-      newVideo: ['', [Validators.required, Validators.pattern(/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/)]]
+      newVideo: ['', [Validators.required, Validators.pattern(/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/)]],
+      description: ['']
     });
   }
 
@@ -79,6 +85,7 @@ export class ProjectVideosComponent implements OnInit {
       next: (newVideo) => {
         this.videos.push(newVideo);
         this.videoForm.reset();
+        this.features = [];
         this.videoForm.get('newVideo')?.setErrors(null);
         this.snackBar.open('Video agregado correctamente.', 'Cerrar', { duration: 3000 });
       },
@@ -100,5 +107,19 @@ export class ProjectVideosComponent implements OnInit {
         this.snackBar.open('Error al eliminar el video.', 'Cerrar', { duration: 3000 });
       }
     });
+  }
+
+  addFeature(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+    if (value && !this.features.includes(value)) {
+      this.features.push(value);
+    }
+    event.chipInput!.clear();
+  }
+
+  removeFeature(index: number): void {
+    if (index >= 0) {
+      this.features.splice(index, 1);
+    }
   }
 }
