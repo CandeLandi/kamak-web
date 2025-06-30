@@ -47,3 +47,8 @@ node_modules/
 # Environment variables
 .env
 .env.*
+src/environments/environment.ts
+src/environments/environment.prod.ts
+
+# Ignore local index.html with API keys
+src/index.html

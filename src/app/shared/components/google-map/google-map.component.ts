@@ -1,10 +1,10 @@
 import { Component, OnInit, inject, ViewChild } from '@angular/core';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { CommonModule } from '@angular/common';
-import { environment } from '../../../../environments/environment';
 import { ProjectsService } from '../../../../app/core/services/projects.service';
 import { Project } from '../../../../app/pages/admin/interfaces/project.interface';
 import { MapInfoWindow } from '@angular/google-maps';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-google-map',
@@ -13,7 +13,7 @@ import { MapInfoWindow } from '@angular/google-maps';
   styleUrl: './google-map.component.scss'
 })
 export class GoogleMapComponent implements OnInit {
-  apiKey = environment.key;
+  apiKey = environment.apiKey;
   center = { lat: -38.4161, lng: -63.6167 }; // Centro de Argentina
   zoom = 5; // Zoom más cercano para ver Argentina
   markers: { lat: number; lng: number; title: string; address: string }[] = [];
