@@ -18,24 +18,30 @@
   <form (ngSubmit)="isEditMode ? handleUpdateVideo() : handleAddVideo()" autocomplete="off" class="w-full">
     <div class="space-y-4">
       <div class="space-y-2">
-        <label for="title" class="text-gray-300">Título del video</label>
-        <input id="title" name="title" [(ngModel)]="formData.title" placeholder="Ingresa el título del video" class="border border-gray-600 text-white placeholder-gray-400 rounded w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary" />
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Título del video</mat-label>
+          <input matInput id="title" name="title" [(ngModel)]="formData.title" placeholder="Ingresa el título del video" />
+        </mat-form-field>
         <p *ngIf="errors?.title" class="text-red-400 text-sm flex items-center gap-1">
           <lucide-icon name="alert-circle" class="w-3 h-3 text-red-400" />
           {{ errors.title }}
         </p>
       </div>
       <div class="space-y-2">
-        <label for="youtubeUrl" class="text-gray-300">URL de YouTube (embed)</label>
-        <input id="youtubeUrl" name="youtubeUrl" [(ngModel)]="formData.youtubeUrl" placeholder="https://www.youtube.com/watch?v=... o https://www.youtube.com/embed/..." class="border border-gray-600 text-white placeholder-gray-400 rounded w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary" />
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>URL de YouTube (embed)</mat-label>
+          <input matInput id="youtubeUrl" name="youtubeUrl" [(ngModel)]="formData.youtubeUrl" placeholder="https://www.youtube.com/watch?v=... o https://www.youtube.com/embed/..." />
+        </mat-form-field>
         <p *ngIf="errors?.youtubeUrl" class="text-red-400 text-sm flex items-center gap-1">
           <lucide-icon name="alert-circle" class="w-3 h-3 text-red-400" />
           {{ errors.youtubeUrl }}
         </p>
       </div>
       <div class="space-y-2">
-        <label for="description" class="text-gray-300">Descripción</label>
-        <textarea id="description" name="description" [(ngModel)]="formData.description" placeholder="Describe el contenido del video" class="border border-gray-600 text-white placeholder-gray-400 min-h-[80px] resize-none rounded w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Descripción</mat-label>
+          <textarea matInput id="description" name="description" [(ngModel)]="formData.description" placeholder="Describe el contenido del video" rows="3"></textarea>
+        </mat-form-field>
         <p *ngIf="errors?.description" class="text-red-400 text-sm flex items-center gap-1">
           <lucide-icon name="alert-circle" class="w-3 h-3 text-red-400" />
           {{ errors.description }}
