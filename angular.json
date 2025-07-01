@@ -32,6 +32,16 @@
                 "glob": "**/*",
                 "input": "src/assets/logos",
                 "output": "/assets/logos"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets/hero",
+                "output": "/assets/hero"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets/images",
+                "output": "/assets/images"
               }
             ],
             "styles": [
@@ -59,7 +69,7 @@
                 }
               ],
               "outputHashing": "all",
-              "baseHref": "/kamak-web/"
+              "baseHref": "/"
             },
             "development": {
               "optimization": false,
