@@ -78,10 +78,10 @@ export interface UpdateProjectDto {
 
 export interface ProjectVideo {
   id: string;
-  url: string;
+  title: string;
+  youtubeUrl: string;
   order: number;
   description?: string;
-  features?: string[];
 }
 
 export interface PaginatedResponse<T> {

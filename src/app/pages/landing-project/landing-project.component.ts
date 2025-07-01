@@ -10,6 +10,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { LucideAngularModule } from 'lucide-angular';
 import { ImageLightboxDialogComponent, ImageLightboxData } from '../../shared/components/image-lightbox-dialog/image-lightbox-dialog.component';
+import { VideoService } from '../../core/services/video.service';
 
 @Component({
   selector: 'app-landing-project',
@@ -27,11 +28,14 @@ export class LandingProjectComponent implements OnInit {
   showAllImages = false;
   initialImageCount = 6;
 
+  limit = 10;
+
   private route = inject(ActivatedRoute);
   private projectsService = inject(ProjectsService);
   private sanitizer = inject(DomSanitizer);
   private viewportScroller = inject(ViewportScroller);
   private dialog = inject(MatDialog);
+  private videoService = inject(VideoService);
 
   ngOnInit() {
     this.viewportScroller.scrollToPosition([0, 0]);
@@ -43,28 +47,82 @@ export class LandingProjectComponent implements OnInit {
     this.route.paramMap.pipe(
       switchMap(params => {
         const id = params.get('id');
-        if (!id) {
-          throw new Error('Project ID not found');
-        }
+        if (!id) throw new Error('Project ID not found');
         return this.projectsService.getPublicProjectById(id).pipe(
           tap(project => {
             this.project = project;
             this.loading = false;
+            this.loadVideos();
           })
         );
       })
     ).subscribe({
-      next: () => {
-        // Videos cargados temporalmente deshabilitados
-        this.videos = [];
-        this.loading = false;
-      },
+      next: () => {},
       error: err => {
         this.error = 'No se pudo cargar el proyecto. Intente más tarde.';
         this.loading = false;
         console.error(err);
       }
     });
+  }
+
+  loadVideos(): void {
+    if (!this.project?.id) return;
+    this.loading = true;
+    this.videoService.getVideos(this.project.id, { page: 1, limit: this.limit }).subscribe({
+      next: (res) => {
+        this.videos = res.data || [];
+        this.loading = false;
+      },
+      error: () => {
+        this.videos = [];
+        this.loading = false;
+      }
+    });
+  }
+
+  get mainVideo(): ProjectVideo | null {
+    return this.videos.length > 0 ? this.videos[0] : null;
+  }
+
+  get additionalVideos(): ProjectVideo[] {
+    return this.videos.length > 1 ? this.videos.slice(1) : [];
+  }
+
+  get projectDetails() {
+    if (!this.project) return [];
+    const details = [];
+    // Ubicación
+    let addressValue = '';
+    if (this.project.address && typeof this.project.address === 'object' && this.project.address.address) {
+      addressValue = this.project.address.address;
+    } else if (typeof this.project.address === 'string') {
+      addressValue = this.project.address;
+    }
+    if (addressValue) {
+      details.push({ label: 'Ubicación', value: addressValue, icon: 'map-pin' });
+    }
+    // Superficie
+    if (this.project.area) {
+      details.push({ label: 'Superficie', value: this.project.area, icon: 'ruler' });
+    }
+    // Duración
+    if (this.project.duration) {
+      details.push({ label: 'Duración', value: this.project.duration, icon: 'clock' });
+    }
+    // Fecha inicio
+    if (this.project.startDate) {
+      details.push({ label: 'Fecha inicio', value: this.project.startDate, icon: 'calendar' });
+    }
+    // Fecha fin
+    if (this.project.endDate) {
+      details.push({ label: 'Fecha fin', value: this.project.endDate, icon: 'calendar-check' });
+    }
+    return details;
+  }
+
+  isYoutube(url: string): boolean {
+    return /youtu(be\.com|\.be)/.test(url);
   }
 
   get displayedGallery() {
@@ -132,13 +190,14 @@ export class LandingProjectComponent implements OnInit {
   }
 
   getSafeVideoUrl(url: string): SafeResourceUrl {
-    const videoId = this.extractVideoId(url);
-    if (!videoId) {
-      // Return a placeholder or an empty safe URL if ID extraction fails
-      return this.sanitizer.bypassSecurityTrustResourceUrl('');
+    if (!url) return '';
+    if (this.isYoutube(url)) {
+      const videoId = this.extractVideoId(url);
+      if (!videoId) return this.sanitizer.bypassSecurityTrustResourceUrl('');
+      const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+      return this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
     }
-    const embedUrl = `https://www.youtube.com/embed/${videoId}`;
-    return this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
   private extractVideoId(url: string): string | null {

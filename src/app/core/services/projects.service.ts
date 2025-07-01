@@ -90,11 +90,15 @@ export class ProjectsService {
     return this.http.get<ProjectVideo[]>(`${this.baseUrl}/projects/${projectId}/videos`);
   }
 
-  addProjectVideo(projectId: string, url: string): Observable<ProjectVideo> {
-    return this.http.post<ProjectVideo>(`${this.baseUrl}/projects/${projectId}/videos`, { url });
+  addProjectVideo(projectId: string, video: { title: string; youtubeUrl: string; description?: string; features?: string[] }): Observable<ProjectVideo> {
+    return this.http.post<ProjectVideo>(`${this.baseUrl}/projects/${projectId}/videos`, video);
   }
 
   deleteProjectVideo(projectId: string, videoId: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/projects/${projectId}/videos/${videoId}`);
+  }
+
+  updateProjectVideoUrl(id: string, videoUrl: string): Observable<Project> {
+    return this.http.patch<Project>(`${this.baseUrl}/projects/${id}`, { videoUrl });
   }
 }

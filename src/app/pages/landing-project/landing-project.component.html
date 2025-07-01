@@ -33,42 +33,21 @@
           <p class="text-base sm:text-lg text-gray-300 max-w-3xl mt-6">{{ project.description }}</p>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6 rounded-xl p-4 border border-white/10 flex justify-center">
-        <div class="flex items-center gap-2">
-            <i-lucide name="map-pin" class="w-5 h-5 text-[#195764]"></i-lucide>
-          <div>
-              <span class="text-xs text-gray-400">Ubicación:</span>
-              <p class="font-medium text-white">{{ project.address }}</p>
+          <ng-container *ngFor="let detail of projectDetails">
+            <div class="flex items-center gap-2" *ngIf="detail.value">
+              <i-lucide [name]="detail.icon" class="w-5 h-5 text-[#195764]"></i-lucide>
+              <div>
+                <span class="text-xs text-gray-400">{{ detail.label }}:</span>
+                <p class="font-medium text-white">
+                  <!-- Formatear fecha si es fecha -->
+                  <ng-container *ngIf="detail.label === 'Fecha inicio' || detail.label === 'Fecha fin'; else normalValue">
+                    {{ detail.value | date: 'dd/MM/yyyy' }}
+                  </ng-container>
+                  <ng-template #normalValue>{{ detail.value }}</ng-template>
+                </p>
+              </div>
             </div>
-          </div>
-
-        <div class="flex items-center gap-2">
-            <i-lucide name="ruler" class="w-5 h-5 text-[#195764]"></i-lucide>
-          <div>
-            <span class="text-xs text-gray-400">Superficie:</span>
-            <p class="font-medium text-white">{{ project.area }}</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-2">
-            <i-lucide name="clock" class="w-5 h-5 text-[#195764]"></i-lucide>
-          <div>
-            <span class="text-xs text-gray-400">Duración:</span>
-            <p class="font-medium text-white">{{ project.duration }}</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-2">
-            <i-lucide name="calendar" class="w-5 h-5 text-[#195764]"></i-lucide>
-          <div>
-            <span class="text-xs text-gray-400">Fecha inicio:</span>
-              <p class="font-medium text-white">{{ project.startDate | date: 'dd/MM/yyyy' }}</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-2">
-            <i-lucide name="calendar-check" class="w-5 h-5 text-[#195764]"></i-lucide>
-          <div>
-            <span class="text-xs text-gray-400">Fecha fin:</span>
-              <p class="font-medium text-white">{{ project.endDate | date: 'dd/MM/yyyy' }}</p>
-            </div>
-          </div>
+          </ng-container>
         </div>
       </div>
 
@@ -122,16 +101,44 @@
         </div>
       </div>
 
-      <!-- Bloque: Videos -->
-      @if (videos.length > 0) {
+      <!-- Bloque: Videos del Proyecto -->
+      @if (mainVideo) {
         <div class="mb-10 md:mb-12">
-          <h2 class="text-2xl font-bold mb-4 text-white flex items-center gap-2"><i-lucide name="video" class="w-6 h-6 text-[#195764]"></i-lucide>Videos del Proyecto</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            @for (video of videos; track video.id; let index = $index) {
-              <div class="aspect-video w-full rounded-lg overflow-hidden border border-white/10">
-                <iframe class="w-full h-full" [src]="getSafeVideoUrl(video.url)" [title]="project.name + ' - Video ' + (index + 1)"
-                  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen></iframe>
+          <h2 class="text-2xl font-bold mb-4 text-white flex items-center gap-2"><i-lucide name="video" class="w-6 h-6 text-[#195764]"></i-lucide>Video del Proyecto</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+            <div>
+              <div class="aspect-video w-full rounded-lg overflow-hidden border border-white/10 mb-2">
+                <iframe *ngIf="isYoutube(mainVideo.youtubeUrl)" class="w-full h-full"
+                  [src]="getSafeVideoUrl(mainVideo.youtubeUrl)" [title]="mainVideo.title"
+                  frameborder="0" allowfullscreen></iframe>
+                <video *ngIf="!isYoutube(mainVideo.youtubeUrl)" class="w-full h-full" controls>
+                  <source [src]="mainVideo.youtubeUrl" type="video/mp4" />
+                </video>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-white mb-2">{{ mainVideo.title }}</h3>
+              <p class="text-gray-300 whitespace-pre-wrap mb-4">{{ mainVideo.description }}</p>
+            </div>
+          </div>
+        </div>
+      }
+      @if (additionalVideos.length > 0) {
+        <div class="mb-10 md:mb-12">
+          <h2 class="text-2xl font-bold mb-4 text-white flex items-center gap-2"><i-lucide name="video" class="w-6 h-6 text-[#195764]"></i-lucide>Videos Adicionales</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
+            @for (video of additionalVideos; track video.id) {
+              <div class="flex flex-col gap-2">
+                <div class="aspect-video w-full rounded-lg overflow-hidden border border-white/10 mb-2">
+                  <iframe *ngIf="isYoutube(video.youtubeUrl)" class="w-full h-full"
+                    [src]="getSafeVideoUrl(video.youtubeUrl)" [title]="video.title"
+                    frameborder="0" allowfullscreen></iframe>
+                  <video *ngIf="!isYoutube(video.youtubeUrl)" class="w-full h-full" controls>
+                    <source [src]="video.youtubeUrl" type="video/mp4" />
+                  </video>
+                </div>
+                <h3 class="text-lg font-semibold text-white mb-1">{{ video.title }}</h3>
+                <p class="text-gray-300 whitespace-pre-wrap mb-2">{{ video.description }}</p>
               </div>
             }
           </div>

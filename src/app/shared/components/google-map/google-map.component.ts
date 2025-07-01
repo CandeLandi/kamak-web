@@ -14,8 +14,8 @@ import { environment } from '../../../../environments/environment';
 })
 export class GoogleMapComponent implements OnInit {
   apiKey = environment.apiKey;
-  center = { lat: -38.4161, lng: -63.6167 }; // Centro de Argentina
-  zoom = 5; // Zoom más cercano para ver Argentina
+  center = { lat: -38.4161, lng: -63.6167 };
+  zoom = 5;
   markers: { lat: number; lng: number; title: string; address: string }[] = [];
   @ViewChild('infoWindow') infoWindow!: MapInfoWindow;
   selectedMarker: { lat: number; lng: number; title: string; address: string } | null = null;

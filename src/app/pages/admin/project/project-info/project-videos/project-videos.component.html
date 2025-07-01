@@ -1,68 +1,116 @@
-<div class="bg-[#181c23] border border-white/10 rounded-b-lg p-6">
-  <label class="block text-sm font-medium text-white mb-4">Videos de YouTube</label>
-
-  @if (loading) {
-    <div class="flex justify-center items-center py-8">
-      <mat-spinner diameter="40"></mat-spinner>
+<div class="w-full p-6">
+  <!-- Header del formulario -->
+  <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center gap-2">
+      <lucide-icon *ngIf="isEditMode" name="pencil" class="w-5 h-5 text-primary" />
+      <lucide-icon *ngIf="!isEditMode" name="plus" class="w-5 h-5 text-primary" />
+      <h3 class="text-lg font-semibold text-white">
+        {{ isEditMode ? 'Editar Video' : 'Agregar Nuevo Video' }}
+      </h3>
+      <span *ngIf="isEditMode" class="border border-primary text-primary rounded px-2 py-0.5 text-xs ml-2">Editando: {{ selectedVideo?.title }}</span>
     </div>
-  } @else {
-    <div class="space-y-4 mb-6">
-      @for (video of videos; track video.id) {
-        <mat-card class="bg-black/40">
-          <mat-card-content class="flex items-center gap-4 p-3">
-            <div class="flex-1 overflow-hidden">
-              <p class="text-white truncate" title="{{ video.url }}">{{ video.url }}</p>
-              <p class="text-gray-400 text-sm mt-2" *ngIf="video.description">{{ video.description }}</p>
-              <div class="flex flex-wrap gap-2 mt-2" *ngIf="video.features?.length">
-                <mat-chip-grid>
-                  <mat-chip *ngFor="let feature of video.features">{{ feature }}</mat-chip>
-                </mat-chip-grid>
+    <button *ngIf="isEditMode" type="button" (click)="handleCancelEdit()" class="border border-gray-600 hover:bg-gray-700 text-gray-300 bg-transparent rounded px-3 py-1 flex items-center gap-1">
+      <lucide-icon name="x" class="w-4 h-4 mr-1 text-gray-400" />
+      Cancelar
+    </button>
+  </div>
+  <!-- Formulario -->
+  <form (ngSubmit)="isEditMode ? handleUpdateVideo() : handleAddVideo()" autocomplete="off" class="w-full">
+    <div class="space-y-4">
+      <div class="space-y-2">
+        <label for="title" class="text-gray-300">Título del video</label>
+        <input id="title" name="title" [(ngModel)]="formData.title" placeholder="Ingresa el título del video" class="border border-gray-600 text-white placeholder-gray-400 rounded w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary" />
+        <p *ngIf="errors?.title" class="text-red-400 text-sm flex items-center gap-1">
+          <lucide-icon name="alert-circle" class="w-3 h-3 text-red-400" />
+          {{ errors.title }}
+        </p>
+      </div>
+      <div class="space-y-2">
+        <label for="youtubeUrl" class="text-gray-300">URL de YouTube (embed)</label>
+        <input id="youtubeUrl" name="youtubeUrl" [(ngModel)]="formData.youtubeUrl" placeholder="https://www.youtube.com/watch?v=... o https://www.youtube.com/embed/..." class="border border-gray-600 text-white placeholder-gray-400 rounded w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary" />
+        <p *ngIf="errors?.youtubeUrl" class="text-red-400 text-sm flex items-center gap-1">
+          <lucide-icon name="alert-circle" class="w-3 h-3 text-red-400" />
+          {{ errors.youtubeUrl }}
+        </p>
+      </div>
+      <div class="space-y-2">
+        <label for="description" class="text-gray-300">Descripción</label>
+        <textarea id="description" name="description" [(ngModel)]="formData.description" placeholder="Describe el contenido del video" class="border border-gray-600 text-white placeholder-gray-400 min-h-[80px] resize-none rounded w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+        <p *ngIf="errors?.description" class="text-red-400 text-sm flex items-center gap-1">
+          <lucide-icon name="alert-circle" class="w-3 h-3 text-red-400" />
+          {{ errors.description }}
+        </p>
+      </div>
+    </div>
+    <!-- Acciones del formulario -->
+    <div class="flex justify-between items-center mt-6 pt-4 border-t border-gray-700">
+      <p class="text-sm text-gray-400">Ejemplo: https://www.youtube.com/embed/VIDEO_ID</p>
+      <div class="flex gap-2">
+        <button *ngIf="isEditMode" type="button" (click)="handleDelete()" class="bg-red-600 hover:bg-red-700 text-white rounded px-4 py-2 flex items-center gap-2">
+          <lucide-icon name="trash-2" class="w-4 h-4 mr-2" />
+          Eliminar
+        </button>
+        <button type="submit" [disabled]="!formData.title || !formData.youtubeUrl || submitting || (!isEditMode && videos.length >= 10)" class="bg-primary hover:bg-primary/80 text-white rounded px-4 py-2 flex items-center gap-2 border border-primary">
+          {{ isEditMode ? 'Actualizar' : 'Agregar' }}
+        </button>
+      </div>
+    </div>
+  </form>
+  <!-- Listado de videos debajo, con fondo y borde -->
+  <div class="w-full mt-8">
+    <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-6">
+      <h3 class="text-lg font-semibold text-white mb-4">
+        Videos del Proyecto
+        <span *ngIf="videos.length > 0" class="text-sm font-normal text-gray-400 ml-2">• Haz clic en un video para editarlo</span>
+      </h3>
+      <div *ngIf="videos.length === 0" class="text-center py-12 border border-dashed border-gray-700 rounded-lg">
+        <lucide-icon name="play-circle" class="text-4xl text-gray-600 mb-4 mx-auto" />
+        <h4 class="text-lg font-medium text-gray-400 mb-2">No hay videos agregados</h4>
+        <p class="text-gray-500">Comienza agregando tu primer video de YouTube usando el formulario de arriba</p>
+      </div>
+      <div *ngIf="videos.length > 0" class="space-y-3">
+        <div
+          *ngFor="let video of videos"
+          (click)="handleVideoClick(video)"
+          class="flex gap-4 p-4 rounded-lg border cursor-pointer transition-all hover:border-gray-600"
+          [ngClass]="{
+            'border-primary bg-primary/10': selectedVideoId === video.id,
+            'border-gray-700 bg-gray-800/30 hover:bg-gray-800/50': selectedVideoId !== video.id
+          }"
+        >
+          <!-- Video Thumbnail -->
+          <div class="flex-shrink-0">
+            <div class="relative group">
+              <img
+                [src]="getYoutubeThumbnail(video.youtubeUrl) || '/placeholder.svg'"
+                [alt]="'Thumbnail de ' + video.title"
+                class="w-32 h-20 object-cover rounded bg-gray-700"
+              />
+              <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded flex items-center justify-center">
+                <lucide-icon name="play-circle" class="text-white w-8 h-8" />
+              </div>
+              <div *ngIf="selectedVideoId === video.id" class="absolute -top-2 -right-2 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                <lucide-icon name="pencil" class="text-white text-xs w-4 h-4" />
               </div>
             </div>
-            <button mat-icon-button color="warn" (click)="handleRemoveVideo(video.id)">
-              <i-lucide name="x" class="w-5 h-5"></i-lucide>
-            </button>
-          </mat-card-content>
-        </mat-card>
-      }
-    </div>
-  }
-
-  <form [formGroup]="videoForm" (ngSubmit)="handleAddVideo()" class="flex flex-col gap-4 items-start">
-    <mat-form-field appearance="outline" class="w-full flex-1">
-      <mat-label>URL de YouTube</mat-label>
-      <input matInput formControlName="newVideo" placeholder="https://www.youtube.com/watch?v=...">
-      @if (videoForm.get('newVideo')?.hasError('pattern')) {
-        <mat-error>La URL no parece ser un video de YouTube válido.</mat-error>
-      }
-    </mat-form-field>
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Descripción del video</mat-label>
-      <textarea matInput formControlName="description" rows="2" placeholder="Breve descripción del video..."></textarea>
-    </mat-form-field>
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Características destacadas</mat-label>
-      <mat-chip-grid #chipGrid>
-        <mat-chip *ngFor="let feature of features; let i = index" [removable]="true" (removed)="removeFeature(i)">
-          {{ feature }}
-          <button matChipRemove><i-lucide name="x" class="w-3 h-3"></i-lucide></button>
-        </mat-chip>
-        <input
-          placeholder="Nueva característica"
-          [matChipInputFor]="chipGrid"
-          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-          [matChipInputAddOnBlur]="true"
-          (matChipInputTokenEnd)="addFeature($event)"
-          class="bg-transparent text-white placeholder-gray-400"
-        />
-      </mat-chip-grid>
-    </mat-form-field>
-    <button mat-flat-button color="primary" type="submit" [disabled]="videoForm.invalid" class="h-[52px] !px-5">
-      <div class="flex items-center gap-2">
-        <i-lucide name="plus" class="w-5 h-5"></i-lucide>
-        Agregar
+          </div>
+          <!-- Video Details -->
+          <div class="flex-1 min-w-0">
+            <h4 class="font-semibold text-white mb-1 truncate">{{ video.title }}</h4>
+            <p class="text-sm text-gray-400 mb-2 line-clamp-2">{{ video.description }}</p>
+            <p class="text-xs text-gray-500 font-mono truncate">{{ video.youtubeUrl }}</p>
+          </div>
+          <!-- Selection Indicator -->
+          <div class="flex items-center">
+            <div
+              [ngClass]="{
+                'w-3 h-3 bg-primary rounded-full': selectedVideoId === video.id,
+                'w-3 h-3 border-2 border-gray-600 rounded-full': selectedVideoId !== video.id
+              }"
+            ></div>
+          </div>
+        </div>
       </div>
-    </button>
-  </form>
-  <p class="text-xs text-gray-400 mt-2">Pega la URL completa del video de YouTube.</p>
+    </div>
+  </div>
 </div>
