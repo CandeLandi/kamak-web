@@ -189,11 +189,11 @@ export class LandingProjectComponent implements OnInit {
     return `https://via.placeholder.com/600x400?text=${encodeURIComponent(text)}`;
   }
 
-  getSafeVideoUrl(url: string): SafeResourceUrl {
-    if (!url) return '';
+  getSafeVideoUrl(url: string): SafeResourceUrl | null {
+    if (!url) return null;
     if (this.isYoutube(url)) {
       const videoId = this.extractVideoId(url);
-      if (!videoId) return this.sanitizer.bypassSecurityTrustResourceUrl('');
+      if (!videoId) return null;
       const embedUrl = `https://www.youtube.com/embed/${videoId}`;
       return this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
     }
@@ -202,8 +202,9 @@ export class LandingProjectComponent implements OnInit {
 
   private extractVideoId(url: string): string | null {
     if (!url) return null;
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    // Soporta múltiples formatos de YouTube
+    const regExp = /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?|shorts)\/|.*[?&]v=)|youtu\.be\/)([\w-]{11})/;
     const match = url.match(regExp);
-    return (match && match[2].length === 11) ? match[2] : null;
+    return match ? match[1] : null;
   }
 }
