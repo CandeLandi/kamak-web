@@ -1,10 +1,13 @@
-import { Component, OnInit, inject, ViewChild } from '@angular/core';
+import { Component, OnInit, inject, ViewChild, Inject } from '@angular/core';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { CommonModule } from '@angular/common';
 import { ProjectsService } from '../../../../app/core/services/projects.service';
 import { Project } from '../../../../app/pages/admin/interfaces/project.interface';
 import { MapInfoWindow } from '@angular/google-maps';
+import { GoogleMapsService } from '../../../../app/core/services/google-maps.service';
 import { environment } from '../../../../environments/environment';
+
+
 
 @Component({
   selector: 'app-google-map',
@@ -13,8 +16,12 @@ import { environment } from '../../../../environments/environment';
   styleUrl: './google-map.component.scss'
 })
 export class GoogleMapComponent implements OnInit {
-  apiKey = environment.apiKey;
+  apiKey: string;
   center = { lat: -38.4161, lng: -63.6167 };
+
+  constructor(@Inject('GOOGLE_MAPS_API_KEY') apiKey: string) {
+    this.apiKey = apiKey;
+  }
   zoom = 5;
   markers: { lat: number; lng: number; title: string; address: string }[] = [];
   @ViewChild('infoWindow') infoWindow!: MapInfoWindow;
@@ -23,9 +30,28 @@ export class GoogleMapComponent implements OnInit {
   error = false;
 
   private projectsService = inject(ProjectsService);
+  private googleMapsService = inject(GoogleMapsService);
 
   ngOnInit() {
-    this.loadProjects();
+    // Verificar si estamos en el servidor (SSR)
+    if (typeof window === 'undefined') {
+      console.log('Google Map Component: Running on server, skipping initialization');
+      this.loading = false;
+      return;
+    }
+
+    this.loadGoogleMapsAndProjects();
+  }
+
+  private async loadGoogleMapsAndProjects() {
+    try {
+      await this.googleMapsService.loadGoogleMaps();
+      this.loadProjects();
+    } catch (error) {
+      console.error('Error loading Google Maps:', error);
+      this.error = true;
+      this.loading = false;
+    }
   }
 
   loadProjects() {

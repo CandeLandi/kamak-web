@@ -15,6 +15,7 @@ import { VideoService } from '../../../../../core/services/video.service';
 import { debounceTime, distinctUntilChanged, filter, skip } from 'rxjs/operators';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ProjectsService } from '../../../../../core/services/projects.service';
+import { AuthService } from '../../../../../core/services/auth.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -57,6 +58,7 @@ export class ProjectVideosComponent implements OnInit, OnChanges {
   private fb = inject(FormBuilder);
   private sanitizer = inject(DomSanitizer);
   private projectsService = inject(ProjectsService);
+  private authService = inject(AuthService);
 
   constructor() {}
 
@@ -74,6 +76,10 @@ export class ProjectVideosComponent implements OnInit, OnChanges {
 
   loadVideos(): void {
     if (!this.project?.id) return;
+
+    // Debug: verificar estado de autenticación
+    this.authService.debugAuthStatus();
+
     this.loading = true;
     this.videoService.getVideos(this.project.id, { page: 1, limit: 10 }).subscribe({
       next: (res) => {

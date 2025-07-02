@@ -59,22 +59,23 @@ export class LandingProjectComponent implements OnInit {
     ).subscribe({
       next: () => {},
       error: err => {
+        console.error('Error loading project data:', err);
         this.error = 'No se pudo cargar el proyecto. Intente más tarde.';
         this.loading = false;
-        console.error(err);
       }
     });
   }
 
-  loadVideos(): void {
+    loadVideos(): void {
     if (!this.project?.id) return;
     this.loading = true;
-    this.videoService.getVideos(this.project.id, { page: 1, limit: this.limit }).subscribe({
-      next: (res) => {
-        this.videos = res.data || [];
+    this.videoService.getPublicVideos(this.project.id, { page: 1, limit: this.limit }).subscribe({
+      next: (videos) => {
+        this.videos = videos || [];
         this.loading = false;
       },
-      error: () => {
+      error: (error) => {
+        console.error('Error loading videos:', error);
         this.videos = [];
         this.loading = false;
       }

@@ -6,6 +6,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { environment } from '../environments/environment';
 import {
   LucideAngularModule, ChevronLeft, ChevronRight, FolderSearch, Eye, Edit, Trash2, Plus, EyeOff, Image, AlertCircle, FileText, Upload, X, ImageOff, MoreVertical, Star, User, DollarSign, Folder, Search, ArrowLeft, MapPin, Building, Ruler, Clock, Calendar, CalendarCheck, ChevronDown, Expand
 } from 'lucide-angular';
@@ -16,6 +17,10 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideAnimationsAsync(),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
+    {
+      provide: 'GOOGLE_MAPS_API_KEY',
+      useValue: environment.googleMapsApiKey
+    },
     importProvidersFrom(LucideAngularModule.pick({
       // Íconos de paginación y galería
       ChevronLeft,
