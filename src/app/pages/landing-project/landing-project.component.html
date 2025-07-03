@@ -1,196 +1,184 @@
 <div class="bg-[#111] pb-8 min-h-screen px-6 md:px-16">
   <div class="container mx-auto px-4 pt-8">
+
+    @if (loading) {
+      <div class="flex justify-center items-center h-[80vh]">
+        <mat-spinner diameter="60"></mat-spinner>
+      </div>
+    } @else if (error) {
+      <div class="flex flex-col justify-center items-center h-[80vh] text-center">
+        <i-lucide name="alert-triangle" class="w-16 h-16 text-red-400 mb-4"></i-lucide>
+        <h2 class="text-2xl font-bold text-white mb-2">Error al cargar el proyecto</h2>
+        <p class="text-gray-400">{{ error }}</p>
+        <a routerLink="/" class="mt-6 border border-white/20 text-white hover:bg-white/10 px-4 py-2 rounded-md font-semibold transition-colors">
+          Volver a Proyectos
+        </a>
+      </div>
+    } @else if (project) {
     <!-- Botón Volver a Proyectos -->
     <div class="mb-4">
       <a routerLink="/" class="flex items-center text-gray-300 hover:text-white transition-colors gap-2 text-sm font-medium">
         <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-        Volver a proyectos
+          Volver a Proyectos
       </a>
-    </div>
-    <!-- Título, descripción e información del proyecto -->
-    <div class="space-y-6">
-      <div>
-        <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white">{{ project.title }}</h1>
-        <p class="text-base sm:text-lg text-gray-300 max-w-3xl mt-2">{{ project.description }}</p>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
-        <div class="flex items-center gap-2">
-          <svg class="h-5 w-5 text-[#195764]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21c-4.418 0-8-4.03-8-9a8 8 0 1116 0c0 4.97-3.582 9-8 9z"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg>
+
+      <div class="space-y-6 mb-10">
           <div>
-            <span class="text-xs text-gray-400">Ubicación:</span>
-            <p class="font-medium text-white">{{ project.location }}</p>
-          </div>
+          <h1 class="text-3xl md:text-4xl font-bold text-white flex items-center gap-3">
+            <i-lucide name="star" class="w-7 h-7 text-[#195764]"></i-lucide>
+            {{ project.name }}
+          </h1>
+          <p class="text-base sm:text-lg text-gray-300 max-w-3xl mt-6">{{ project.description }}</p>
         </div>
-        <div class="flex items-center gap-2">
-          <svg class="h-5 w-5 text-[#195764]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 21V9h6v12"/></svg>
-          <div>
-            <span class="text-xs text-gray-400">Cliente:</span>
-            <p class="font-medium text-white">{{ project.client }}</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-2">
-          <svg class="h-5 w-5 text-[#195764]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="6" rx="2"/><path d="M6 7v6M10 7v6M14 7v6M18 7v6"/></svg>
-          <div>
-            <span class="text-xs text-gray-400">Superficie:</span>
-            <p class="font-medium text-white">{{ project.area }}</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-2">
-          <svg class="h-5 w-5 text-[#195764]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-          <div>
-            <span class="text-xs text-gray-400">Duración:</span>
-            <p class="font-medium text-white">{{ project.duration }}</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-2">
-          <svg class="h-5 w-5 text-[#195764]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-          <div>
-            <span class="text-xs text-gray-400">Fecha inicio:</span>
-            <p class="font-medium text-white">{{ project.startDate }}</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-2">
-          <svg class="h-5 w-5 text-[#195764]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-          <div>
-            <span class="text-xs text-gray-400">Fecha fin:</span>
-            <p class="font-medium text-white">{{ project.endDate }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Galería de imágenes -->
-    <div class="pt-6 pb-6 md:pt-8 md:pb-12">
-      <div class="mb-8">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          @for (imageSrc of displayedGallery; track imageSrc; let index = $index) {
-            <div class="relative h-48 rounded-lg overflow-hidden cursor-pointer group bg-[#181c23] shadow-md flex items-center justify-center" (click)="openImageModal(index + 2)">
-              <img
-                [src]="imageSrc || '/placeholder.svg'"
-                [alt]="project.title + ' - Imagen ' + (index + 1)"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 rounded-lg"
-              />
-              <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <div class="backdrop-blur-sm p-2 rounded-full">
-                  <!-- Icono de expandir -->
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
-                    <path d="M15 3h6v6"></path>
-                    <path d="M10 14 21 3"></path>
-                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                  </svg>
-                </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6 rounded-xl p-4 border border-white/10 flex justify-center">
+          <ng-container *ngFor="let detail of projectDetails">
+            <div class="flex items-center gap-2" *ngIf="detail.value">
+              <i-lucide [name]="detail.icon" class="w-5 h-5 text-[#195764]"></i-lucide>
+              <div>
+                <span class="text-xs text-gray-400">{{ detail.label }}:</span>
+                <p class="font-medium text-white">
+
+                  <ng-container *ngIf="detail.label === 'Fecha inicio' || detail.label === 'Fecha fin'; else normalValue">
+                    {{ detail.value | date: 'dd/MM/yyyy' }}
+                  </ng-container>
+                  <ng-template #normalValue>{{ detail.value }}</ng-template>
+                </p>
               </div>
             </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <!-- Bloque: Galería de imágenes -->
+      @if (project.gallery && project.gallery.length > 0) {
+        <div class="pt-6 pb-6 md:pt-8 md:pb-12 mb-10">
+          <h2 class="text-2xl font-bold mb-4 text-white flex items-center gap-2"><i-lucide name="image" class="w-6 h-6 text-[#195764]"></i-lucide>Galería del Proyecto</h2>
+      <div class="mb-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              @for (image of displayedGallery; track image.id; let index = $index) {
+                <div class="relative h-48 rounded-lg overflow-hidden cursor-pointer group flex items-center justify-center"
+                     (click)="openImageLightbox(index)">
+                  <img [src]="image.url || '/placeholder.svg'" [alt]="project.name + ' - Imagen ' + (index + 1)"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 rounded-lg" />
+                  <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center bg-black/50">
+                    <i-lucide name="expand" class="w-8 h-8 text-white"></i-lucide>
+                  </div>
+                </div>
           }
         </div>
         @if (hasMoreImages && !showAllImages) {
           <div class="mt-6 text-center">
             <button (click)="showAllImages = true" class="border border-[#195764] text-[#195764] hover:bg-[#195764]/10 px-4 py-2 rounded-md font-semibold transition-colors flex items-center justify-center mx-auto">
               Ver más imágenes
-              <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                  <i-lucide name="chevron-down" class="w-4 h-4 ml-2"></i-lucide>
             </button>
+                @if(project.gallery) {
             <p class="text-sm text-gray-400 mt-2">
               Mostrando {{ initialImageCount }} de {{ project.gallery.length }} imágenes
             </p>
+                }
           </div>
         }
       </div>
-      <!-- Descripción del Proyecto -->
-      <div class="mb-8 md:mb-12">
-        <h2 class="text-2xl font-bold mb-4 text-white">Descripción del Proyecto</h2>
-        <p class="text-gray-300 mb-6">{{ project.longDescription }}</p>
+        </div>
+      }
+
+      <!-- Bloque: Descripciones -->
+      <div class="mb-10 md:mb-12">
+        <h2 class="text-2xl font-bold mb-4 text-white flex items-center gap-2"><i-lucide name="file-text" class="w-6 h-6 text-[#195764]"></i-lucide>Descripción del proyecto</h2>
+        <p class="text-gray-300 mb-6 whitespace-pre-wrap">{{ project.longDescription }}</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h3 class="text-xl font-semibold mb-3 text-white">El Desafío</h3>
-            <p class="text-gray-300">{{ project.challenge }}</p>
+            <h3 class="text-xl font-semibold mb-3 text-white flex items-center gap-2"><i-lucide name="alert-circle" class="w-5 h-5 text-[#195764]"></i-lucide>El desafío</h3>
+            <p class="text-gray-300 whitespace-pre-wrap">{{ project.challenge }}</p>
           </div>
           <div>
-            <h3 class="text-xl font-semibold mb-3 text-white">Nuestra Solución</h3>
-            <p class="text-gray-300">{{ project.solution }}</p>
+            <h3 class="text-xl font-semibold mb-3 text-white flex items-center gap-2"><i-lucide name="star" class="w-5 h-5 text-[#195764]"></i-lucide>Nuestra solución</h3>
+            <p class="text-gray-300 whitespace-pre-wrap">{{ project.solution }}</p>
           </div>
         </div>
       </div>
-      <!-- Video principal -->
-      <div class="mb-8 md:mb-12">
-        <h2 class="text-2xl font-bold mb-4 text-white">Video del Proyecto</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="aspect-video w-full rounded-lg overflow-hidden border border-gray-700">
-            <iframe
-              class="w-full h-full"
-              [src]="getSafeVideoUrl(project.videos[0])"
-              title="Video del proyecto"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            ></iframe>
-          </div>
-          <div class="flex flex-col justify-center">
-            <h3 class="text-xl font-semibold mb-3 text-white">Proceso de Construcción</h3>
-            <p class="text-gray-300 mb-4">
-              Este video muestra el proceso de construcción del proyecto desde su inicio hasta su finalización. Podrás
-              observar las diferentes etapas y técnicas utilizadas para lograr el resultado final.
-            </p>
-            <div class="flex flex-wrap gap-3">
-              <span class="text-sm bg-[#181c23] text-gray-300 px-3 py-1 rounded-full">Timelapse</span>
-              <span class="text-sm bg-[#181c23] text-gray-300 px-3 py-1 rounded-full">HD 1080p</span>
-              <span class="text-sm bg-[#181c23] text-gray-300 px-3 py-1 rounded-full">2:15 min</span>
+
+      <!-- Bloque: Videos del Proyecto -->
+      @if (mainVideo && getSafeVideoUrl(mainVideo.youtubeUrl)) {
+        <div class="mb-10 md:mb-12">
+          <h2 class="text-2xl font-bold mb-4 text-white flex items-center gap-2"><i-lucide name="video" class="w-6 h-6 text-[#195764]"></i-lucide>Videos</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+            <div>
+              <div class="aspect-video w-full rounded-lg overflow-hidden border border-white/10 mb-2">
+                <iframe *ngIf="isYoutube(mainVideo.youtubeUrl) && getSafeVideoUrl(mainVideo.youtubeUrl)" class="w-full h-full"
+                  [src]="getSafeVideoUrl(mainVideo.youtubeUrl)" [title]="mainVideo.title || 'Video del Proyecto'"
+                  frameborder="0" allowfullscreen></iframe>
+                <video *ngIf="!isYoutube(mainVideo.youtubeUrl) && getSafeVideoUrl(mainVideo.youtubeUrl)" class="w-full h-full" controls>
+                  <source [src]="mainVideo.youtubeUrl" type="video/mp4" />
+                </video>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-white mb-2">{{ mainVideo.title || 'Video del Proyecto' }}</h3>
+              <p class="text-gray-300 whitespace-pre-wrap mb-4">{{ mainVideo.description || ' ' }}</p>
             </div>
           </div>
         </div>
-      </div>
-      <!-- Videos adicionales -->
-      @if (project.videos && project.videos.length > 1) {
-        <div class="mb-8 md:mb-12">
-          <h2 class="text-2xl font-bold mb-4 text-white">Videos Adicionales</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            @for (video of project.videos.slice(1, 4); track video; let index = $index) {
-              <div class="aspect-video w-full rounded-lg overflow-hidden border border-gray-700">
-                <iframe
-                  class="w-full h-full"
-                  [src]="getSafeVideoUrl(video)"
-                  [title]="'Video adicional ' + (index + 1)"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen
-                ></iframe>
+      } @else {
+        <div class="mb-10 md:mb-12">
+          <h2 class="text-2xl font-bold mb-4 text-white flex items-center gap-2"><i-lucide name="video" class="w-6 h-6 text-[#195764]"></i-lucide>Videos</h2>
+          <div class="text-gray-400 italic">No hay videos disponibles para este proyecto.</div>
+        </div>
+      }
+      @if (additionalVideos.length > 0) {
+        <div class="mb-10 md:mb-12">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
+            @for (video of additionalVideos; track video.id) {
+              <div class="flex flex-col gap-2">
+                <div class="aspect-video w-full rounded-lg overflow-hidden border border-white/10 mb-2">
+                  <iframe *ngIf="isYoutube(video.youtubeUrl) && getSafeVideoUrl(video.youtubeUrl)" class="w-full h-full"
+                    [src]="getSafeVideoUrl(video.youtubeUrl)" [title]="video.title || 'Video adicional'"
+                    frameborder="0" allowfullscreen></iframe>
+                  <video *ngIf="!isYoutube(video.youtubeUrl) && getSafeVideoUrl(video.youtubeUrl)" class="w-full h-full" controls>
+                    <source [src]="video.youtubeUrl" type="video/mp4" />
+                  </video>
+                </div>
+                <h3 class="text-lg font-semibold text-white mb-1">{{ video.title || 'Video adicional' }}</h3>
+                <p class="text-gray-300 whitespace-pre-wrap mb-2">{{ video.description || ' ' }}</p>
               </div>
             }
           </div>
         </div>
       }
-      <!-- Antes y Después -->
-      <div class="mb-8 md:mb-12">
-        <h2 class="text-2xl font-bold mb-4 text-white">Antes y Después</h2>
+
+      <!-- Bloque: Antes y Después -->
+      @if(project.imageBefore && project.imageAfter) {
+        <div class="pt-6 pb-6 md:pt-8 md:pb-12 mb-10">
+          <h2 class="text-2xl font-bold mb-4 text-white flex items-center gap-2"><i-lucide name="image" class="w-6 h-6 text-[#195764]"></i-lucide>Antes y Después</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <!-- Imagen Antes -->
-          <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-md">
+            <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-md cursor-pointer group"
+                 (click)="openBeforeAfterLightbox(0)">
             <div class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm font-semibold bg-white text-[#181c23] border border-[#195764] shadow">Antes</div>
-            <div
-              class="relative h-[300px] sm:h-[350px] md:h-[400px] rounded-md overflow-hidden cursor-pointer"
-              (click)="openImageModal(0)"
-            >
-              <img
-                [src]="generatePlaceholderUrl('Antes - ' + project.title) || '/placeholder.svg'"
-                [alt]="project.title + ' - Antes'"
-                class="w-full h-full object-cover"
-              />
-            </div>
+              <div class="relative h-[350px] md:h-[450px] rounded-md overflow-hidden">
+                <img [src]="project.imageBefore" [alt]="project.name + ' - Antes'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" style="object-fit:cover; width:100%; height:100%;" />
+              </div>
+              <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center bg-black/30">
+                <i-lucide name="expand" class="w-8 h-8 text-white"></i-lucide>
+              </div>
           </div>
           <!-- Imagen Después -->
-          <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-md">
+            <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-md cursor-pointer group"
+                 (click)="openBeforeAfterLightbox(1)">
             <div class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm font-semibold bg-white text-[#181c23] border border-[#195764] shadow">Después</div>
-            <div
-              class="relative h-[300px] sm:h-[350px] md:h-[400px] rounded-md overflow-hidden cursor-pointer"
-              (click)="openImageModal(1)"
-            >
-              <img
-                [src]="generatePlaceholderUrl('Después - ' + project.title) || '/placeholder.svg'"
-                [alt]="project.title + ' - Después'"
-                class="w-full h-full object-cover"
-              />
+              <div class="relative h-[350px] md:h-[450px] rounded-md overflow-hidden">
+                <img [src]="project.imageAfter" [alt]="project.name + ' - Después'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" style="object-fit:cover; width:100%; height:100%;" />
+              </div>
+              <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center bg-black/30">
+                <i-lucide name="expand" class="w-8 h-8 text-white"></i-lucide>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      }
+
       <!-- CTA -->
       <div class="mt-8 bg-[#195764] rounded-lg p-6 text-center">
         <h3 class="text-xl font-bold mb-2 text-white">¿Te interesa un proyecto similar?</h3>
@@ -201,7 +189,7 @@
           </button>
         </a>
       </div>
-    </div>
+    }
   </div>
 </div>
 <app-footer></app-footer>

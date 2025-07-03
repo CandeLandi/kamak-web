@@ -1,63 +1,102 @@
-import { ProjectCategory } from '../../../core/models/enums';
+import { ProjectCategory, ProjectStatus } from '../../../core/models/enums';
 
 export interface Gallery {
   id: string;
   url: string;
   title?: string;
   description?: string;
-  order: number;
-  projectId: string;
-  createdAt: Date;
-  updatedAt: Date;
+}
+
+export interface ProjectAddress {
+  address: string;
+  lat: number;
+  lng: number;
 }
 
 export interface Project {
   id: string;
   name: string;
   category: ProjectCategory;
+  // client: string;
   description: string;
   longDescription: string;
   imageBefore?: string;
   imageAfter?: string;
   videoUrl?: string;
-  latitude?: number;
-  longitude?: number;
-  address: string;
+  address: ProjectAddress;
   area: string;
   duration: string;
-  date: string;
+  status: ProjectStatus;
   clientId: string;
   challenge: string;
   solution: string;
-  showOnHomepage: boolean;
   createdBy?: string;
   createdAt: Date;
   updatedAt: Date;
+  startDate: Date;
+  endDate: Date;
   gallery?: Gallery[];
 }
 
 export interface CreateProjectDto {
   name: string;
   category: ProjectCategory;
+  // client: string;
   description: string;
   longDescription: string;
   imageBefore?: string;
   imageAfter?: string;
   videoUrl?: string;
-  latitude?: number;
-  longitude?: number;
-  address: string;
-  country?: string;
-  state?: string;
-  city?: string;
+  address: ProjectAddress;
   area: string;
   duration: string;
-  date: string;
+  status: ProjectStatus;
   clientId: string;
   challenge: string;
   solution: string;
-  showOnHomepage: boolean;
-  gallery?: Gallery[];
+  startDate: Date;
+  endDate: Date;
 }
 
-export interface UpdateProjectDto extends Partial<CreateProjectDto> {}
+export interface UpdateProjectDto {
+  name?: string;
+  category?: ProjectCategory;
+  description?: string;
+  longDescription?: string;
+  imageBefore?: string;
+  imageAfter?: string;
+  videoUrl?: string;
+  address?: ProjectAddress;
+  area?: string;
+  duration?: string;
+  status?: ProjectStatus;
+  challenge?: string;
+  solution?: string;
+  startDate?: Date;
+  endDate?: Date;
+}
+
+export interface ProjectVideo {
+  id: string;
+  title: string;
+  youtubeUrl: string;
+  order: number;
+  description?: string;
+}
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+  hasNext: boolean;
+  hasPrev: boolean;
+}
+
+export interface PaginationDto {
+  page?: number | string;
+  limit?: number | string;
+  search?: string;
+  category?: string;
+}

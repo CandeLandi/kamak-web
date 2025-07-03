@@ -1,4 +1,5 @@
 @use "tailwindcss";
+@use "@angular/material" as mat;
 
 html, body {
     background-color: #000;
@@ -9,6 +10,24 @@ mat-error, .mat-mdc-form-field-error {
   color: var(--mdc-theme-error, #f44336) !important;
 }
 
+
+$angular-primary: mat.m2-define-palette(mat.$m2-blue-palette, 500, 100, 900);
+$angular-accent: mat.m2-define-palette(mat.$m2-orange-palette, A200, A100, A400);
+$angular-warn: mat.m2-define-palette(mat.$m2-red-palette);
+
+$angular-dark-theme: mat.m2-define-dark-theme((
+  color: (
+    primary: $angular-primary,
+    accent: $angular-accent,
+    warn: $angular-warn,
+  ),
+));
+
+@include mat.all-component-themes($angular-dark-theme);
+
+
+
+
 .mat-elevation-z8,
 .mat-mdc-elevation-specific.mat-elevation-z8 {
   box-shadow: none;
@@ -16,88 +35,53 @@ mat-error, .mat-mdc-form-field-error {
 
 .mdc-notched-outline__notch { border-right: none; }
 
+// Estilos para el diálogo del lightbox
+.lightbox-dialog {
+  .mat-mdc-dialog-container {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
 
-.mat-mdc-form-field {
-  --mdc-outlined-text-field-outline-color: #195764;
-  --mdc-outlined-text-field-hover-outline-color: #195764;
-  --mdc-outlined-text-field-focus-outline-color: #195764;
-  --mdc-outlined-text-field-label-text-color: #fff;
-  --mdc-outlined-text-field-input-text-color: #fff;
-  --mdc-outlined-text-field-focus-label-text-color: #fff;
-  --mdc-outlined-text-field-hover-label-text-color: #fff;
-  --mdc-outlined-text-field-caret-color: #195764;
+  .mat-mdc-dialog-surface {
+    background: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  .mat-mdc-dialog-content {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-height: none !important;
+  }
 }
 
-
-.mat-mdc-input-element, .mat-mdc-select-value, .mat-mdc-select-placeholder {
-  color: #fff !important;
-  caret-color: #195764 !important;
+// Animaciones personalizadas para el lightbox
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-
-.mat-mdc-floating-label, .mat-mdc-form-field-label {
-  color: #fff !important;
-  padding-left: 8px;
-  padding-right: 8px;
+.animate-in {
+  animation-fill-mode: both;
 }
 
-// Padding horizontal extra para los labels/titles
-.mat-mdc-form-field-label-wrapper {
-  padding-left: 8px;
-  padding-right: 8px;
+.fade-in {
+  animation-name: fade-in;
 }
 
-.mat-mdc-form-field-infix {
-  padding: 0.75rem 1rem !important;
+.duration-300 {
+  animation-duration: 300ms;
 }
 
-.mat-mdc-select-panel {
-  background: #23272f !important;
-  color: #fff !important;
+// Soporte para prefers-reduced-motion
+@media (prefers-reduced-motion: reduce) {
+  .animate-in,
+  .fade-in,
+  .duration-300 {
+    animation: none !important;
+  }
 }
-
-.mat-mdc-form-field-outline {
-  border-radius: 8px !important;
-}
-
-// Estilos para el estado de error
-.mat-mdc-form-field.mat-form-field-invalid {
-  --mdc-outlined-text-field-outline-color: #195764;
-  --mdc-outlined-text-field-hover-outline-color: #195764;
-  --mdc-outlined-text-field-focus-outline-color: #195764;
-  --mdc-outlined-text-field-label-text-color: #fff;
-  --mdc-outlined-text-field-focus-label-text-color: #fff;
-  --mdc-outlined-text-field-hover-label-text-color: #fff;
-  --mdc-outlined-text-field-caret-color: #195764;
-}
-
-// Forzar borde verde en error (outline SVG)
-.mat-mdc-form-field.mat-form-field-invalid .mdc-notched-outline__leading,
-.mat-mdc-form-field.mat-form-field-invalid .mdc-notched-outline__notch,
-.mat-mdc-form-field.mat-form-field-invalid .mdc-notched-outline__trailing {
-  stroke: #195764 !important;
-  border-color: #195764 !important;
-}
-
-// Personalización del mat-slide-toggle para modo oscuro y color corporativo
-.mat-mdc-slide-toggle {
-  --mdc-switch-selected-track-color: #195764;
-  --mdc-switch-selected-hover-track-color: #195764cc;
-  --mdc-switch-selected-focus-track-color: #195764;
-  --mdc-switch-selected-pressed-track-color: #195764;
-  --mdc-switch-selected-handle-color: #fff;
-  --mdc-switch-selected-hover-handle-color: #fff;
-  --mdc-switch-selected-focus-handle-color: #fff;
-  --mdc-switch-selected-pressed-handle-color: #fff;
-  --mdc-switch-unselected-track-color: #374151;
-  --mdc-switch-unselected-handle-color: #9ca3af;
-  --mdc-switch-unselected-hover-track-color: #23272f;
-  --mdc-switch-unselected-focus-track-color: #23272f;
-  --mdc-switch-unselected-pressed-track-color: #23272f;
-  --mdc-switch-unselected-hover-handle-color: #fff;
-  --mdc-switch-unselected-focus-handle-color: #fff;
-  --mdc-switch-unselected-pressed-handle-color: #fff;
-  margin-top: 0.1rem;
-  margin-bottom: 0.1rem;
-}
-

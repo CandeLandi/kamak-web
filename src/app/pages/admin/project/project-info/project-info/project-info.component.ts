@@ -13,9 +13,25 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { LucideAngularModule } from 'lucide-angular';
 import { ProjectsService } from '../../../../../core/services/projects.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ProjectCategory } from '../../../../../core/models/enums';
-import { CreateProjectDto, Project } from '../../../interfaces/project.interface';
+import { ProjectCategory, ProjectStatus, ProjectType } from '../../../../../core/models/enums';
+import { CreateProjectDto, Project, UpdateProjectDto } from '../../../interfaces/project.interface';
 import { AuthService } from '../../../../../core/services/auth.service';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
+import { GooglePlaceAutocompleteComponent } from './google-place-autocomplete.component';
+
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 @Component({
   selector: 'app-project-info',
@@ -32,12 +48,20 @@ import { AuthService } from '../../../../../core/services/auth.service';
     MatSlideToggleModule,
     MatChipsModule,
     MatExpansionModule,
-    LucideAngularModule
+    LucideAngularModule,
+    MatDatepickerModule,
+    MatMomentDateModule,
+    GooglePlaceAutocompleteComponent
   ],
   templateUrl: './project-info.component.html',
-  styleUrl: './project-info.component.scss'
+  styleUrl: './project-info.component.scss',
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
+  ]
 })
 export class ProjectInfoComponent implements OnInit {
+
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
   private readonly projectsService = inject(ProjectsService);
@@ -46,16 +70,54 @@ export class ProjectInfoComponent implements OnInit {
 
   @Input() projectId: string | null = null;
   @Input() isEditMode = false;
-  @Output() projectCreated = new EventEmitter<void>();
+  @Output() projectCreated = new EventEmitter<Project>();
 
   projectForm!: FormGroup;
   isSubmitting = false;
   error: string | null = null;
- projectCategories = ProjectCategory;
+  projectCategories = ProjectCategory;
+  projectStatus = ProjectStatus;
+  expandedPanel: string | null = null;
+  showOnHomePage: boolean = true;
 
   ngOnInit(): void {
     this.initForm();
-    if (this.projectId) this.loadProject();
+    if (this.projectId) {
+      this.projectsService.getProjectById(this.projectId).subscribe({
+        next: (project: Project) => {
+          const startDate = project.startDate ? new Date(project.startDate) : null;
+          const endDate = project.endDate ? new Date(project.endDate) : null;
+
+          this.projectForm.patchValue({
+            name: project.name,
+            category: project.category,
+            description: project.description,
+            longDescription: project.longDescription,
+            imageBefore: project.imageBefore || '',
+            imageAfter: project.imageAfter || '',
+            videoUrl: project.videoUrl || '',
+            address: project.address,
+            area: typeof project.area === 'string' ? project.area.replace(/\s*m²$/, '').trim() : project.area,
+            startDate: startDate,
+            endDate: endDate,
+            duration: project.duration,
+            challenge: project.challenge,
+            solution: project.solution,
+            status: project.status,
+          });
+          this.showOnHomePage = project.status === ProjectStatus.PUBLISHED;
+        },
+        error: () => {
+          this.error = 'Error al cargar el proyecto';
+          this.snackBar.open(this.error ? this.error : 'Error al cargar el proyecto', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['error-snackbar']
+          });
+        }
+      });
+    } else {
+      this.showOnHomePage = this.projectForm.get('status')?.value === ProjectStatus.PUBLISHED;
+    }
   }
 
   private initForm(): void {
@@ -67,48 +129,66 @@ export class ProjectInfoComponent implements OnInit {
       imageBefore: [''],
       imageAfter: [''],
       videoUrl: [''],
-      address: ['', Validators.required],
+      address: [null, Validators.required],
       area: ['', Validators.required],
-      duration: ['', Validators.required],
-      date: ['', Validators.required],
+      startDate: [null],
+      endDate: [null],
+      duration: [{ value: '', disabled: true }],
       challenge: ['', [Validators.required, Validators.minLength(20)]],
       solution: ['', [Validators.required, Validators.minLength(20)]],
-      showOnHomepage: [true],
-      latitude: [], // Descomentar si se usan en el UI
-      longitude: [],
+      status: [ProjectStatus.PUBLISHED],
+      type: [ProjectType.LANDING],
+      contactName: [''],
+      contactPhone: [''],
+      contactEmail: [''],
+      budget: [''],
+      invoiceStatus: [''],
+      notes: [''],
     });
+
+    // Calcular duración automáticamente
+    this.projectForm.get('startDate')?.valueChanges.subscribe(() => this.updateDuration());
+    this.projectForm.get('endDate')?.valueChanges.subscribe(() => this.updateDuration());
   }
 
-  private loadProject(): void {
-    this.projectsService.getProjectById(this.projectId!).subscribe({
-      next: (project: Project) => {
-        this.projectForm.patchValue({
-          name: project.name,
-          category: project.category,
-          description: project.description,
-          longDescription: project.longDescription,
-          imageBefore: project.imageBefore || '',
-          imageAfter: project.imageAfter || '',
-          videoUrl: project.videoUrl || '',
-          address: project.address,
-          area: project.area,
-          duration: project.duration,
-          date: project.date,
-          challenge: project.challenge,
-          solution: project.solution,
-          showOnHomepage: project.showOnHomepage,
-          // latitude: project.latitude || null,
-          // longitude: project.longitude || null,
-        });
-      },
-      error: () => {
-        this.error = 'Error al cargar el proyecto';
-        this.snackBar.open(this.error ? this.error : 'Error al cargar el proyecto', 'Cerrar', {
-          duration: 3000,
-          panelClass: ['error-snackbar']
-        });
-      }
-    });
+  private updateDuration(): void {
+    const start = this.projectForm.get('startDate')?.value;
+    const end = this.projectForm.get('endDate')?.value;
+    if (start && end) {
+      const startDate = new Date(start);
+      const endDate = new Date(end);
+      const diffTime = endDate.getTime() - startDate.getTime();
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      const durationText = diffDays > 0 ? `${diffDays} días` : '0 días';
+      this.projectForm.get('duration')?.setValue(durationText, { emitEvent: false });
+    } else {
+      this.projectForm.get('duration')?.setValue('', { emitEvent: false });
+    }
+  }
+
+  formatArea(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    // Eliminar cualquier caracter que no sea número
+    input.value = input.value.replace(/[^0-9]/g, '');
+  }
+
+  private getFormattedArea(value: string | number): string {
+    if (!value) return '';
+    // Convertir a string si es número
+    const stringValue = value.toString();
+    // Eliminar "m²" si ya existe y cualquier espacio
+    const numericValue = stringValue.replace(/m²/g, '').trim();
+    return `${numericValue} m²`;
+  }
+
+  isPublished(): boolean {
+    return this.showOnHomePage;
+  }
+
+  toggleStatus(): void {
+    this.showOnHomePage = !this.showOnHomePage;
+    const newStatus = this.showOnHomePage ? ProjectStatus.PUBLISHED : ProjectStatus.DRAFT;
+    this.projectForm.patchValue({ status: newStatus });
   }
 
   saveForm(): void {
@@ -135,22 +215,74 @@ export class ProjectInfoComponent implements OnInit {
       return;
     }
 
-    const projectDto: CreateProjectDto = {
-      ...this.projectForm.value,
-      clientId,
-      // latitude: this.projectForm.value.latitude || undefined,
-      // longitude: this.projectForm.value.longitude || undefined,
+    const formValue = this.projectForm.getRawValue();
+    formValue.area = this.getFormattedArea(formValue.area);
+
+    if (this.projectId) {
+      // --- MODO EDICIÓN ---
+      const updateDto: UpdateProjectDto = {
+        name: formValue.name,
+        category: formValue.category,
+        description: formValue.description,
+        longDescription: formValue.longDescription,
+        address: formValue.address,
+        area: formValue.area,
+        duration: formValue.duration,
+        challenge: formValue.challenge,
+        solution: formValue.solution,
+        status: this.showOnHomePage ? ProjectStatus.PUBLISHED : ProjectStatus.DRAFT,
+        startDate: formValue.startDate,
+        endDate: formValue.endDate
     };
 
-    this.projectsService.createProject(projectDto).subscribe({
+      console.log('Enviando para actualizar:', updateDto);
+
+      this.projectsService.updateProject(this.projectId, updateDto).subscribe({
       next: () => {
         this.isSubmitting = false;
-        this.snackBar.open('Proyecto creado correctamente', 'Cerrar', {
+          this.snackBar.open('Proyecto actualizado correctamente', 'Cerrar', {
           duration: 2500,
           panelClass: ['success-snackbar']
         });
-        this.projectCreated.emit();
         this.router.navigate(['/admin/dashboard']);
+        },
+        error: (err) => {
+          this.isSubmitting = false;
+          this.error = err.error?.message || 'Error al actualizar el proyecto';
+          this.snackBar.open(
+            `${this.error || 'Error al actualizar el proyecto'}`,
+            'Cerrar',
+            { duration: 3000, panelClass: ['error-snackbar'] }
+          );
+          console.error('Error al actualizar el proyecto:', err);
+        }
+      });
+    } else {
+      // --- MODO CREACIÓN ---
+      const createDto: CreateProjectDto = {
+        name: formValue.name,
+        category: formValue.category,
+        description: formValue.description,
+        longDescription: formValue.longDescription,
+        address: formValue.address,
+        area: formValue.area,
+        duration: formValue.duration,
+        challenge: formValue.challenge,
+        solution: formValue.solution,
+        status: this.showOnHomePage ? ProjectStatus.PUBLISHED : ProjectStatus.DRAFT,
+        startDate: formValue.startDate,
+        endDate: formValue.endDate,
+        clientId: clientId
+      };
+
+      this.projectsService.createProject(createDto).subscribe({
+        next: (newProject) => {
+          this.isSubmitting = false;
+          this.snackBar.open('Proyecto creado correctamente. Ahora puedes añadir imágenes.', 'Cerrar', {
+            duration: 3500,
+            panelClass: ['success-snackbar']
+          });
+          this.projectCreated.emit(newProject);
       },
       error: (err) => {
         this.isSubmitting = false;
@@ -163,6 +295,7 @@ export class ProjectInfoComponent implements OnInit {
         console.error('Error al crear el proyecto:', err);
       }
     });
+    }
   }
 
   private markFormGroupTouched(formGroup: FormGroup): void {

@@ -1,0 +1,59 @@
+<div class="relative">
+  @if (loading) {
+    <div class="flex justify-center items-center h-[650px] bg-gray-100 rounded-lg">
+      <div class="text-center">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#195764] mx-auto mb-4"></div>
+        <p class="text-gray-600">Cargando proyectos...</p>
+      </div>
+    </div>
+  } @else if (error) {
+    <div class="flex justify-center items-center h-[650px] bg-gray-100 rounded-lg">
+      <div class="text-center">
+        <div class="text-red-500 mb-4">
+          <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+          </svg>
+        </div>
+        <p class="text-gray-600 mb-4">Error al cargar los proyectos</p>
+        <button
+          (click)="retryLoad()"
+          class="px-4 py-2 bg-[#195764] text-white rounded-lg hover:bg-[#134a54] transition-colors"
+        >
+          Reintentar
+        </button>
+      </div>
+    </div>
+  } @else if (markers.length === 0) {
+    <div class="flex justify-center items-center h-[650px] bg-gray-100 rounded-lg">
+      <div class="text-center">
+        <div class="text-gray-400 mb-4">
+          <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
+        </div>
+        <p class="text-gray-600">No hay proyectos con ubicación disponible</p>
+      </div>
+    </div>
+  } @else {
+    <google-map
+      height="650px"
+      width="100%"
+      [center]="center"
+      [zoom]="zoom"
+    >
+      <map-marker
+        *ngFor="let marker of markers"
+        [position]="marker"
+        [title]="marker.title"
+        (mapClick)="openInfoWindow(marker)"
+      ></map-marker>
+      <map-info-window #infoWindow>
+        <div class="p-3 min-w-[200px]">
+          <div class="font-semibold text-[#195764] text-lg mb-1">{{ selectedMarker?.title }}</div>
+          <div class="text-sm text-gray-600">{{ selectedMarker?.address }}</div>
+        </div>
+      </map-info-window>
+    </google-map>
+  }
+</div>

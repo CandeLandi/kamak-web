@@ -1,0 +1,64 @@
+<div class="fixed inset-0 w-screen h-screen bg-black/95 flex flex-col items-center justify-center z-[1000] cursor-pointer backdrop-blur-sm animate-in fade-in duration-300" (click)="close()">
+  <button
+    class="absolute top-5 right-5 bg-white/10 border-none rounded-full w-12 h-12 flex items-center justify-center cursor-pointer text-white transition-all duration-300 backdrop-blur-md z-10 hover:bg-white/20 hover:scale-110 md:top-5 md:right-5 md:w-12 md:h-12"
+    (click)="close()"
+    aria-label="Cerrar galería">
+    <i-lucide name="x" class="w-6 h-6"></i-lucide>
+  </button>
+
+  @if (hasMultipleImages) {
+    <button
+      class="absolute top-1/2 -translate-y-1/2 left-5 bg-white/10 border-none rounded-full w-15 h-15 flex items-center justify-center cursor-pointer text-white transition-all duration-300 backdrop-blur-md z-10 hover:bg-white/20 hover:scale-110 md:left-5 md:w-12 md:h-12"
+      (click)="$event.stopPropagation(); previous()"
+      aria-label="Imagen anterior">
+      <i-lucide name="chevron-left" class="w-8 h-8"></i-lucide>
+    </button>
+
+    <button
+      class="absolute top-1/2 -translate-y-1/2 right-5 bg-white/10 border-none rounded-full w-15 h-15 flex items-center justify-center cursor-pointer text-white transition-all duration-300 backdrop-blur-md z-10 hover:bg-white/20 hover:scale-110 md:right-5 md:w-12 md:h-12"
+      (click)="$event.stopPropagation(); next()"
+      aria-label="Siguiente imagen">
+      <i-lucide name="chevron-right" class="w-8 h-8"></i-lucide>
+    </button>
+  }
+
+  <div class="flex-1 flex items-center justify-center w-full max-w-[90vw] max-h-[80vh] p-5 cursor-default" (click)="$event.stopPropagation()">
+    <img
+      [src]="currentImage"
+      [alt]="projectName ? projectName + ' - Imagen ' + (currentIndex + 1) : 'Imagen ' + (currentIndex + 1)"
+      class="max-w-full max-h-full object-contain rounded-lg shadow-2xl transition-transform duration-300 hover:scale-[1.02]"
+      loading="lazy" />
+  </div>
+
+  <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-10 pb-5 flex flex-col items-center gap-4 cursor-default md:p-8 md:pb-3" (click)="$event.stopPropagation()">
+    @if (hasMultipleImages) {
+      <div class="bg-white/10 px-4 py-2 rounded-full backdrop-blur-md">
+        <span class="text-white text-sm font-medium">{{ currentIndex + 1 }} de {{ images.length }}</span>
+      </div>
+    }
+
+    @if (hasMultipleImages && images.length <= 8) {
+      <div class="flex gap-2 flex-wrap justify-center max-w-full overflow-x-auto py-2">
+        @for (image of images; track $index; let index = $index) {
+          <button
+            class="bg-none border-2 border-transparent rounded-md overflow-hidden cursor-pointer transition-all duration-300 w-15 h-15 flex-shrink-0 hover:border-white/30 hover:scale-105 md:w-[50px] md:h-[50px]"
+            [class.border-[#195764]]="index === currentIndex"
+            [class.shadow-[0_0_0_2px_rgba(25,87,100,0.3)]]="index === currentIndex"
+            (click)="goToImage(index)"
+            [attr.aria-label]="'Ir a imagen ' + (index + 1)">
+            <img
+              [src]="image"
+              [alt]="'Miniatura ' + (index + 1)"
+              class="w-full h-full object-cover" />
+          </button>
+        }
+      </div>
+    }
+
+    @if (hasMultipleImages) {
+      <div class="text-center">
+        <span class="text-white/70 text-xs font-normal">Usa las flechas del teclado o haz clic en las flechas para navegar</span>
+      </div>
+    }
+  </div>
+</div>

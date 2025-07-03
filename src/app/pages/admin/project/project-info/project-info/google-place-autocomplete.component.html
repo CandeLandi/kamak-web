@@ -1,0 +1,23 @@
+<mat-form-field class="w-full rounded-xl">
+  <mat-label>{{ label }}</mat-label>
+  <input
+    type="text"
+    matInput
+    [formControl]="addressControl"
+    [matAutocomplete]="auto"
+    [placeholder]="placeholder"
+    (blur)="onTouched()"
+    autocomplete="off"
+  />
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event.option.value)">
+    <mat-option *ngFor="let option of options" [value]="option">
+      {{ option.description }}
+    </mat-option>
+    <mat-option *ngIf="isLoading" disabled>Cargando...</mat-option>
+    @if (!isLoading && options.length === 0 && (addressControl.value?.length ?? 0) > 2) {
+      <mat-option disabled>
+        No se encontraron resultados
+      </mat-option>
+    }
+  </mat-autocomplete>
+</mat-form-field>
