@@ -1,22 +1,22 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, inject, OnChanges } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { Component, Input, OnChanges, OnInit, inject } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { LucideAngularModule } from 'lucide-angular';
-import { Project, ProjectVideo } from '../../../interfaces/project.interface';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { VideoService } from '../../../../../core/services/video.service';
 import { debounceTime, distinctUntilChanged, filter, skip } from 'rxjs/operators';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { ProjectsService } from '../../../../../core/services/projects.service';
+import { Project, ProjectVideo } from '../../../interfaces/project.interface';
 import { AuthService } from '../../../../../core/services/auth.service';
-import { FormsModule } from '@angular/forms';
+import { ProjectsService } from '../../../../../core/services/projects.service';
+import { VideoService } from '../../../../../core/services/video.service';
 
 @Component({
   selector: 'app-project-videos',
@@ -45,7 +45,6 @@ export class ProjectVideosComponent implements OnInit, OnChanges {
   submitting = false;
   savingIndex: number | null = null;
 
-  // Estado para UI tipo Vercel
   isEditMode = false;
   selectedVideo: ProjectVideo | null = null;
   selectedVideoId: string | null = null;
@@ -57,8 +56,7 @@ export class ProjectVideosComponent implements OnInit, OnChanges {
   private snackBar = inject(MatSnackBar);
   private fb = inject(FormBuilder);
   private sanitizer = inject(DomSanitizer);
-  private projectsService = inject(ProjectsService);
-  private authService = inject(AuthService);
+
 
   constructor() {}
 
@@ -76,9 +74,6 @@ export class ProjectVideosComponent implements OnInit, OnChanges {
 
   loadVideos(): void {
     if (!this.project?.id) return;
-
-    // Debug: verificar estado de autenticación
-    this.authService.debugAuthStatus();
 
     this.loading = true;
     this.videoService.getVideos(this.project.id, { page: 1, limit: 10 }).subscribe({

@@ -47,15 +47,4 @@ export class AuthService {
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
-
-  // Método de debug para verificar el estado de autenticación
-  debugAuthStatus(): void {
-    const token = this.getToken();
-    const user = this.getUser();
-    console.log('🔐 Auth Debug - Token exists:', !!token);
-    console.log('🔐 Auth Debug - Token value:', token ? `${token.substring(0, 20)}...` : 'null');
-    console.log('🔐 Auth Debug - User exists:', !!user);
-    console.log('🔐 Auth Debug - User:', user);
-    console.log('🔐 Auth Debug - Client ID:', this.getClientId());
-  }
 }

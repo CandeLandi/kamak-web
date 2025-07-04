@@ -66,12 +66,12 @@ export class LandingProjectComponent implements OnInit {
     });
   }
 
-    loadVideos(): void {
+  loadVideos(): void {
     if (!this.project?.id) return;
     this.loading = true;
-    this.videoService.getPublicVideos(this.project.id, { page: 1, limit: this.limit }).subscribe({
-      next: (videos) => {
-        this.videos = videos || [];
+    this.videoService.getVideos(this.project.id, { page: 1, limit: this.limit }).subscribe({
+      next: (res) => {
+        this.videos = res.data || [];
         this.loading = false;
       },
       error: (error) => {

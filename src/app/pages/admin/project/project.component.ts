@@ -1,16 +1,16 @@
-import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, inject } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AdminHeaderComponent } from '../../../shared/components/admin-header/admin-header.component';
-import { MatTabsModule } from '@angular/material/tabs';
 import { AuthService } from '../../../core/services/auth.service';
 import { LucideAngularModule } from 'lucide-angular';
-import { ProjectImagesComponent } from './project-info/project-images/project-images.component';
-import { ProjectVideosComponent } from './project-info/project-videos/project-videos.component';
-import { ProjectInfoComponent } from './project-info/project-info/project-info.component';
-import { ProjectsService } from '../../../core/services/projects.service';
-import { Project } from '../interfaces/project.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { Project } from '../interfaces/project.interface';
+import { ProjectImagesComponent } from './project-info/project-images/project-images.component';
+import { ProjectInfoComponent } from './project-info/project-info/project-info.component';
+import { ProjectVideosComponent } from './project-info/project-videos/project-videos.component';
+import { ProjectsService } from '../../../core/services/projects.service';
 
 @Component({
   selector: 'app-project',

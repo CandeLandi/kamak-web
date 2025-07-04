@@ -11,12 +11,16 @@ export class VideoService {
   private http = inject(HttpClient);
   private authService = inject(AuthService);
 
-  addVideo(projectId: string, video: { title: string; youtubeUrl: string; description?: string; order?: number }): Observable<ProjectVideo> {
+  private getAuthHeaders(): HttpHeaders {
     const token = this.authService.getToken();
-    const headers = new HttpHeaders({
+    return new HttpHeaders({
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
     });
+  }
+
+  addVideo(projectId: string, video: { title: string; youtubeUrl: string; description?: string; order?: number }): Observable<ProjectVideo> {
+    const headers = this.getAuthHeaders();
     return this.http.post<ProjectVideo>(`${this.baseUrl}/projects/${projectId}/videos`, video, { headers });
   }
 
@@ -25,11 +29,7 @@ export class VideoService {
     if (params?.page) httpParams = httpParams.set('page', params.page.toString());
     if (params?.limit) httpParams = httpParams.set('limit', params.limit.toString());
 
-    const token = this.authService.getToken();
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
+    const headers = this.getAuthHeaders();
 
     return this.http.get<PaginatedResponse<ProjectVideo>>(`${this.baseUrl}/projects/${projectId}/videos`, {
       params: httpParams,
@@ -45,38 +45,22 @@ export class VideoService {
   }
 
   getVideoById(projectId: string, videoId: string): Observable<ProjectVideo> {
-    const token = this.authService.getToken();
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
+    const headers = this.getAuthHeaders();
     return this.http.get<ProjectVideo>(`${this.baseUrl}/projects/${projectId}/videos/${videoId}`, { headers });
   }
 
   updateVideo(projectId: string, videoId: string, video: { title?: string; youtubeUrl?: string; description?: string }): Observable<ProjectVideo> {
-    const token = this.authService.getToken();
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
+    const headers = this.getAuthHeaders();
     return this.http.patch<ProjectVideo>(`${this.baseUrl}/projects/${projectId}/videos/${videoId}`, video, { headers });
   }
 
   deleteVideo(projectId: string, videoId: string): Observable<void> {
-    const token = this.authService.getToken();
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
+    const headers = this.getAuthHeaders();
     return this.http.delete<void>(`${this.baseUrl}/projects/${projectId}/videos/${videoId}`, { headers });
   }
 
   reorderVideos(projectId: string, order: { ids: string[] }): Observable<void> {
-    const token = this.authService.getToken();
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
+    const headers = this.getAuthHeaders();
     return this.http.post<void>(`${this.baseUrl}/projects/${projectId}/videos/reorder`, order, { headers });
   }
 }
