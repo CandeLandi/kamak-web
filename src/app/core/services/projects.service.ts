@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, tap, map } from 'rxjs';
 import { Project, CreateProjectDto, UpdateProjectDto, ProjectVideo, PaginatedResponse, PaginationDto } from '../../pages/admin/interfaces/project.interface';
 import { environment } from '../../../environments/environment';
-import { ProjectCategory } from '../models/enums';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -16,7 +15,7 @@ export class ProjectsService {
   private authService = inject(AuthService);
 
   constructor(private http: HttpClient) {
-    // Cuando el usuario cambia (login/logout), reseteamos los proyectos.
+
     effect(() => {
       const currentId = this.authService.getClientId();
       if (this.lastClientId && this.lastClientId !== currentId) {
@@ -26,7 +25,6 @@ export class ProjectsService {
     });
   }
 
-  /** Signal reactivo global de proyectos */
   get projects() {
     return this.projectsSignal;
   }
@@ -61,8 +59,13 @@ export class ProjectsService {
     return this.http.get<Project>(`${this.baseUrl}/projects/${id}/published`);
   }
 
-  getPublicProjectVideos(projectId: string): Observable<ProjectVideo[]> {
-    return this.http.get<ProjectVideo[]>(`${this.baseUrl}/projects/${projectId}/videos/published`);
+  getFeaturedProjects(): Observable<Project[]> {
+    return this.http.get<Project[]>(`${this.baseUrl}/projects/featured`);
+  }
+
+  // MULTIMEDIA METHODS
+  deleteGalleryImage(projectId: string, imageId: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/projects/${projectId}/gallery/${imageId}`);
   }
 
   createProject(project: CreateProjectDto): Observable<Project> {
@@ -75,30 +78,5 @@ export class ProjectsService {
 
   deleteProject(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/projects/${id}`);
-  }
-
-  getFeaturedProjects(): Observable<Project[]> {
-    return this.http.get<Project[]>(`${this.baseUrl}/projects/featured`);
-  }
-
-  // MULTIMEDIA METHODS
-  deleteGalleryImage(projectId: string, imageId: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/projects/${projectId}/gallery/${imageId}`);
-  }
-
-  getProjectVideos(projectId: string): Observable<ProjectVideo[]> {
-    return this.http.get<ProjectVideo[]>(`${this.baseUrl}/projects/${projectId}/videos`);
-  }
-
-  addProjectVideo(projectId: string, video: { title: string; youtubeUrl: string; description?: string; features?: string[] }): Observable<ProjectVideo> {
-    return this.http.post<ProjectVideo>(`${this.baseUrl}/projects/${projectId}/videos`, video);
-  }
-
-  deleteProjectVideo(projectId: string, videoId: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/projects/${projectId}/videos/${videoId}`);
-  }
-
-  updateProjectVideoUrl(id: string, videoUrl: string): Observable<Project> {
-    return this.http.patch<Project>(`${this.baseUrl}/projects/${id}`, { videoUrl });
   }
 }

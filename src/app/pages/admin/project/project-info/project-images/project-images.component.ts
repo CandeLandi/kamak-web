@@ -1,18 +1,17 @@
-import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { LucideAngularModule } from 'lucide-angular';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { LucideAngularModule } from 'lucide-angular';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { MatDialog } from '@angular/material/dialog';
-
+import { ConfirmationDialogComponent, ConfirmationDialogData } from '../../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { UploadService } from '../../../../../core/services/file-upload.service';
 import { ProjectsService } from '../../../../../core/services/projects.service';
-import { Project, Gallery } from '../../../interfaces/project.interface';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ConfirmationDialogComponent, ConfirmationDialogData } from '../../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { Gallery, Project } from '../../../interfaces/project.interface';
 
 @Component({
   selector: 'app-project-images',

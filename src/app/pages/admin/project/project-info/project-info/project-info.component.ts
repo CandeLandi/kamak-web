@@ -1,25 +1,25 @@
-import { Component, OnInit, inject, Input, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatExpansionModule } from '@angular/material/expansion';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+import { GooglePlaceAutocompleteComponent } from '../../../../../shared/components/google-place-autocomplete/google-place-autocomplete.component';
+import { AuthService } from '../../../../../core/services/auth.service';
+import { CreateProjectDto, Project, UpdateProjectDto } from '../../../interfaces/project.interface';
 import { LucideAngularModule } from 'lucide-angular';
-import { ProjectsService } from '../../../../../core/services/projects.service';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProjectCategory, ProjectStatus, ProjectType } from '../../../../../core/models/enums';
-import { CreateProjectDto, Project, UpdateProjectDto } from '../../../interfaces/project.interface';
-import { AuthService } from '../../../../../core/services/auth.service';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
-import { GooglePlaceAutocompleteComponent } from './google-place-autocomplete.component';
+import { ProjectsService } from '../../../../../core/services/projects.service';
 
 export const MY_DATE_FORMATS = {
   parse: {
