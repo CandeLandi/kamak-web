@@ -125,7 +125,7 @@ export class ProjectInfoComponent implements OnInit {
       name: ['', [Validators.required, Validators.minLength(3)]],
       category: [ProjectCategory.ESTACIONES, Validators.required],
       description: ['', [Validators.required, Validators.minLength(10)]],
-      longDescription: ['', [Validators.required, Validators.minLength(50)]],
+      longDescription: [''],
       imageBefore: [''],
       imageAfter: [''],
       videoUrl: [''],

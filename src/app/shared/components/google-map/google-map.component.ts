@@ -22,7 +22,7 @@ export class GoogleMapComponent implements OnInit {
   constructor(@Inject('GOOGLE_MAPS_API_KEY') apiKey: string) {
     this.apiKey = apiKey;
   }
-  zoom = 5;
+  zoom = 4;
   markers: { lat: number; lng: number; title: string; address: string }[] = [];
   @ViewChild('infoWindow') infoWindow!: MapInfoWindow;
   selectedMarker: { lat: number; lng: number; title: string; address: string } | null = null;
@@ -59,9 +59,9 @@ export class GoogleMapComponent implements OnInit {
     this.error = false;
 
     this.projectsService.getPublicProjects().subscribe({
-      next: (res) => {
-        // Filtrar solo proyectos que tengan coordenadas válidas
-        const projectsWithLocation = res.data.filter(p =>
+      next: (projects) => {
+
+        const projectsWithLocation = projects.filter(p =>
           p.address &&
           typeof p.address.lat === 'number' &&
           typeof p.address.lng === 'number' &&

@@ -1,13 +1,13 @@
 <div class="relative">
   @if (loading) {
-    <div class="flex justify-center items-center h-[650px] bg-gray-100 rounded-lg">
+    <div class="flex justify-center items-center h-[600px] bg-gray-100 rounded-lg">
       <div class="text-center">
         <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#195764] mx-auto mb-4"></div>
         <p class="text-gray-600">Cargando proyectos...</p>
       </div>
     </div>
   } @else if (error) {
-    <div class="flex justify-center items-center h-[650px] bg-gray-100 rounded-lg">
+    <div class="flex justify-center items-center h-[600px] bg-gray-100 rounded-lg">
       <div class="text-center">
         <div class="text-red-500 mb-4">
           <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -24,7 +24,7 @@
       </div>
     </div>
   } @else if (markers.length === 0) {
-    <div class="flex justify-center items-center h-[650px] bg-gray-100 rounded-lg">
+    <div class="flex justify-center items-center h-[600px] bg-gray-100 rounded-lg">
       <div class="text-center">
         <div class="text-gray-400 mb-4">
           <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -37,7 +37,7 @@
     </div>
   } @else {
     <google-map
-      height="650px"
+      height="600px"
       width="100%"
       [center]="center"
       [zoom]="zoom"

@@ -36,7 +36,8 @@ import { LucideAngularModule } from 'lucide-angular';
         Página {{ currentPage + 1 }} de {{ totalPages }}
       </p>
     </div>
-  `
+  `,
+  styleUrls: ['./pagination.component.scss']
 })
 export class PaginationComponent {
   @Input() currentPage = 0;

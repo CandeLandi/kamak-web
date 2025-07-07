@@ -16,16 +16,7 @@
       <div class="flex justify-center items-center h-64">
         <mat-spinner diameter="50"></mat-spinner>
       </div>
-    } @else if (error()) {
-      <div class="flex flex-col items-center justify-center h-64 text-center">
-        <i-lucide name="alert-circle" class="w-12 h-12 text-red-400 mb-4"></i-lucide>
-        <p class="text-red-400">{{ error() }}</p>
-        <button (click)="loadProjects()" class="mt-4 border border-white/20 text-white hover:bg-white/10 px-4 py-2 rounded-md font-semibold transition-colors">
-          Reintentar
-        </button>
-      </div>
     } @else {
-    <!-- Project Showcase -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         @for (project of paginatedProjects(); track project.id) {
           <a [routerLink]="['/projects', project.id]" class="block group">
@@ -42,59 +33,18 @@
               </div>
             </div>
           </a>
-        } @empty {
-          <div class="md:col-span-2 lg:col-span-3 text-center h-64 flex flex-col items-center justify-center">
-            <i-lucide name="folder-search" class="w-12 h-12 text-gray-500 mb-4"></i-lucide>
-            @if (searchQuery()) {
-              <p class="text-gray-400">No se encontraron proyectos para "{{ searchQuery() }}".</p>
-            } @else {
-              <p class="text-gray-400">No hay proyectos para mostrar en este momento.</p>
-            }
-          </div>
-      }
+        }
     </div>
 
-    <!-- Paginador Personalizado -->
     @if (totalPages() > 1) {
-      <div class="flex flex-col items-center gap-4 mt-8">
-        <div class="flex items-center gap-2">
-          <!-- Previous Button -->
-          <button (click)="previousPage()" [disabled]="pagination().pageIndex === 0" class="pagination-arrow">
-            <i-lucide name="chevron-left" class="w-5 h-5"></i-lucide>
-          </button>
-
-          <!-- Page Numbers -->
-          @for (page of displayedPages(); track $index) {
-            @if (page === '...') {
-              <span class="pagination-dots">...</span>
-            } @else {
-              <button (click)="goToPage(+page - 1)"
-                      [class.active]="+page - 1 === pagination().pageIndex"
-                      class="pagination-number">
-                {{ page }}
-              </button>
-            }
-          }
-
-          <!-- Next Button -->
-          <button (click)="nextPage()" [disabled]="pagination().pageIndex >= totalPages() - 1" class="pagination-arrow">
-            <i-lucide name="chevron-right" class="w-5 h-5"></i-lucide>
-          </button>
-        </div>
-        <p class="text-sm text-gray-400">
-          Página {{ pagination().pageIndex + 1 }} de {{ totalPages() }}
-        </p>
-      </div>
+      <app-pagination
+        [currentPage]="pagination().pageIndex"
+        [totalPages]="totalPages()"
+        (pageChange)="goToPage($event)"
+      ></app-pagination>
     }
     }
 
-    <!-- Botón "Ver más" -->
-<!--     <div class="flex flex-col items-center mt-8">
-      <button class="bg-white text-[#195764] hover:bg-gray-100 border border-[#195764] px-6 py-2 rounded-md transition-colors duration-200 flex items-center gap-2">
-        Ver más proyectos
-        <i class="fas fa-chevron-down h-4 w-4"></i>
-      </button>
-      <p class="text-sm text-gray-400 mt-2">Mostrando 6 de 30 proyectos</p>
-    </div> -->
+
   </div>
 </section>

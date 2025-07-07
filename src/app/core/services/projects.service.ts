@@ -50,9 +50,10 @@ export class ProjectsService {
     return this.http.get<Project>(`${this.baseUrl}/projects/${id}`);
   }
 
-  getPublicProjects(): Observable<PaginatedResponse<Project>> {
-    const params = new HttpParams().set('limit', '100');
-    return this.http.get<PaginatedResponse<Project>>(`${this.baseUrl}/projects`, { params });
+  getPublicProjects(): Observable<Project[]> {
+    return this.http.get<{ data: Project[] }>(`${this.baseUrl}/projects`).pipe(
+      map(res => res.data)
+    );
   }
 
   getPublicProjectById(id: string): Observable<Project> {

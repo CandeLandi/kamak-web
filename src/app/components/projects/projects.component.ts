@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
+import { Component, OnInit, inject, signal, computed, effect } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -7,13 +7,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { LucideAngularModule } from 'lucide-angular';
 import { debounceTime, distinctUntilChanged, Subject, takeUntil, tap } from 'rxjs';
 import { ProjectsService } from '../../core/services/projects.service';
 import { AuthService } from '../../core/services/auth.service';
 import { Project, PaginationDto } from '../../pages/admin/interfaces/project.interface';
 import { SearchInputComponent } from '../../shared/components/search-input/search-input.component';
+import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -28,9 +28,9 @@ import { environment } from '../../../environments/environment';
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    MatPaginatorModule,
     LucideAngularModule,
     SearchInputComponent,
+    PaginationComponent,
   ],
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss']
@@ -39,7 +39,6 @@ export class ProjectsComponent implements OnInit {
   private projectsService = inject(ProjectsService);
   private authService = inject(AuthService);
 
-  // --- Estado ---
   public loading = signal(true);
   public error = signal<string | null>(null);
 
@@ -82,41 +81,33 @@ export class ProjectsComponent implements OnInit {
     return Math.ceil(length / pageSize);
   });
 
-  public displayedPages = computed(() => {
-    const total = this.totalPages();
-    const current = this.pagination().pageIndex + 1;
-    if (total <= 7) {
-      return Array.from({ length: total }, (_, i) => i + 1);
+  private readonly PUBLIC_CLIENT_ID = '78abe353-1728-49b0-b268-1d2ad5786317';
+
+  // El effect debe ser un campo de clase, no dentro de ngOnInit
+  private clientIdEffect = effect(() => {
+    const clientId = this.authService.clientIdSignal();
+    if (clientId) {
+      this.loadProjectsWithClientId(clientId);
     }
-    const delta = 2;
-    const range: (number | string)[] = [];
-    for (let i = Math.max(2, current - delta); i <= Math.min(total - 1, current + delta); i++) {
-      range.push(i);
-    }
-    if (current - delta > 2) {
-      range.unshift('...');
-    }
-    if (current + delta < total - 1) {
-      range.push('...');
-    }
-    range.unshift(1);
-    range.push(total);
-    return range;
   });
 
   ngOnInit(): void {
-    this.loadProjects();
+    this.loading.set(true);
+    const pagination: PaginationDto = { page: 1, limit: 100 };
+    this.projectsService.getProjectsByClientId(this.PUBLIC_CLIENT_ID, pagination).subscribe({
+      next: (response) => {
+        this.allProjects.set(response.data);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.loading.set(false);
+      }
+    });
   }
 
-  loadProjects(): void {
+  loadProjectsWithClientId(clientId: string): void {
     this.loading.set(true);
     this.error.set(null);
-    const clientId = this.authService.getClientId();
-    if (!clientId) {
-      this.error.set('No se pudo obtener el cliente actual.');
-      this.loading.set(false);
-      return;
-    }
     const pagination: PaginationDto = { page: 1, limit: 100 };
 
     this.projectsService.getProjectsByClientId(clientId, pagination).subscribe({
@@ -143,17 +134,5 @@ export class ProjectsComponent implements OnInit {
 
     // Forzar el repintado reiniciando el estado de paginación
     this.pagination.set({ ...this.pagination(), pageIndex: newPageIndex });
-  }
-
-  previousPage(): void {
-    if (this.pagination().pageIndex > 0) {
-      this.goToPage(this.pagination().pageIndex - 1);
-    }
-  }
-
-  nextPage(): void {
-    if (this.pagination().pageIndex < this.totalPages() - 1) {
-      this.goToPage(this.pagination().pageIndex + 1);
-    }
   }
 }

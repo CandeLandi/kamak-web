@@ -6,6 +6,11 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const token = authService.getToken();
 
+  // No agregar token a endpoints públicos
+  if (req.url.includes('/public')) {
+    return next(req);
+  }
+
   // Si no hay token, simplemente deja pasar la petición sin modificarla.
   if (!token) {
     return next(req);

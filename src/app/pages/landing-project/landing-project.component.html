@@ -1,3 +1,4 @@
+<app-header></app-header>
 <div class="bg-[#111] pb-8 min-h-screen px-6 md:px-16">
   <div class="container mx-auto px-4 pt-8">
 
@@ -5,54 +6,47 @@
       <div class="flex justify-center items-center h-[80vh]">
         <mat-spinner diameter="60"></mat-spinner>
       </div>
-    } @else if (error) {
-      <div class="flex flex-col justify-center items-center h-[80vh] text-center">
-        <i-lucide name="alert-triangle" class="w-16 h-16 text-red-400 mb-4"></i-lucide>
-        <h2 class="text-2xl font-bold text-white mb-2">Error al cargar el proyecto</h2>
-        <p class="text-gray-400">{{ error }}</p>
-        <a routerLink="/" class="mt-6 border border-white/20 text-white hover:bg-white/10 px-4 py-2 rounded-md font-semibold transition-colors">
-          Volver a Proyectos
-        </a>
-      </div>
     } @else if (project) {
-    <!-- Botón Volver a Proyectos -->
-    <div class="mb-4">
+
+    <div class="mb-4 mt-12">
       <a routerLink="/" class="flex items-center text-gray-300 hover:text-white transition-colors gap-2 text-sm font-medium">
         <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-          Volver a Proyectos
+        Volver a Proyectos
       </a>
-      </div>
+    </div>
 
-      <div class="space-y-6 mb-10">
-          <div>
-          <h1 class="text-3xl md:text-4xl font-bold text-white flex items-center gap-3">
-            <i-lucide name="star" class="w-7 h-7 text-[#195764]"></i-lucide>
-            {{ project.name }}
-          </h1>
-          <p class="text-base sm:text-lg text-gray-300 max-w-3xl mt-6">{{ project.description }}</p>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
-          <ng-container *ngFor="let detail of projectDetails">
-            <div class="flex items-center gap-2" *ngIf="detail.value">
-              <i-lucide [name]="detail.icon" class="w-5 h-5 text-[#195764]"></i-lucide>
-              <div>
-                <span class="text-xs text-gray-400">{{ detail.label }}:</span>
-                <p class="font-medium text-white">
-                  <ng-container *ngIf="detail.label === 'Fecha inicio' || detail.label === 'Fecha fin'; else normalValue">
-                    {{ detail.value | date: 'dd/MM/yyyy' }}
-                  </ng-container>
-                  <ng-template #normalValue>{{ detail.value }}</ng-template>
-                </p>
+      <!-- Sección superior destacada -->
+      <div class="bg-[#181c23]/90 rounded-2xl p-8 md:p-12 shadow-lg mb-10 md:mb-16">
+        <div class="space-y-6">
+            <div>
+            <h1 class="text-3xl md:text-4xl font-bold text-white flex items-center gap-3">
+              <i-lucide name="star" class="w-7 h-7 text-[#195764]"></i-lucide>
+              {{ project.name }}
+            </h1>
+            <p class="text-base sm:text-lg text-gray-300 max-w-3xl mt-6">{{ project.description }}</p>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
+            <ng-container *ngFor="let detail of projectDetails">
+              <div class="flex items-center gap-2" *ngIf="detail.value">
+                <i-lucide [name]="detail.icon" class="w-5 h-5 text-[#195764]"></i-lucide>
+                <div>
+                  <span class="text-xs text-gray-400">{{ detail.label }}:</span>
+                  <p class="font-medium text-white">
+                    <ng-container *ngIf="detail.label === 'Fecha inicio' || detail.label === 'Fecha fin'; else normalValue">
+                      {{ detail.value | date: 'dd/MM/yyyy' }}
+                    </ng-container>
+                    <ng-template #normalValue>{{ detail.value }}</ng-template>
+                  </p>
+                </div>
               </div>
-            </div>
-          </ng-container>
+            </ng-container>
+          </div>
         </div>
       </div>
 
-      <!-- Bloque: Galería de imágenes -->
+      <!-- Bloque: Galería de imágenes (sin título) -->
       @if (project.gallery && project.gallery.length > 0) {
         <div class="pt-6 pb-6 md:pt-8 md:pb-12 mb-10">
-          <h2 class="text-2xl font-bold mb-4 text-white flex items-center gap-2"><i-lucide name="image" class="w-6 h-6 text-[#195764]"></i-lucide>Galería del Proyecto</h2>
       <div class="mb-8">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               @for (image of displayedGallery; track image.id; let index = $index) {
@@ -83,9 +77,7 @@
         </div>
       }
 
-      <!-- Bloque: Descripciones -->
       <div class="mb-10 md:mb-12">
-        <h2 class="text-2xl font-bold mb-4 text-white flex items-center gap-2"><i-lucide name="file-text" class="w-6 h-6 text-[#195764]"></i-lucide>Descripción del proyecto</h2>
         <p class="text-gray-300 mb-6 whitespace-pre-wrap">{{ project.longDescription }}</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
@@ -99,10 +91,9 @@
         </div>
       </div>
 
-      <!-- Bloque: Videos del Proyecto -->
+      <!-- Bloque: Videos del Proyecto (sin título) -->
       @if (mainVideo && getSafeVideoUrl(mainVideo.youtubeUrl)) {
         <div class="mb-10 md:mb-12">
-          <h2 class="text-2xl font-bold mb-4 text-white flex items-center gap-2"><i-lucide name="video" class="w-6 h-6 text-[#195764]"></i-lucide>Videos</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
             <div>
               <div class="aspect-video w-full rounded-lg overflow-hidden border border-white/10 mb-2">
@@ -119,11 +110,6 @@
               <p class="text-gray-300 whitespace-pre-wrap mb-4">{{ mainVideo.description || ' ' }}</p>
             </div>
           </div>
-        </div>
-      } @else {
-        <div class="mb-10 md:mb-12">
-          <h2 class="text-2xl font-bold mb-4 text-white flex items-center gap-2"><i-lucide name="video" class="w-6 h-6 text-[#195764]"></i-lucide>Videos</h2>
-          <div class="text-gray-400 italic">No hay videos disponibles para este proyecto.</div>
         </div>
       }
       @if (additionalVideos.length > 0) {

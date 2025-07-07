@@ -1,0 +1,44 @@
+// Custom Pagination Styles
+.pagination-arrow, .pagination-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background-color: #181c23;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background-color 0.2s, border-color 0.2s;
+  cursor: pointer;
+  font-size: 0.875rem;
+
+  &:hover:not(:disabled) {
+    background-color: #222733;
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  &:disabled {
+    color: rgba(255, 255, 255, 0.3);
+    cursor: not-allowed;
+  }
+}
+
+.pagination-number {
+  &.active {
+    background-color: #195764;
+    border-color: #195764;
+    font-weight: bold;
+    color: white;
+  }
+}
+
+.pagination-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.875rem;
+}

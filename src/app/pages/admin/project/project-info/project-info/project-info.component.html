@@ -47,8 +47,34 @@
             La ubicación es obligatoria
           </mat-error>
         </div>
-        <div class="grid grid-cols-2 gap-4">
-          <mat-form-field class="w-full rounded-xl">
+        <!-- Primera fila: Fechas -->
+        <div class="flex flex-col md:flex-row gap-4 w-full">
+          <mat-form-field class="flex-1 w-full rounded-xl">
+            <mat-label>Fecha de inicio</mat-label>
+            <input matInput [matDatepicker]="pickerInicio" formControlName="startDate" placeholder="Selecciona la fecha de inicio" readonly />
+            <mat-datepicker-toggle matSuffix [for]="pickerInicio"></mat-datepicker-toggle>
+            <mat-datepicker #pickerInicio></mat-datepicker>
+            <mat-error *ngIf="projectForm.get('startDate')?.hasError('required') && projectForm.get('startDate')?.touched">
+              La fecha de inicio es obligatoria
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="flex-1 w-full rounded-xl">
+            <mat-label>Fecha de fin</mat-label>
+            <input matInput [matDatepicker]="pickerFin" formControlName="endDate" placeholder="Selecciona la fecha de fin" readonly />
+            <mat-datepicker-toggle matSuffix [for]="pickerFin"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFin></mat-datepicker>
+            <mat-error *ngIf="projectForm.get('endDate')?.hasError('required') && projectForm.get('endDate')?.touched">
+              La fecha de fin es obligatoria
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <!-- Segunda fila: Duración y Superficie -->
+        <div class="flex flex-col md:flex-row gap-4 w-full">
+          <mat-form-field class="flex-1 w-full rounded-xl">
+            <mat-label>Duración</mat-label>
+            <input matInput formControlName="duration" readonly />
+          </mat-form-field>
+          <mat-form-field class="flex-1 w-full rounded-xl">
             <mat-label>Superficie</mat-label>
             <input
               matInput
@@ -62,30 +88,6 @@
             <mat-error *ngIf="projectForm.get('area')?.hasError('required') && projectForm.get('area')?.touched">
               La superficie es obligatoria
             </mat-error>
-          </mat-form-field>
-          <mat-form-field class="w-full rounded-xl">
-            <mat-label>Fecha de inicio</mat-label>
-            <input matInput [matDatepicker]="pickerInicio" formControlName="startDate" placeholder="Selecciona la fecha de inicio" readonly />
-            <mat-datepicker-toggle matSuffix [for]="pickerInicio"></mat-datepicker-toggle>
-            <mat-datepicker #pickerInicio></mat-datepicker>
-            <mat-error *ngIf="projectForm.get('startDate')?.hasError('required') && projectForm.get('startDate')?.touched">
-              La fecha de inicio es obligatoria
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="grid grid-cols-2 gap-4">
-          <mat-form-field class="w-full rounded-xl ">
-            <mat-label>Fecha de fin</mat-label>
-            <input matInput [matDatepicker]="pickerFin" formControlName="endDate" placeholder="Selecciona la fecha de fin" readonly />
-            <mat-datepicker-toggle matSuffix [for]="pickerFin"></mat-datepicker-toggle>
-            <mat-datepicker #pickerFin></mat-datepicker>
-            <mat-error *ngIf="projectForm.get('endDate')?.hasError('required') && projectForm.get('endDate')?.touched">
-              La fecha de fin es obligatoria
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field class="w-full rounded-xl ">
-            <mat-label>Duración</mat-label>
-            <input matInput formControlName="duration" readonly />
           </mat-form-field>
         </div>
       </div>
