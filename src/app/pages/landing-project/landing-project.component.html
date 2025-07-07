@@ -1,179 +1,318 @@
 <app-header></app-header>
 <div class="bg-[#111] pb-8 min-h-screen px-6 md:px-16">
   <div class="container mx-auto px-4 pt-8">
-
     @if (loading) {
-      <div class="flex justify-center items-center h-[80vh]">
-        <mat-spinner diameter="60"></mat-spinner>
-      </div>
+    <div class="flex justify-center items-center h-[80vh]">
+      <mat-spinner diameter="60"></mat-spinner>
+    </div>
     } @else if (project) {
 
-    <div class="mb-4 mt-12">
-      <a routerLink="/" class="flex items-center text-gray-300 hover:text-white transition-colors gap-2 text-sm font-medium">
-        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+    <div class="mb-4 mt-12 w-full max-w-screen-2xl mx-auto px-4">
+      <a
+        routerLink="/"
+        class="flex items-center text-gray-300 hover:text-white transition-colors gap-2 text-sm font-medium"
+      >
+        <svg
+          class="h-5 w-5"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
         Volver a Proyectos
       </a>
     </div>
 
-      <!-- Sección superior destacada -->
-      <div class="bg-[#181c23]/90 rounded-2xl p-8 md:p-12 shadow-lg mb-10 md:mb-16">
-        <div class="space-y-6">
-            <div>
-            <h1 class="text-3xl md:text-4xl font-bold text-white flex items-center gap-3">
-              <i-lucide name="star" class="w-7 h-7 text-[#195764]"></i-lucide>
-              {{ project.name }}
-            </h1>
-            <p class="text-base sm:text-lg text-gray-300 max-w-3xl mt-6">{{ project.description }}</p>
-          </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
-            <ng-container *ngFor="let detail of projectDetails">
-              <div class="flex items-center gap-2" *ngIf="detail.value">
-                <i-lucide [name]="detail.icon" class="w-5 h-5 text-[#195764]"></i-lucide>
-                <div>
-                  <span class="text-xs text-gray-400">{{ detail.label }}:</span>
-                  <p class="font-medium text-white">
-                    <ng-container *ngIf="detail.label === 'Fecha inicio' || detail.label === 'Fecha fin'; else normalValue">
-                      {{ detail.value | date: 'dd/MM/yyyy' }}
-                    </ng-container>
-                    <ng-template #normalValue>{{ detail.value }}</ng-template>
-                  </p>
-                </div>
+    <div class="bg-[#181c23]/90 rounded-2xl p-8 md:p-12 shadow-lg mb-10 md:mb-16 w-full max-w-screen-2xl mx-auto px-4">
+      <div class="space-y-6">
+        <div>
+          <h1
+            class="text-3xl md:text-4xl font-bold text-white flex items-center gap-3"
+          >
+            <i-lucide name="star" class="w-7 h-7 text-[#195764]"></i-lucide>
+            {{ project.name }}
+          </h1>
+          <p class="text-base sm:text-lg text-gray-300 max-w-3xl mt-6 break-words whitespace-pre-line">
+            {{ project.description }}
+          </p>
+        </div>
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6"
+        >
+          <ng-container *ngFor="let detail of projectDetails">
+            <div class="flex items-center gap-2" *ngIf="detail.value">
+              <i-lucide
+                [name]="detail.icon"
+                class="w-5 h-5 text-[#195764]"
+              ></i-lucide>
+              <div>
+                <span class="text-xs text-gray-400">{{ detail.label }}:</span>
+                <p class="font-medium text-white">
+                  <ng-container
+                    *ngIf="
+                      detail.label === 'Fecha inicio' ||
+                        detail.label === 'Fecha fin';
+                      else normalValue
+                    "
+                  >
+                    {{ detail.value | date : "dd/MM/yyyy" }}
+                  </ng-container>
+                  <ng-template #normalValue>{{ detail.value }}</ng-template>
+                </p>
               </div>
-            </ng-container>
-          </div>
+            </div>
+          </ng-container>
         </div>
       </div>
+    </div>
 
-      <!-- Bloque: Galería de imágenes (sin título) -->
-      @if (project.gallery && project.gallery.length > 0) {
-        <div class="pt-6 pb-6 md:pt-8 md:pb-12 mb-10">
-      <div class="mb-8">
+    <!-- Bloque: Galería de imágenes (sin título) -->
+    @if (project.gallery && project.gallery.length > 0) {
+    <div class="mb-2 md:pt-8 md:pb-12 md:mb-6 w-full max-w-screen-2xl mx-auto px-4">
+      <div class="mb-2">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              @for (image of displayedGallery; track image.id; let index = $index) {
-                <div class="relative h-48 rounded-lg overflow-hidden cursor-pointer group flex items-center justify-center"
-                     (click)="openImageLightbox(index)">
-                  <img [src]="image.url || '/placeholder.svg'" [alt]="project.name + ' - Imagen ' + (index + 1)"
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 rounded-lg" />
-                  <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center bg-black/50">
-                    <i-lucide name="expand" class="w-8 h-8 text-white"></i-lucide>
-                  </div>
-                </div>
+          @for (image of displayedGallery; track image.id; let index = $index) {
+          <div
+            class="relative h-64 md:h-80 rounded-lg overflow-hidden cursor-pointer group flex items-center justify-center"
+            (click)="openImageLightbox(index)"
+          >
+            <img
+              [src]="image.url || '/placeholder.svg'"
+              [alt]="project.name + ' - Imagen ' + (index + 1)"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 rounded-lg"
+            />
+            <div
+              class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center bg-black/50"
+            >
+              <i-lucide name="expand" class="w-8 h-8 text-white"></i-lucide>
+            </div>
+          </div>
           }
         </div>
         @if (hasMoreImages && !showAllImages) {
-          <div class="mt-6 text-center">
-            <button (click)="showAllImages = true" class="border border-[#195764] text-[#195764] hover:bg-[#195764]/10 px-4 py-2 rounded-md font-semibold transition-colors flex items-center justify-center mx-auto">
-              Ver más imágenes
-                  <i-lucide name="chevron-down" class="w-4 h-4 ml-2"></i-lucide>
-            </button>
-                @if(project.gallery) {
-            <p class="text-sm text-gray-400 mt-2">
-              Mostrando {{ initialImageCount }} de {{ project.gallery.length }} imágenes
-            </p>
-                }
-          </div>
+        <div class="mt-6 text-center">
+          <button
+            (click)="showAllImages = true"
+            class="border border-[#195764] text-[#195764] hover:bg-[#195764]/10 px-4 py-2 rounded-md font-semibold transition-colors flex items-center justify-center mx-auto"
+          >
+            Ver más imágenes
+            <i-lucide name="chevron-down" class="w-4 h-4 ml-2"></i-lucide>
+          </button>
+          @if(project.gallery) {
+          <p class="text-sm text-gray-400 mt-2">
+            Mostrando {{ initialImageCount }} de
+            {{ project.gallery.length }} imágenes
+          </p>
+          }
+        </div>
         }
       </div>
-        </div>
-      }
+    </div>
+    }
 
-      <div class="mb-10 md:mb-12">
-        <p class="text-gray-300 mb-6 whitespace-pre-wrap">{{ project.longDescription }}</p>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h3 class="text-xl font-semibold mb-3 text-white flex items-center gap-2"><i-lucide name="alert-circle" class="w-5 h-5 text-[#195764]"></i-lucide>El desafío</h3>
-            <p class="text-gray-300 whitespace-pre-wrap">{{ project.challenge }}</p>
+    <div class="mb-10 md:mb-12 w-full max-w-screen-2xl mx-auto px-4">
+      <p class="text-gray-300 mb-6 whitespace-pre-line break-words">
+        {{ project.longDescription }}
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3
+            class="text-xl font-semibold mb-3 text-white flex items-center gap-2"
+          >
+            <i-lucide
+              name="alert-circle"
+              class="w-5 h-5 text-[#195764]"
+            ></i-lucide
+            >El desafío
+          </h3>
+          <p class="text-gray-300 whitespace-pre-line break-words">
+            {{ project.challenge }}
+          </p>
+        </div>
+        <div>
+          <h3
+            class="text-xl font-semibold mb-3 text-white flex items-center gap-2"
+          >
+            <i-lucide name="star" class="w-5 h-5 text-[#195764]"></i-lucide
+            >Nuestra solución
+          </h3>
+          <p class="text-gray-300 whitespace-pre-line break-words">
+            {{ project.solution }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bloque: Videos del Proyecto (sin título) -->
+    @if (mainVideo && getSafeVideoUrl(mainVideo.youtubeUrl)) {
+    <div class="mb-10 md:mb-12 w-full max-w-screen-2xl mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+        <div>
+          <div
+            class="aspect-video w-full rounded-lg overflow-hidden border border-white/10 mb-2"
+          >
+            <iframe
+              *ngIf="
+                isYoutube(mainVideo.youtubeUrl) &&
+                getSafeVideoUrl(mainVideo.youtubeUrl)
+              "
+              class="w-full h-full"
+              [src]="getSafeVideoUrl(mainVideo.youtubeUrl)"
+              [title]="mainVideo.title || 'Video del Proyecto'"
+              frameborder="0"
+              allowfullscreen
+            ></iframe>
+            <video
+              *ngIf="
+                !isYoutube(mainVideo.youtubeUrl) &&
+                getSafeVideoUrl(mainVideo.youtubeUrl)
+              "
+              class="w-full h-full"
+              controls
+            >
+              <source [src]="mainVideo.youtubeUrl" type="video/mp4" />
+            </video>
           </div>
-          <div>
-            <h3 class="text-xl font-semibold mb-3 text-white flex items-center gap-2"><i-lucide name="star" class="w-5 h-5 text-[#195764]"></i-lucide>Nuestra solución</h3>
-            <p class="text-gray-300 whitespace-pre-wrap">{{ project.solution }}</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold text-white mb-2">
+            {{ mainVideo.title || "Video del Proyecto" }}
+          </h3>
+          <p class="text-gray-300 whitespace-pre-wrap mb-4">
+            {{ mainVideo.description || " " }}
+          </p>
+        </div>
+      </div>
+    </div>
+    } @if (additionalVideos.length > 0) {
+    <div class="mb-10 md:mb-12 w-full max-w-screen-2xl mx-auto px-4">
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start"
+      >
+        @for (video of additionalVideos; track video.id) {
+        <div class="flex flex-col gap-2">
+          <div
+            class="aspect-video w-full rounded-lg overflow-hidden border border-white/10 mb-2"
+          >
+            <iframe
+              *ngIf="
+                isYoutube(video.youtubeUrl) && getSafeVideoUrl(video.youtubeUrl)
+              "
+              class="w-full h-full"
+              [src]="getSafeVideoUrl(video.youtubeUrl)"
+              [title]="video.title || 'Video adicional'"
+              frameborder="0"
+              allowfullscreen
+            ></iframe>
+            <video
+              *ngIf="
+                !isYoutube(video.youtubeUrl) &&
+                getSafeVideoUrl(video.youtubeUrl)
+              "
+              class="w-full h-full"
+              controls
+            >
+              <source [src]="video.youtubeUrl" type="video/mp4" />
+            </video>
+          </div>
+          <h3 class="text-lg font-semibold text-white mb-1">
+            {{ video.title || "Video adicional" }}
+          </h3>
+          <p class="text-gray-300 whitespace-pre-wrap mb-2">
+            {{ video.description || " " }}
+          </p>
+        </div>
+        }
+      </div>
+    </div>
+    }
+
+    <!-- Bloque: Antes y Después -->
+    @if(project.imageBefore && project.imageAfter) {
+    <div class="pt-6 pb-6 md:pt-8 md:pb-12 mb-10 w-full max-w-screen-2xl mx-auto px-4">
+      <h2 class="text-2xl font-bold mb-4 text-white flex items-center gap-2">
+        <i-lucide name="image" class="w-6 h-6 text-[#195764]"></i-lucide>Antes y
+        Después
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Imagen Antes -->
+        <div
+          class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-md cursor-pointer group"
+          (click)="openBeforeAfterLightbox(0)"
+        >
+          <div
+            class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm font-semibold bg-white text-[#181c23] border border-[#195764] shadow"
+          >
+            Antes
+          </div>
+          <div
+            class="relative h-[350px] md:h-[450px] rounded-md overflow-hidden"
+          >
+            <img
+              [src]="project.imageBefore"
+              [alt]="project.name + ' - Antes'"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              style="object-fit: cover; width: 100%; height: 100%"
+            />
+          </div>
+          <div
+            class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center bg-black/30"
+          >
+            <i-lucide name="expand" class="w-8 h-8 text-white"></i-lucide>
+          </div>
+        </div>
+        <!-- Imagen Después -->
+        <div
+          class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-md cursor-pointer group"
+          (click)="openBeforeAfterLightbox(1)"
+        >
+          <div
+            class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm font-semibold bg-white text-[#181c23] border border-[#195764] shadow"
+          >
+            Después
+          </div>
+          <div
+            class="relative h-[350px] md:h-[450px] rounded-md overflow-hidden"
+          >
+            <img
+              [src]="project.imageAfter"
+              [alt]="project.name + ' - Después'"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              style="object-fit: cover; width: 100%; height: 100%"
+            />
+          </div>
+          <div
+            class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center bg-black/30"
+          >
+            <i-lucide name="expand" class="w-8 h-8 text-white"></i-lucide>
           </div>
         </div>
       </div>
+    </div>
+    }
 
-      <!-- Bloque: Videos del Proyecto (sin título) -->
-      @if (mainVideo && getSafeVideoUrl(mainVideo.youtubeUrl)) {
-        <div class="mb-10 md:mb-12">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-            <div>
-              <div class="aspect-video w-full rounded-lg overflow-hidden border border-white/10 mb-2">
-                <iframe *ngIf="isYoutube(mainVideo.youtubeUrl) && getSafeVideoUrl(mainVideo.youtubeUrl)" class="w-full h-full"
-                  [src]="getSafeVideoUrl(mainVideo.youtubeUrl)" [title]="mainVideo.title || 'Video del Proyecto'"
-                  frameborder="0" allowfullscreen></iframe>
-                <video *ngIf="!isYoutube(mainVideo.youtubeUrl) && getSafeVideoUrl(mainVideo.youtubeUrl)" class="w-full h-full" controls>
-                  <source [src]="mainVideo.youtubeUrl" type="video/mp4" />
-                </video>
-              </div>
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold text-white mb-2">{{ mainVideo.title || 'Video del Proyecto' }}</h3>
-              <p class="text-gray-300 whitespace-pre-wrap mb-4">{{ mainVideo.description || ' ' }}</p>
-            </div>
-          </div>
-        </div>
-      }
-      @if (additionalVideos.length > 0) {
-        <div class="mb-10 md:mb-12">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
-            @for (video of additionalVideos; track video.id) {
-              <div class="flex flex-col gap-2">
-                <div class="aspect-video w-full rounded-lg overflow-hidden border border-white/10 mb-2">
-                  <iframe *ngIf="isYoutube(video.youtubeUrl) && getSafeVideoUrl(video.youtubeUrl)" class="w-full h-full"
-                    [src]="getSafeVideoUrl(video.youtubeUrl)" [title]="video.title || 'Video adicional'"
-                    frameborder="0" allowfullscreen></iframe>
-                  <video *ngIf="!isYoutube(video.youtubeUrl) && getSafeVideoUrl(video.youtubeUrl)" class="w-full h-full" controls>
-                    <source [src]="video.youtubeUrl" type="video/mp4" />
-                  </video>
-                </div>
-                <h3 class="text-lg font-semibold text-white mb-1">{{ video.title || 'Video adicional' }}</h3>
-                <p class="text-gray-300 whitespace-pre-wrap mb-2">{{ video.description || ' ' }}</p>
-              </div>
-            }
-          </div>
-        </div>
-      }
-
-      <!-- Bloque: Antes y Después -->
-      @if(project.imageBefore && project.imageAfter) {
-        <div class="pt-6 pb-6 md:pt-8 md:pb-12 mb-10">
-          <h2 class="text-2xl font-bold mb-4 text-white flex items-center gap-2"><i-lucide name="image" class="w-6 h-6 text-[#195764]"></i-lucide>Antes y Después</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <!-- Imagen Antes -->
-            <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-md cursor-pointer group"
-                 (click)="openBeforeAfterLightbox(0)">
-            <div class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm font-semibold bg-white text-[#181c23] border border-[#195764] shadow">Antes</div>
-              <div class="relative h-[350px] md:h-[450px] rounded-md overflow-hidden">
-                <img [src]="project.imageBefore" [alt]="project.name + ' - Antes'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" style="object-fit:cover; width:100%; height:100%;" />
-              </div>
-              <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center bg-black/30">
-                <i-lucide name="expand" class="w-8 h-8 text-white"></i-lucide>
-              </div>
-          </div>
-          <!-- Imagen Después -->
-            <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-md cursor-pointer group"
-                 (click)="openBeforeAfterLightbox(1)">
-            <div class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm font-semibold bg-white text-[#181c23] border border-[#195764] shadow">Después</div>
-              <div class="relative h-[350px] md:h-[450px] rounded-md overflow-hidden">
-                <img [src]="project.imageAfter" [alt]="project.name + ' - Después'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" style="object-fit:cover; width:100%; height:100%;" />
-              </div>
-              <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center bg-black/30">
-                <i-lucide name="expand" class="w-8 h-8 text-white"></i-lucide>
-              </div>
-            </div>
-          </div>
-        </div>
-      }
-
-      <!-- CTA -->
-      <div class="mt-8 bg-[#195764] rounded-lg p-6 text-center">
-        <h3 class="text-xl font-bold mb-2 text-white">¿Te interesa un proyecto similar?</h3>
-        <p class="text-gray-100 mb-4">Contáctanos para discutir cómo podemos ayudarte con tu próximo proyecto.</p>
-        <a href="/#contacto">
-          <button class="border border-white text-white hover:bg-white/10 px-4 py-2 rounded-md font-semibold transition-colors">
-            Contactar ahora
-          </button>
-        </a>
-      </div>
+    <!-- CTA -->
+    <div class="mt-8 bg-[#195764] rounded-lg p-6 text-center w-full max-w-screen-2xl mx-auto px-4">
+      <h3 class="text-xl font-bold mb-2 text-white">
+        ¿Te interesa un proyecto similar?
+      </h3>
+      <p class="text-gray-100 mb-4">
+        Contáctanos para discutir cómo podemos ayudarte con tu próximo proyecto.
+      </p>
+      <a href="/#contacto">
+        <button
+          class="border border-white text-white hover:bg-white/10 px-4 py-2 rounded-md font-semibold transition-colors"
+        >
+          Contactar ahora
+        </button>
+      </a>
+    </div>
     }
   </div>
 </div>
