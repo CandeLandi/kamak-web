@@ -11,11 +11,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { LucideAngularModule } from 'lucide-angular';
 import { ImageLightboxDialogComponent, ImageLightboxData } from '../../shared/components/image-lightbox-dialog/image-lightbox-dialog.component';
 import { VideoService } from '../../core/services/video.service';
+import { HeaderComponent } from '../../components/header/header.component';
 
 @Component({
   selector: 'app-landing-project',
   standalone: true,
-  imports: [FooterComponent, RouterModule, CommonModule, MatProgressSpinnerModule, LucideAngularModule],
+  imports: [FooterComponent, RouterModule, CommonModule, MatProgressSpinnerModule, LucideAngularModule, HeaderComponent],
   templateUrl: './landing-project.component.html',
   styleUrls: ['./landing-project.component.scss']
 })
@@ -70,8 +71,8 @@ export class LandingProjectComponent implements OnInit {
     if (!this.project?.id) return;
     this.loading = true;
     this.videoService.getVideos(this.project.id, { page: 1, limit: this.limit }).subscribe({
-      next: (res) => {
-        this.videos = res.data || [];
+      next: (response) => {
+        this.videos = response.data || [];
         this.loading = false;
       },
       error: (error) => {

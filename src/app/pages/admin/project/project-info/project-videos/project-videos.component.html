@@ -7,7 +7,6 @@
       <h3 class="text-lg font-semibold text-white">
         {{ isEditMode ? 'Editar Video' : 'Agregar Nuevo Video' }}
       </h3>
-      <span *ngIf="isEditMode" class="border border-primary text-primary rounded px-2 py-0.5 text-xs ml-2">Editando: {{ selectedVideo?.title }}</span>
     </div>
     <button *ngIf="isEditMode" type="button" (click)="handleCancelEdit()" class="border border-gray-600 hover:bg-gray-700 text-gray-300 bg-transparent rounded px-3 py-1 flex items-center gap-1">
       <lucide-icon name="x" class="w-4 h-4 mr-1 text-gray-400" />
@@ -32,6 +31,7 @@
           <mat-label>URL de YouTube (embed)</mat-label>
           <input matInput id="youtubeUrl" name="youtubeUrl" [(ngModel)]="formData.youtubeUrl" placeholder="https://www.youtube.com/watch?v=... o https://www.youtube.com/embed/..." />
         </mat-form-field>
+
         <p *ngIf="errors?.youtubeUrl" class="text-red-400 text-sm flex items-center gap-1">
           <lucide-icon name="alert-circle" class="w-3 h-3 text-red-400" />
           {{ errors.youtubeUrl }}
@@ -48,21 +48,18 @@
         </p>
       </div>
     </div>
-    <!-- Acciones del formulario -->
-    <div class="flex justify-between items-center mt-6 pt-4 border-t border-gray-700">
-      <p class="text-sm text-gray-400">Ejemplo: https://www.youtube.com/embed/VIDEO_ID</p>
-      <div class="flex gap-2">
-        <button *ngIf="isEditMode" type="button" (click)="handleDelete()" class="bg-red-600 hover:bg-red-700 text-white rounded px-4 py-2 flex items-center gap-2">
-          <lucide-icon name="trash-2" class="w-4 h-4 mr-2" />
-          Eliminar
-        </button>
-        <button type="submit" [disabled]="!formData.title || !formData.youtubeUrl || submitting || (!isEditMode && videos.length >= 10)" class="bg-primary hover:bg-primary/80 text-white rounded px-4 py-2 flex items-center gap-2 border border-primary">
-          {{ isEditMode ? 'Actualizar' : 'Agregar' }}
-        </button>
-      </div>
+
+    <div class="flex flex-col justify-end sm:flex-row gap-2 w-full sm:w-auto mt-6 pt-2 border-gray-700">
+      <button type="submit" [disabled]="!formData.title || !formData.youtubeUrl || submitting || (!isEditMode && videos.length >= 10)" class="bg-primary hover:bg-primary/80 text-white rounded px-4 py-2 flex items-center justify-center p-2 border border-primary w-full sm:w-auto">
+        {{ isEditMode ? 'Actualizar' : 'Agregar' }}
+      </button>
+      <button *ngIf="isEditMode" type="button" (click)="handleDelete()" class="bg-red-600 hover:bg-red-700 text-white rounded px-4 py-2 flex items-center justify-center gap-2 w-full sm:w-auto">
+        <lucide-icon name="trash-2" class="w-4 h-4 mr-2" />
+        Eliminar
+      </button>
     </div>
   </form>
-  <!-- Listado de videos debajo, con fondo y borde -->
+
   <div class="w-full mt-8">
     <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-6">
       <h3 class="text-lg font-semibold text-white mb-4">

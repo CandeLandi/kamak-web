@@ -1,40 +1,43 @@
 <app-admin-header (logout)="handleLogout()"></app-admin-header>
 
-<div class="min-h-screen flex w-full flex-col bg-black text-white md:px-16 p-16">
-
+<div class="max-w-screen-2xl mx-auto px-4 flex flex-col bg-black text-white mt-20">
   <div class="mb-2">
-    <a [routerLink]="'/admin/dashboard'" class="flex items-center gap-2 text-white transition-colors">
-      <i-lucide name="arrow-left" class="w-6 h-6 opacity-60"></i-lucide>
-      <span class="font-medium opacity-60">Volver al dashboard</span>
+    <a [routerLink]="'/admin/dashboard'" class="flex items-center text-gray-300 hover:text-white transition-colors gap-2 text-sm font-medium">
+      <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+      Volver al dashboard
     </a>
   </div>
-
   <div>
     <h1 class="text-3xl font-bold text-white mb-6">
-      {{ isEditMode ? "Editar Proyecto" : "Crear Proyecto" }}
+      {{ project?.name }}
     </h1>
   </div>
-
-  <mat-tab-group
-    [selectedIndex]="selectedTabIndex"
-    (selectedIndexChange)="onTabChange($event)"
-    animationDuration="0ms"
-    class="bg-[#23272f]/80 border border-white/10 rounded-xl shadow-lg overflow-hidden"
-  >
-    <mat-tab label="Información">
-      <app-project-info
-        [projectId]="projectId"
-        [isEditMode]="isEditMode"
-        (projectCreated)="onProjectCreated($event)"
-      ></app-project-info>
-    </mat-tab>
-
-    <mat-tab label="Imágenes" [disabled]="!isEditMode">
-      <app-project-images [project]="project" (imageUpdated)="loadProject(projectId!)"></app-project-images>
-    </mat-tab>
-
-    <mat-tab label="Videos" [disabled]="!isEditMode">
-      <app-project-videos [project]="project"></app-project-videos>
-    </mat-tab>
-  </mat-tab-group>
+  <div class="overflow-x-auto">
+    <mat-tab-group
+      [selectedIndex]="selectedTabIndex"
+      (selectedIndexChange)="onTabChange($event)"
+      animationDuration="0ms"
+      class="bg-[#23272f]/80 border border-white/10 rounded-xl shadow-lg overflow-hidden w-full"
+    >
+      <mat-tab label="Información">
+        <div class="w-full p-2 sm:p-4">
+          <app-project-info
+            [projectId]="projectId"
+            [isEditMode]="isEditMode"
+            (projectCreated)="onProjectCreated($event)"
+          ></app-project-info>
+        </div>
+      </mat-tab>
+      <mat-tab label="Imágenes" [disabled]="!isEditMode">
+        <div class="w-full p-2 sm:p-4">
+          <app-project-images [project]="project" (imageUpdated)="loadProject(projectId!)"></app-project-images>
+        </div>
+      </mat-tab>
+      <mat-tab label="Videos" [disabled]="!isEditMode">
+        <div class="w-full p-2 sm:p-4">
+          <app-project-videos [project]="project"></app-project-videos>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
 </div>

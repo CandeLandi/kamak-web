@@ -112,25 +112,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return Math.ceil(length / pageSize);
   });
 
-  // 4. Genera los números de página a mostrar
-  public displayedPages = computed(() => {
-    const total = this.totalPages();
-    const current = this.pagination().pageIndex + 1;
-    if (total <= 7) {
-      return Array.from({ length: total }, (_, i) => i + 1);
-    }
-    const delta = 2;
-    const range: (number | string)[] = [];
-    for (let i = Math.max(2, current - delta); i <= Math.min(total - 1, current + delta); i++) {
-      range.push(i);
-    }
-    if (current - delta > 2) range.unshift('...');
-    if (current + delta < total - 1) range.push('...');
-    range.unshift(1);
-    range.push(total);
-    return range;
-  });
-
   ngOnInit(): void {
     this.error.set(null);
     const clientId = this.authService.getClientId();
@@ -195,18 +176,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.pagination.update(p => ({ ...p, pageIndex: newPageIndex }));
   }
 
-  previousPage(): void {
-    if (this.pagination().pageIndex > 0) {
-      this.goToPage(this.pagination().pageIndex - 1);
-  }
-  }
-
-  nextPage(): void {
-    if (this.pagination().pageIndex < this.totalPages() - 1) {
-      this.goToPage(this.pagination().pageIndex + 1);
-  }
-  }
-
   handleLogout(): void {
     this.authService.logout();
     this.router.navigate(['/admin/login']);
@@ -228,8 +197,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         next: () => {
           this.snackBar.open('Proyecto eliminado correctamente.', 'Cerrar', {
             duration: 3000,
-            panelClass: ['success-snackbar']
+            panelClass: ['success-snackbar'],
+
           });
+          this.router.navigate(['/admin/dashboard']);
           this.loadProjects();
         },
         error: () => {
