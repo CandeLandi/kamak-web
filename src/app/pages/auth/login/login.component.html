@@ -1,16 +1,15 @@
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#195764] via-[#124450] to-blue-900 p-4">
-  <div class="w-full max-w-md bg-gray-800 border border-gray-700 rounded-lg shadow-lg">
-    <div class="text-center p-6">
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#195764] via-[#124450] to-blue-900 p-2 sm:p-4">
+  <div class="w-full max-w-xs sm:max-w-md bg-gray-800 border border-gray-700 rounded-lg shadow-lg">
+    <div class="text-center p-4 sm:p-6">
       <img
         src="assets/logos/logo-kamak.png"
         alt="Kamak Desarrollos"
-        class="mx-auto mb-6"
-        style="max-width: 320px; max-height: 220px;"
+        class="mx-auto mb-6 max-w-[180px] sm:max-w-[320px] max-h-[100px] sm:max-h-[220px]"
       />
     </div>
-    <div class="px-6 pb-6">
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-4">
-        <div class="space-y-2 relative">
+    <div class="px-4 sm:px-6 pb-4 sm:pb-6">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-3 sm:space-y-4">
+        <div class="space-y-1.5 sm:space-y-2 relative">
           <label for="email" class="text-white block">Email</label>
           <input
             id="email"
@@ -18,10 +17,10 @@
             formControlName="email"
             placeholder="admin@example.com"
             required
-            class="bg-gray-700 border border-gray-600 text-white rounded-md w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#195764] focus:border-[#195764] hover:border-[#195764] transition-all duration-150 shadow-sm focus:shadow-lg"
+            class="bg-gray-700 border border-gray-600 text-white rounded-md w-full px-3 py-2 sm:py-2 focus:outline-none focus:ring-2 focus:ring-[#195764] focus:border-[#195764] hover:border-[#195764] transition-all duration-150 shadow-sm focus:shadow-lg"
           />
         </div>
-        <div class="space-y-2 relative">
+        <div class="space-y-1.5 sm:space-y-2 relative">
           <label for="password" class="text-white block">Contraseña</label>
           <div class="relative flex items-center">
             <input
@@ -30,7 +29,7 @@
               formControlName="password"
               placeholder="••••••••"
               required
-              class="bg-gray-700 border border-gray-600 text-white rounded-md w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#195764] focus:border-[#195764] hover:border-[#195764] transition-all duration-150 shadow-sm focus:shadow-lg pr-10"
+              class="bg-gray-700 border border-gray-600 text-white rounded-md w-full px-3 py-2 sm:py-2 focus:outline-none focus:ring-2 focus:ring-[#195764] focus:border-[#195764] hover:border-[#195764] transition-all duration-150 shadow-sm focus:shadow-lg pr-10"
             />
             <button type="button" (click)="togglePasswordVisibility()" tabindex="-1"
               class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white focus:outline-none flex items-center justify-center h-6 w-6">
@@ -52,7 +51,7 @@
         }
         <button
           type="submit"
-          class="w-full flex items-center justify-center bg-[#195764] hover:bg-[#124450] text-white font-semibold py-2 rounded-md transition-colors duration-200 gap-2"
+          class="w-full flex items-center justify-center bg-[#195764] hover:bg-[#124450] text-white font-semibold py-2 sm:py-2 rounded-md transition-colors duration-200 gap-2 text-base sm:text-base"
           [disabled]="isLoading"
         >
           @if (isLoading) {
