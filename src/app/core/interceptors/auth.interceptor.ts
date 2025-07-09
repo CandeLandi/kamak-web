@@ -1,9 +1,13 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
+  const router = inject(Router);
   const token = authService.getToken();
 
   // No agregar token a endpoints públicos
@@ -21,6 +25,14 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     headers: req.headers.set('Authorization', `Bearer ${token}`)
   });
 
-  // Pasa la nueva petición clonada al siguiente manejador.
-  return next(authReq);
+  // Manejar errores 401/403 para forzar logout y redirección
+  return next(authReq).pipe(
+    catchError((error) => {
+      if (error.status === 401 || error.status === 403) {
+        authService.logout();
+        router.navigate(['/login']);
+      }
+      return throwError(() => error);
+    })
+  );
 };
