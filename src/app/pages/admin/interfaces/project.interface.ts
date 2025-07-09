@@ -36,6 +36,12 @@ export interface Project {
   startDate: Date;
   endDate: Date;
   gallery?: Gallery[];
+  contactName?: string;
+  contactPhone?: string;
+  contactEmail?: string;
+  budget?: string;
+  invoiceStatus?: string;
+  notes?: string;
 }
 
 export interface CreateProjectDto {
@@ -56,6 +62,12 @@ export interface CreateProjectDto {
   solution: string;
   startDate: Date;
   endDate: Date;
+  contactName?: string;
+  contactPhone?: string;
+  contactEmail?: string;
+  budget?: string;
+  invoiceStatus?: string;
+  notes?: string;
 }
 
 export interface UpdateProjectDto {
@@ -74,6 +86,12 @@ export interface UpdateProjectDto {
   solution?: string;
   startDate?: Date;
   endDate?: Date;
+  contactName?: string;
+  contactPhone?: string;
+  contactEmail?: string;
+  budget?: string;
+  invoiceStatus?: string;
+  notes?: string;
 }
 
 export interface ProjectVideo {

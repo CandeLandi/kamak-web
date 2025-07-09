@@ -104,6 +104,12 @@ export class ProjectInfoComponent implements OnInit {
             challenge: project.challenge,
             solution: project.solution,
             status: project.status,
+            contactName: project.contactName || '',
+            contactPhone: project.contactPhone || '',
+            contactEmail: project.contactEmail || '',
+            budget: project.budget || '',
+            invoiceStatus: project.invoiceStatus || '',
+            notes: project.notes || '',
           });
           this.showOnHomePage = project.status === ProjectStatus.PUBLISHED;
         },
@@ -139,8 +145,8 @@ export class ProjectInfoComponent implements OnInit {
       status: [ProjectStatus.PUBLISHED],
       type: [ProjectType.LANDING],
       contactName: [''],
-      contactPhone: [''],
-      contactEmail: [''],
+      contactPhone: ['', [Validators.pattern('^[0-9]+$'), Validators.minLength(7), Validators.maxLength(20)]],
+      contactEmail: ['', [Validators.email]],
       budget: [''],
       invoiceStatus: [''],
       notes: [''],
@@ -232,8 +238,14 @@ export class ProjectInfoComponent implements OnInit {
         solution: formValue.solution,
         status: this.showOnHomePage ? ProjectStatus.PUBLISHED : ProjectStatus.DRAFT,
         startDate: formValue.startDate,
-        endDate: formValue.endDate
-    };
+        endDate: formValue.endDate,
+        contactName: formValue.contactName,
+        contactPhone: formValue.contactPhone,
+        contactEmail: formValue.contactEmail,
+        budget: formValue.budget,
+        invoiceStatus: formValue.invoiceStatus,
+        notes: formValue.notes
+      };
 
       console.log('Enviando para actualizar:', updateDto);
 
@@ -272,7 +284,13 @@ export class ProjectInfoComponent implements OnInit {
         status: this.showOnHomePage ? ProjectStatus.PUBLISHED : ProjectStatus.DRAFT,
         startDate: formValue.startDate,
         endDate: formValue.endDate,
-        clientId: clientId
+        clientId: clientId,
+        contactName: formValue.contactName,
+        contactPhone: formValue.contactPhone,
+        contactEmail: formValue.contactEmail,
+        budget: formValue.budget,
+        invoiceStatus: formValue.invoiceStatus,
+        notes: formValue.notes
       };
 
       this.projectsService.createProject(createDto).subscribe({
