@@ -130,7 +130,7 @@ export class ProjectInfoComponent implements OnInit {
     this.projectForm = this.fb.group({
       name: ['', [Validators.minLength(3)]],
       category: [ProjectCategory.ESTACIONES],
-      description: ['', [Validators.minLength(10)]],
+      description: [''],
       longDescription: [''],
       imageBefore: [''],
       imageAfter: [''],

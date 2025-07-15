@@ -25,9 +25,7 @@
         <mat-form-field class="w-full rounded-xl">
           <mat-label>Descripción corta</mat-label>
           <textarea matInput formControlName="description" rows="3" placeholder="Breve descripción del proyecto"></textarea>
-          <mat-error *ngIf="projectForm.get('description')?.hasError('minlength') && projectForm.get('description')?.touched">
-            La descripción debe tener al menos 10 caracteres
-          </mat-error>
+
         </mat-form-field>
         <div class="flex items-center justify-between px-2 ">
           <span class="text-sm font-medium text-white">Mostrar en página principal</span>
