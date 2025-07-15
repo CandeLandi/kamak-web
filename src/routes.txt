@@ -1,0 +1,5 @@
+/
+/home
+/login
+/admin
+/admin/dashboard 
