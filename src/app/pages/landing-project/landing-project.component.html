@@ -1,13 +1,13 @@
 <app-header></app-header>
-<div class="bg-[#111] pb-8 min-h-screen px-6 md:px-16">
-  <div class="container mx-auto px-4 pt-8">
+<div class="bg-[#111] pb-8 min-h-screen px-4 ">
+  <div class="container mx-auto pt-8">
     @if (loading) {
     <div class="flex justify-center items-center h-[80vh]">
       <mat-spinner diameter="60"></mat-spinner>
     </div>
     } @else if (project) {
 
-    <div class="mb-4 mt-12 w-full max-w-screen-2xl mx-auto px-4">
+    <div class="mb-4 mt-8 w-full max-w-screen-2xl mx-auto">
       <a
         routerLink="/"
         class="flex items-center text-gray-300 hover:text-white transition-colors gap-2 text-sm font-medium"
@@ -29,7 +29,7 @@
       </a>
     </div>
 
-    <div class="bg-[#181c23]/90 rounded-2xl p-8 md:p-12 shadow-lg mb-10 md:mb-16 w-full max-w-screen-2xl mx-auto px-4">
+    <div class="bg-[#181c23]/90 rounded-2xl py-8 shadow-lg mb-4  w-full max-w-screen-2xl mx-auto px-4">
       <div class="space-y-6">
         <div>
           <h1
@@ -74,9 +74,9 @@
 
     <!-- Bloque: Galería de imágenes (sin título) -->
     @if (project.gallery && project.gallery.length > 0) {
-    <div class="mb-2 md:pt-8 md:pb-12 md:mb-6 w-full max-w-screen-2xl mx-auto px-4">
+    <div class="mb-2  md:pb-12 md:mb-6 w-full max-w-screen-2xl mx-auto ">
       <div class="mb-2">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
           @for (image of displayedGallery; track image.id; let index = $index) {
           <div
             class="relative h-64 md:h-80 rounded-lg overflow-hidden cursor-pointer group flex items-center justify-center"
@@ -116,7 +116,7 @@
     </div>
     }
 
-    <div class="mb-10 md:mb-12 w-full max-w-screen-2xl mx-auto px-4">
+    <div class="mb-10 md:mb-12 w-full max-w-screen-2xl mx-auto">
       <p class="text-gray-300 mb-6 whitespace-pre-line break-words">
         {{ project.longDescription }}
       </p>
@@ -151,7 +151,7 @@
 
     <!-- Bloque: Videos del Proyecto (sin título) -->
     @if (mainVideo && getSafeVideoUrl(mainVideo.youtubeUrl)) {
-    <div class="mb-10 md:mb-12 w-full max-w-screen-2xl mx-auto px-4">
+    <div class="mb-10 md:mb-12 w-full max-w-screen-2xl mx-auto">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
         <div>
           <div
@@ -191,7 +191,7 @@
       </div>
     </div>
     } @if (additionalVideos.length > 0) {
-    <div class="mb-10 md:mb-12 w-full max-w-screen-2xl mx-auto px-4">
+    <div class="mb-10 md:mb-12 w-full max-w-screen-2xl mx-auto">
       <div
         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start"
       >
@@ -235,7 +235,7 @@
 
     <!-- Bloque: Antes y Después -->
     @if(project.imageBefore && project.imageAfter) {
-    <div class="pt-6 pb-6 md:pt-8 md:pb-12 mb-10 w-full max-w-screen-2xl mx-auto px-4">
+    <div class="pt-6 pb-6 md:pt-8 md:pb-12 mb-10 w-full max-w-screen-2xl mx-auto">
       <h2 class="text-2xl font-bold mb-4 text-white flex items-center gap-2">
         <i-lucide name="image" class="w-6 h-6 text-[#195764]"></i-lucide>Antes y
         Después

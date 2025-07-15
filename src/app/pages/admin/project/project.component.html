@@ -20,7 +20,7 @@
       class="bg-[#23272f]/80 border border-white/10 rounded-xl shadow-lg overflow-hidden w-full"
     >
       <mat-tab label="Información">
-        <div class="w-full p-2 sm:p-4">
+        <div class="w-full">
           <app-project-info
             [projectId]="projectId"
             [isEditMode]="isEditMode"
@@ -29,12 +29,12 @@
         </div>
       </mat-tab>
       <mat-tab label="Imágenes" [disabled]="!isEditMode">
-        <div class="w-full p-2 sm:p-4">
+        <div class="w-full">
           <app-project-images [project]="project" (imageUpdated)="loadProject(projectId!)"></app-project-images>
         </div>
       </mat-tab>
       <mat-tab label="Videos" [disabled]="!isEditMode">
-        <div class="w-full p-2 sm:p-4">
+        <div class="w-full">
           <app-project-videos [project]="project"></app-project-videos>
         </div>
       </mat-tab>
