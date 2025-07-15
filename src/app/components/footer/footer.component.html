@@ -1,7 +1,7 @@
-<footer class="bg-black text-white py-12 w-full">
+<footer class="bg-black text-white py-8 md:py-12 w-full">
   <div class="container mx-auto px-4">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-      <div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+      <div class="md:col-span-2 lg:col-span-1">
         <div class="h-10 w-auto relative mb-4">
           <img
             src="assets/logos/logo-kamak.svg"
@@ -10,13 +10,13 @@
           />
 
         </div>
-        <p class="text-gray-400">
+        <p class="text-gray-400 text-sm md:text-base">
           La empresa de construcción con más proyección de crecimiento junto a sus clientes para este 2025.
         </p>
         <h4 class="text-sm font-medium text-white mb-2 mt-4">Ubicación:</h4>
         <div class="flex items-start gap-2">
-          <i class="fas fa-map-marker-alt h-4 w-4 text-[#195764] mt-0.5"></i>
-          <span class="text-gray-400">Avenida 42 N°3703 Necochea, Buenos Aires, Argentina.</span>
+          <i class="fas fa-map-marker-alt h-4 w-4 text-[#195764] mt-0.5 flex-shrink-0"></i>
+          <span class="text-gray-400 text-sm">Avenida 42 N°3703 Necochea, Buenos Aires, Argentina.</span>
         </div>
       </div>
 
@@ -25,7 +25,7 @@
         <ul class="space-y-2">
           @for (service of services; track service.title) {
             <li>
-              <a [href]="service.link" class="text-gray-400 hover:text-white transition-colors">
+              <a [href]="service.link" class="text-gray-400 hover:text-white transition-colors text-sm">
                 {{ service.title }}
               </a>
             </li>
@@ -38,7 +38,7 @@
         <ul class="space-y-2">
           @for (link of links; track link.title) {
             <li>
-              <a [href]="link.link" class="text-gray-400 hover:text-white transition-colors">
+              <a [href]="link.link" class="text-gray-400 hover:text-white transition-colors text-sm">
                 {{ link.title }}
               </a>
             </li>
@@ -46,19 +46,19 @@
         </ul>
       </div>
 
-      <div>
+      <div class="md:col-span-2 lg:col-span-1">
         <h3 class="text-lg font-semibold mb-4">Contacto</h3>
         <div class="space-y-4">
           <div>
             <h4 class="text-sm font-medium text-white mb-2">Ventas:</h4>
           <ul class="space-y-2">
             <li class="flex items-center gap-2">
-              <i class="fas fa-phone h-4 w-4 text-[#195764]"></i>
-                <span class="text-gray-400">{{ contactInfo.sales.phone }}</span>
+              <i class="fas fa-phone h-4 w-4 text-[#195764] flex-shrink-0"></i>
+                <span class="text-gray-400 text-sm">{{ contactInfo.sales.phone }}</span>
             </li>
               <li class="flex items-center gap-2">
-                <i class="fas fa-envelope h-4 w-4 text-[#195764]"></i>
-                <a class="text-gray-400 hover:text-white transition-colors" [href]="'mailto:' + contactInfo.sales.email">{{ contactInfo.sales.email }}</a>
+                <i class="fas fa-envelope h-4 w-4 text-[#195764] flex-shrink-0"></i>
+                <a class="text-gray-400 hover:text-white transition-colors text-sm break-all" [href]="'mailto:' + contactInfo.sales.email">{{ contactInfo.sales.email }}</a>
               </li>
             </ul>
           </div>
@@ -66,12 +66,12 @@
             <h4 class="text-sm font-medium text-white mb-2">Administración:</h4>
             <ul class="space-y-2">
             <li class="flex items-center gap-2">
-              <i class="fas fa-phone h-4 w-4 text-[#195764]"></i>
-                <span class="text-gray-400">{{ contactInfo.admin.phone }}</span>
+              <i class="fas fa-phone h-4 w-4 text-[#195764] flex-shrink-0"></i>
+                <span class="text-gray-400 text-sm">{{ contactInfo.admin.phone }}</span>
             </li>
             <li class="flex items-center gap-2">
-              <i class="fas fa-envelope h-4 w-4 text-[#195764]"></i>
-                <a class="text-gray-400 hover:text-white transition-colors" [href]="'mailto:' + contactInfo.admin.email">{{ contactInfo.admin.email }}</a>
+              <i class="fas fa-envelope h-4 w-4 text-[#195764] flex-shrink-0"></i>
+                <a class="text-gray-400 hover:text-white transition-colors text-sm break-all" [href]="'mailto:' + contactInfo.admin.email">{{ contactInfo.admin.email }}</a>
             </li>
           </ul>
           </div>
