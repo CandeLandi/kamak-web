@@ -9,8 +9,8 @@
         <mat-form-field class="w-full rounded-xl">
           <mat-label>Nombre del proyecto</mat-label>
           <input matInput formControlName="name" placeholder="Nombre del proyecto" />
-          <mat-error *ngIf="projectForm.get('name')?.hasError('required') && projectForm.get('name')?.touched">
-            El nombre es obligatorio
+          <mat-error *ngIf="projectForm.get('name')?.hasError('minlength') && projectForm.get('name')?.touched">
+            El nombre debe tener al menos 3 caracteres
           </mat-error>
         </mat-form-field>
         <mat-form-field class="w-full rounded-xl">
@@ -20,16 +20,12 @@
             <mat-option [value]="projectCategories.TIENDAS">Tiendas</mat-option>
             <mat-option [value]="projectCategories.COMERCIALES">Comerciales</mat-option>
           </mat-select>
-          <mat-error *ngIf="projectForm.get('category')?.hasError('required') && projectForm.get('category')?.touched">
-            La categoría es obligatoria
-          </mat-error>
+
         </mat-form-field>
         <mat-form-field class="w-full rounded-xl">
           <mat-label>Descripción corta</mat-label>
           <textarea matInput formControlName="description" rows="3" placeholder="Breve descripción del proyecto"></textarea>
-          <mat-error *ngIf="projectForm.get('description')?.hasError('required') && projectForm.get('description')?.touched">
-            La descripción es obligatoria
-          </mat-error>
+
         </mat-form-field>
         <div class="flex items-center justify-between px-2 ">
           <span class="text-sm font-medium text-white">Mostrar en página principal</span>
@@ -43,9 +39,7 @@
       <div class="space-y-2">
         <div class="w-full rounded-xl">
           <google-place-autocomplete formControlName="address"></google-place-autocomplete>
-          <mat-error *ngIf="projectForm.get('address')?.hasError('required') && projectForm.get('address')?.touched">
-            La ubicación es obligatoria
-          </mat-error>
+
         </div>
         <!-- Primera fila: Fechas -->
         <div class="flex flex-col md:flex-row gap-4 w-full">
@@ -54,18 +48,14 @@
             <input matInput [matDatepicker]="pickerInicio" formControlName="startDate" placeholder="Selecciona la fecha de inicio" readonly />
             <mat-datepicker-toggle matSuffix [for]="pickerInicio"></mat-datepicker-toggle>
             <mat-datepicker #pickerInicio></mat-datepicker>
-            <mat-error *ngIf="projectForm.get('startDate')?.hasError('required') && projectForm.get('startDate')?.touched">
-              La fecha de inicio es obligatoria
-            </mat-error>
+
           </mat-form-field>
           <mat-form-field class="flex-1 w-full rounded-xl">
             <mat-label>Fecha de fin</mat-label>
             <input matInput [matDatepicker]="pickerFin" formControlName="endDate" placeholder="Selecciona la fecha de fin" readonly />
             <mat-datepicker-toggle matSuffix [for]="pickerFin"></mat-datepicker-toggle>
             <mat-datepicker #pickerFin></mat-datepicker>
-            <mat-error *ngIf="projectForm.get('endDate')?.hasError('required') && projectForm.get('endDate')?.touched">
-              La fecha de fin es obligatoria
-            </mat-error>
+
           </mat-form-field>
         </div>
         <!-- Segunda fila: Duración y Superficie -->
@@ -85,9 +75,7 @@
               (input)="formatArea($event)"
             />
             <span matSuffix>m²</span>
-            <mat-error *ngIf="projectForm.get('area')?.hasError('required') && projectForm.get('area')?.touched">
-              La superficie es obligatoria
-            </mat-error>
+
           </mat-form-field>
         </div>
       </div>
@@ -101,23 +89,21 @@
       <mat-form-field class="w-full rounded-xl px-2">
         <mat-label>Descripción Detallada</mat-label>
         <textarea matInput formControlName="longDescription" rows="5" placeholder="Descripción detallada del proyecto"></textarea>
-        <mat-error *ngIf="projectForm.get('longDescription')?.hasError('required') && projectForm.get('longDescription')?.touched">
-          La descripción detallada es obligatoria
-        </mat-error>
+
       </mat-form-field>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <mat-form-field class="w-full rounded-xl px-2">
           <mat-label>El Desafío</mat-label>
           <textarea matInput formControlName="challenge" rows="4" placeholder="Descripción del desafío del proyecto"></textarea>
-          <mat-error *ngIf="projectForm.get('challenge')?.hasError('required') && projectForm.get('challenge')?.touched">
-            El desafío es obligatorio
+          <mat-error *ngIf="projectForm.get('challenge')?.hasError('minlength') && projectForm.get('challenge')?.touched">
+            El desafío debe tener al menos 20 caracteres
           </mat-error>
         </mat-form-field>
         <mat-form-field class="w-full rounded-xl px-2">
           <mat-label>Nuestra Solución</mat-label>
           <textarea matInput formControlName="solution" rows="4" placeholder="Descripción de la solución implementada"></textarea>
-          <mat-error *ngIf="projectForm.get('solution')?.hasError('required') && projectForm.get('solution')?.touched">
-            La solución es obligatoria
+          <mat-error *ngIf="projectForm.get('solution')?.hasError('minlength') && projectForm.get('solution')?.touched">
+            La solución debe tener al menos 20 caracteres
           </mat-error>
         </mat-form-field>
       </div>
