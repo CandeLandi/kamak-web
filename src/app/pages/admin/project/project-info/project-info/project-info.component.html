@@ -16,6 +16,7 @@
         <mat-form-field class="w-full rounded-xl">
           <mat-label>Categoría</mat-label>
           <mat-select formControlName="category">
+            <mat-option value="">Sin categoría</mat-option>
             <mat-option [value]="projectCategories.ESTACIONES">Estaciones de Servicio</mat-option>
             <mat-option [value]="projectCategories.TIENDAS">Tiendas</mat-option>
             <mat-option [value]="projectCategories.COMERCIALES">Comerciales</mat-option>
