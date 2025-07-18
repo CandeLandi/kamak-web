@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ViewportScroller, CommonModule } from '@angular/common';
 import { FooterComponent } from '../../components/footer/footer.component';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ProjectsService } from '../../core/services/projects.service';
 import { Project, ProjectVideo } from '../admin/interfaces/project.interface';
 import { switchMap, tap } from 'rxjs/operators';
@@ -32,6 +32,7 @@ export class LandingProjectComponent implements OnInit {
   limit = 10;
 
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private projectsService = inject(ProjectsService);
   private sanitizer = inject(DomSanitizer);
   private viewportScroller = inject(ViewportScroller);
@@ -58,7 +59,7 @@ export class LandingProjectComponent implements OnInit {
         );
       })
     ).subscribe({
-      next: () => {},
+      next: () => { },
       error: err => {
         console.error('Error loading project data:', err);
         this.error = 'No se pudo cargar el proyecto. Intente más tarde.';
@@ -104,14 +105,7 @@ export class LandingProjectComponent implements OnInit {
     if (addressValue) {
       details.push({ label: 'Ubicación', value: addressValue, icon: 'map-pin' });
     }
-    // Superficie
-    if (this.project.area) {
-      details.push({ label: 'Superficie', value: this.project.area, icon: 'ruler' });
-    }
-    // Duración
-    if (this.project.duration) {
-      details.push({ label: 'Duración', value: this.project.duration, icon: 'clock' });
-    }
+
     // Fecha inicio
     if (this.project.startDate) {
       details.push({ label: 'Fecha inicio', value: this.project.startDate, icon: 'calendar' });
@@ -119,6 +113,15 @@ export class LandingProjectComponent implements OnInit {
     // Fecha fin
     if (this.project.endDate) {
       details.push({ label: 'Fecha fin', value: this.project.endDate, icon: 'calendar-check' });
+    }
+
+    // Superficie
+    if (this.project.area) {
+      details.push({ label: 'Superficie', value: this.project.area, icon: 'ruler' });
+    }
+    // Duración
+    if (this.project.duration) {
+      details.push({ label: 'Duración', value: this.project.duration, icon: 'clock' });
     }
     return details;
   }
@@ -187,7 +190,6 @@ export class LandingProjectComponent implements OnInit {
   }
 
   generatePlaceholderUrl(text: string): string {
-    // Devuelve una URL de placeholder con texto (mockup)
     return `https://via.placeholder.com/600x400?text=${encodeURIComponent(text)}`;
   }
 
@@ -204,9 +206,10 @@ export class LandingProjectComponent implements OnInit {
 
   private extractVideoId(url: string): string | null {
     if (!url) return null;
-    // Soporta múltiples formatos de YouTube
+
     const regExp = /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?|shorts)\/|.*[?&]v=)|youtu\.be\/)([\w-]{11})/;
     const match = url.match(regExp);
     return match ? match[1] : null;
   }
+
 }

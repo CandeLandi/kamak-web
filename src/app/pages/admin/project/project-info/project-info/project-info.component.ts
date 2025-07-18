@@ -77,7 +77,6 @@ export class ProjectInfoComponent implements OnInit {
   error: string | null = null;
   projectCategories = ProjectCategory;
   projectStatus = ProjectStatus;
-  expandedPanel: string | null = null;
   showOnHomePage: boolean = true;
 
   ngOnInit(): void {
@@ -128,20 +127,20 @@ export class ProjectInfoComponent implements OnInit {
 
   private initForm(): void {
     this.projectForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
-      category: [ProjectCategory.ESTACIONES, Validators.required],
-      description: ['', [Validators.required, Validators.minLength(10)]],
+      name: ['', [Validators.minLength(3)]],
+      category: [''],
+      description: [''],
       longDescription: [''],
       imageBefore: [''],
       imageAfter: [''],
       videoUrl: [''],
-      address: [null, Validators.required],
-      area: ['', Validators.required],
+      address: [null],
+      area: [''],
       startDate: [null],
       endDate: [null],
       duration: [{ value: '', disabled: true }],
-      challenge: ['', [Validators.required, Validators.minLength(20)]],
-      solution: ['', [Validators.required, Validators.minLength(20)]],
+      challenge: ['', [Validators.minLength(20)]],
+      solution: ['', [Validators.minLength(20)]],
       status: [ProjectStatus.PUBLISHED],
       type: [ProjectType.LANDING],
       contactName: [''],
@@ -198,9 +197,10 @@ export class ProjectInfoComponent implements OnInit {
   }
 
   saveForm(): void {
-    if (this.projectForm.invalid) {
+    // Validar solo si hay campos con errores de formato
+    if (this.projectForm.errors) {
       this.markFormGroupTouched(this.projectForm);
-      this.snackBar.open('Por favor, complete todos los campos requeridos', 'Cerrar', {
+      this.snackBar.open('Por favor, corrija los errores en el formulario', 'Cerrar', {
         duration: 3000,
         panelClass: ['error-snackbar']
       });

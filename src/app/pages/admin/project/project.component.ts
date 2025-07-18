@@ -41,6 +41,9 @@ export class ProjectComponent implements OnInit {
   protected project: Project | null = null;
 
   ngOnInit(): void {
+    // Scroll al top cuando se inicializa el componente
+    this.scrollToTop();
+    
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
@@ -58,6 +61,12 @@ export class ProjectComponent implements OnInit {
         this.selectedTabIndex = 1;
       }
     });
+  }
+
+  private scrollToTop(): void {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 
   loadProject(id: string): void {

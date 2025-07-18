@@ -36,24 +36,30 @@
       </div>
     </div>
   } @else {
-    <google-map
-      height="600px"
-      width="100%"
-      [center]="center"
-      [zoom]="zoom"
-    >
-      <map-marker
-        *ngFor="let marker of markers"
-        [position]="marker"
-        [title]="marker.title"
-        (mapClick)="openInfoWindow(marker)"
-      ></map-marker>
-      <map-info-window #infoWindow>
-        <div class="p-3 min-w-[200px]">
-          <div class="font-semibold text-[#195764] text-lg mb-1">{{ selectedMarker?.title }}</div>
-          <div class="text-sm text-gray-600">{{ selectedMarker?.address }}</div>
-        </div>
-      </map-info-window>
-    </google-map>
+    <div #mapContainer class="relative">
+      <google-map
+        height="600px"
+        width="100%"
+        [center]="center"
+        [zoom]="zoom"
+        (mapInitialized)="onMapReady($event)"
+      >
+        <map-info-window #infoWindow>
+          <div class="p-3 min-w-[200px]">
+            @if (selectedMarker?.imageAfter) {
+              <div class="mb-3">
+                <img
+                  [src]="selectedMarker?.imageAfter"
+                  [alt]="selectedMarker?.title"
+                  class="w-full h-32 object-cover rounded-lg"
+                />
+              </div>
+            }
+            <div class="font-semibold text-[#195764] text-lg mb-1">{{ selectedMarker?.title }}</div>
+            <div class="text-sm text-gray-600">{{ selectedMarker?.address }}</div>
+          </div>
+        </map-info-window>
+      </google-map>
+    </div>
   }
 </div>
