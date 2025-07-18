@@ -48,8 +48,5 @@ node_modules/
 .env
 .env.*
 
-# Ignore local index.html with API keys
-src/index.html
-
 # Generated docs folder
 docs/
