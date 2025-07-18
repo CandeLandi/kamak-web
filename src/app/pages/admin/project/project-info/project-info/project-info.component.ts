@@ -77,7 +77,6 @@ export class ProjectInfoComponent implements OnInit {
   error: string | null = null;
   projectCategories = ProjectCategory;
   projectStatus = ProjectStatus;
-  expandedPanel: string | null = null;
   showOnHomePage: boolean = true;
 
   ngOnInit(): void {
@@ -129,7 +128,7 @@ export class ProjectInfoComponent implements OnInit {
   private initForm(): void {
     this.projectForm = this.fb.group({
       name: ['', [Validators.minLength(3)]],
-      category: [ProjectCategory.ESTACIONES],
+      category: [''],
       description: [''],
       longDescription: [''],
       imageBefore: [''],

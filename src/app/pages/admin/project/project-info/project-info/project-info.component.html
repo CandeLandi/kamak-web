@@ -16,6 +16,7 @@
         <mat-form-field class="w-full rounded-xl">
           <mat-label>Categoría</mat-label>
           <mat-select formControlName="category">
+            <mat-option value="">Sin categoría</mat-option>
             <mat-option [value]="projectCategories.ESTACIONES">Estaciones de Servicio</mat-option>
             <mat-option [value]="projectCategories.TIENDAS">Tiendas</mat-option>
             <mat-option [value]="projectCategories.COMERCIALES">Comerciales</mat-option>
@@ -85,14 +86,14 @@
       <i-lucide name="file-text" class="w-5 h-5" style="color:#195764"></i-lucide>
       <h3 class="text-xl font-bold text-white">Detalles</h3>
     </div>
-    <div class="mt-8 pt-4">
-      <mat-form-field class="w-full rounded-xl px-2">
+    <div class=" pt-4">
+      <mat-form-field class="w-full rounded-xl">
         <mat-label>Descripción Detallada</mat-label>
         <textarea matInput formControlName="longDescription" rows="5" placeholder="Descripción detallada del proyecto"></textarea>
 
       </mat-form-field>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <mat-form-field class="w-full rounded-xl px-2">
+        <mat-form-field class="w-full rounded-xl">
           <mat-label>El Desafío</mat-label>
           <textarea matInput formControlName="challenge" rows="4" placeholder="Descripción del desafío del proyecto"></textarea>
           <mat-error *ngIf="projectForm.get('challenge')?.hasError('minlength') && projectForm.get('challenge')?.touched">
@@ -110,74 +111,53 @@
     </div>
 
     <!-- Información Interna -->
-    <div class="mt-6 pt-4">
+    <div>
       <div class="flex items-center gap-3 mb-6">
         <i-lucide name="file-text" class="w-5 h-5" style="color:#195764"></i-lucide>
         <h3 class="text-xl font-bold text-white">Información Interna</h3>
       </div>
 
-      <div class="px-1">
-        <mat-accordion multi="false" class="w-full no-padding-expansion" displayMode="flat">
-          <mat-expansion-panel [expanded]="expandedPanel === 'contact'" (opened)="expandedPanel = 'contact'" (closed)="expandedPanel = null" class="!bg-transparent !shadow-none">
-            <mat-expansion-panel-header class="!min-h-0 !bg-transparent">
-              <div class="flex items-center gap-2">
-                <i-lucide name="user" class="h-4 w-4" style="color:#195764"></i-lucide>
-                <span>Información de Contacto</span>
-              </div>
-            </mat-expansion-panel-header>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-              <mat-form-field class="w-full">
-                <mat-label>Nombre de Contacto</mat-label>
-                <input matInput formControlName="contactName" />
-              </mat-form-field>
-              <mat-form-field class="w-full">
-                <mat-label>Teléfono</mat-label>
-                <input matInput formControlName="contactPhone" />
-              </mat-form-field>
-              <mat-form-field class="w-full">
-                <mat-label>Email</mat-label>
-                <input matInput formControlName="contactEmail" type="email" />
-              </mat-form-field>
-            </div>
-          </mat-expansion-panel>
-          <mat-expansion-panel [expanded]="expandedPanel === 'financial'" (opened)="expandedPanel = 'financial'" (closed)="expandedPanel = null" class="!bg-transparent !shadow-none">
-            <mat-expansion-panel-header class="!min-h-0  !bg-transparent">
-              <div class="flex items-center gap-2">
-                <i-lucide name="dollar-sign" class="h-4 w-4" style="color:#195764"></i-lucide>
-                <span>Información Financiera</span>
-              </div>
-            </mat-expansion-panel-header>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-              <mat-form-field class="w-full">
-                <mat-label>Presupuesto</mat-label>
-                <input matInput formControlName="budget" />
-              </mat-form-field>
-              <mat-form-field class="w-full">
-                <mat-label>Estado de Facturación</mat-label>
-                <mat-select formControlName="invoiceStatus">
-                  <mat-option value="Pendiente">Pendiente</mat-option>
-                  <mat-option value="Facturado">Facturado</mat-option>
-                  <mat-option value="Pago">Pago</mat-option>
-                  <mat-option value="Vencido">Vencido</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </mat-expansion-panel>
-          <mat-expansion-panel [expanded]="expandedPanel === 'notes'" (opened)="expandedPanel = 'notes'" (closed)="expandedPanel = null" class="!bg-transparent !shadow-none">
-            <mat-expansion-panel-header class="!min-h-0 !bg-transparent">
-              <div class="flex items-center gap-2">
-                <i-lucide name="file-text" class="h-4 w-4" style="color:#195764"></i-lucide>
-                <span>Notas Internas</span>
-              </div>
-            </mat-expansion-panel-header>
-            <div class="pt-2">
-              <mat-form-field class="w-full">
-                <mat-label>Notas</mat-label>
-                <textarea matInput formControlName="notes" rows="5" placeholder="Información interna sobre el cliente o proyecto..."></textarea>
-              </mat-form-field>
-            </div>
-          </mat-expansion-panel>
-        </mat-accordion>
+      <div class="px-1 space-y-6">
+        <!-- Información de Contacto -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <mat-form-field class="w-full">
+            <mat-label>Nombre de Contacto</mat-label>
+            <input matInput formControlName="contactName" />
+          </mat-form-field>
+          <mat-form-field class="w-full">
+            <mat-label>Teléfono</mat-label>
+            <input matInput formControlName="contactPhone" />
+          </mat-form-field>
+          <mat-form-field class="w-full">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="contactEmail" type="email" />
+          </mat-form-field>
+        </div>
+
+        <!-- Información Financiera -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <mat-form-field class="w-full">
+            <mat-label>Presupuesto</mat-label>
+            <input matInput formControlName="budget" />
+          </mat-form-field>
+          <mat-form-field class="w-full">
+            <mat-label>Estado de Facturación</mat-label>
+            <mat-select formControlName="invoiceStatus">
+              <mat-option value="Pendiente">Pendiente</mat-option>
+              <mat-option value="Facturado">Facturado</mat-option>
+              <mat-option value="Pago">Pago</mat-option>
+              <mat-option value="Vencido">Vencido</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Notas Internas -->
+        <div>
+          <mat-form-field class="w-full">
+            <mat-label>Notas</mat-label>
+            <textarea matInput formControlName="notes" rows="5" placeholder="Información interna sobre el cliente o proyecto..."></textarea>
+          </mat-form-field>
+        </div>
       </div>
     </div>
 
