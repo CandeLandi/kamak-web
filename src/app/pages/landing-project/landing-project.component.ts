@@ -59,7 +59,7 @@ export class LandingProjectComponent implements OnInit {
         );
       })
     ).subscribe({
-      next: () => {},
+      next: () => { },
       error: err => {
         console.error('Error loading project data:', err);
         this.error = 'No se pudo cargar el proyecto. Intente más tarde.';
@@ -105,14 +105,7 @@ export class LandingProjectComponent implements OnInit {
     if (addressValue) {
       details.push({ label: 'Ubicación', value: addressValue, icon: 'map-pin' });
     }
-    // Superficie
-    if (this.project.area) {
-      details.push({ label: 'Superficie', value: this.project.area, icon: 'ruler' });
-    }
-    // Duración
-    if (this.project.duration) {
-      details.push({ label: 'Duración', value: this.project.duration, icon: 'clock' });
-    }
+
     // Fecha inicio
     if (this.project.startDate) {
       details.push({ label: 'Fecha inicio', value: this.project.startDate, icon: 'calendar' });
@@ -120,6 +113,15 @@ export class LandingProjectComponent implements OnInit {
     // Fecha fin
     if (this.project.endDate) {
       details.push({ label: 'Fecha fin', value: this.project.endDate, icon: 'calendar-check' });
+    }
+
+    // Superficie
+    if (this.project.area) {
+      details.push({ label: 'Superficie', value: this.project.area, icon: 'ruler' });
+    }
+    // Duración
+    if (this.project.duration) {
+      details.push({ label: 'Duración', value: this.project.duration, icon: 'clock' });
     }
     return details;
   }

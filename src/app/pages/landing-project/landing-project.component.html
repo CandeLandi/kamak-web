@@ -30,13 +30,13 @@
               {{ project.description }}
             </p>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
+          <div class="flex flex-wrap justify-between pr-4 gap-4 ">
             <ng-container *ngFor="let detail of projectDetails">
-              <div class="flex items-center gap-2" *ngIf="detail.value">
+              <div class="flex items-center gap-2 mb-4 lg:mb-0" *ngIf="detail.value">
                 <i-lucide [name]="detail.icon" class="w-5 h-5 text-[#195764]"></i-lucide>
                 <div>
                   <span class="text-xs text-gray-400">{{ detail.label }}:</span>
-                  <p class="font-medium text-white">
+                  <p class="font-medium text-white" >
                     <ng-container *ngIf="
                         detail.label === 'Fecha inicio' ||
                           detail.label === 'Fecha fin';
