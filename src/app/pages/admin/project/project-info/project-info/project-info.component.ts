@@ -77,7 +77,6 @@ export class ProjectInfoComponent implements OnInit {
   error: string | null = null;
   projectCategories = ProjectCategory;
   projectStatus = ProjectStatus;
-  expandedPanel: string | null = null;
   showOnHomePage: boolean = true;
 
   ngOnInit(): void {
