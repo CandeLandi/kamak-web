@@ -9,7 +9,7 @@
 
     <div class="mb-4 mt-8 w-full max-w-screen-2xl mx-auto">
       <a
-        routerLink="/"
+        href="#proyectos"
         class="flex items-center text-gray-300 hover:text-white transition-colors gap-2 text-sm font-medium"
       >
         <svg
@@ -43,17 +43,17 @@
           </p>
         </div>
         <div
-          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6"
+          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8"
         >
           <ng-container *ngFor="let detail of projectDetails">
-            <div class="flex items-center gap-2" *ngIf="detail.value">
+            <div class="flex items-start gap-3 min-w-0" *ngIf="detail.value">
               <i-lucide
                 [name]="detail.icon"
-                class="w-5 h-5 text-[#195764]"
+                class="w-5 h-5 text-[#195764] flex-shrink-0 mt-0.5"
               ></i-lucide>
-              <div>
+              <div class="min-w-0 flex-1 overflow-hidden">
                 <span class="text-xs text-gray-400">{{ detail.label }}:</span>
-                <p class="font-medium text-white">
+                <p class="font-medium text-white whitespace-nowrap">
                   <ng-container
                     *ngIf="
                       detail.label === 'Fecha inicio' ||
