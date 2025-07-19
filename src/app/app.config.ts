@@ -10,13 +10,11 @@ import { environment } from '../environments/environment';
 import {
   LucideAngularModule, ChevronLeft, ChevronRight, FolderSearch, Eye, Edit, Trash2, Plus, EyeOff, Image, AlertCircle, FileText, Upload, X, ImageOff, MoreVertical, Star, User, DollarSign, Folder, Search, ArrowLeft, MapPin, Building, Ruler, Clock, Calendar, CalendarCheck, ChevronDown, Expand, PlayCircle, Pencil, Video
 } from 'lucide-angular';
-import { provideServerRendering } from '@angular/platform-server';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideClientHydration(),
-    provideServerRendering(),
     provideAnimationsAsync(),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
     {

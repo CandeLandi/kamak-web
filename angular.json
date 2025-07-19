@@ -28,6 +28,7 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
+
               {
                 "glob": "**/*",
                 "input": "src/assets/logos",
@@ -46,13 +47,8 @@
             ],
             "styles": [
               "src/styles.scss"
-            ],
-            "scripts": [],
-            "server": "src/main.server.ts",
-            "outputMode": "static",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+                        ],
+            "scripts": []
           },
           "configurations": {
             "production": {
