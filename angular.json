@@ -49,7 +49,7 @@
             ],
             "scripts": [],
             "server": "src/main.server.ts",
-            "outputMode": "static",
+            "outputMode": "server",
             "ssr": {
               "entry": "src/server.ts"
             }
