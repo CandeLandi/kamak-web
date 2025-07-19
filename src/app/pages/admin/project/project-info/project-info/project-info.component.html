@@ -25,7 +25,7 @@
         </mat-form-field>
         <mat-form-field class="w-full rounded-xl">
           <mat-label>Descripción corta</mat-label>
-          <textarea matInput formControlName="description" rows="3" placeholder="Breve descripción del proyecto"></textarea>
+          <textarea matInput formControlName="description" rows="3" placeholder="Breve descripción del proyecto" class="max-h-12"></textarea>
 
         </mat-form-field>
         <div class="flex items-center justify-between px-2 ">
@@ -75,8 +75,24 @@
               min="0"
               (input)="formatArea($event)"
             />
-            <span matSuffix>m²</span>
+            <span matSuffix class="p-2">m²</span>
 
+          </mat-form-field>
+        </div>
+        <!-- Tercera fila: Orden -->
+        <div class="flex flex-col md:flex-row gap-4 w-full">
+          <mat-form-field class="flex-1 w-full rounded-xl">
+            <mat-label>Orden de visualización</mat-label>
+            <input
+              matInput
+              formControlName="order"
+              placeholder="Ej: 1"
+              type="number"
+              min="0"
+            />
+            <mat-error *ngIf="projectForm.get('order')?.hasError('min') && projectForm.get('order')?.touched">
+              El orden debe ser un número mayor a 0
+            </mat-error>
           </mat-form-field>
         </div>
       </div>
