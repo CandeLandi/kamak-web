@@ -35,6 +35,7 @@ export interface Project {
   updatedAt: Date;
   startDate: Date;
   endDate: Date;
+  order?: number;
   gallery?: Gallery[];
   contactName?: string;
   contactPhone?: string;
@@ -62,6 +63,7 @@ export interface CreateProjectDto {
   solution: string;
   startDate: Date;
   endDate: Date;
+  order?: number;
   contactName?: string;
   contactPhone?: string;
   contactEmail?: string;
@@ -86,6 +88,7 @@ export interface UpdateProjectDto {
   solution?: string;
   startDate?: Date;
   endDate?: Date;
+  order?: number;
   contactName?: string;
   contactPhone?: string;
   contactEmail?: string;

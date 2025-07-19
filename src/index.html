@@ -45,5 +45,22 @@
   </head>
   <body>
     <app-root></app-root>
+    <script type="text/javascript">
+      // Handle SPA routing for GitHub Pages
+      (function() {
+        var urlParams = new URLSearchParams(window.location.search);
+        var path = urlParams.get('path');
+        
+        if (path) {
+          // Remove the path parameter from the URL
+          urlParams.delete('path');
+          var newSearch = urlParams.toString();
+          var newUrl = path + (newSearch ? '?' + newSearch : '');
+          
+          // Update the browser history without reloading
+          window.history.replaceState(null, null, newUrl);
+        }
+      })();
+    </script>
   </body>
 </html>
