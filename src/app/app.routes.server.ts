@@ -10,7 +10,23 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Server
   },
   {
+    path: 'admin/project',
+    renderMode: RenderMode.Prerender
+  },
+  {
+    path: 'admin/dashboard',
+    renderMode: RenderMode.Prerender
+  },
+  {
+    path: 'admin/login',
+    renderMode: RenderMode.Prerender
+  },
+  {
+    path: '',
+    renderMode: RenderMode.Prerender
+  },
+  {
     path: '**',
-    renderMode: RenderMode.Server
+    renderMode: RenderMode.Prerender
   }
 ];
