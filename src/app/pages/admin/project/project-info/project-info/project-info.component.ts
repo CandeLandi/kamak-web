@@ -247,7 +247,7 @@ export class ProjectInfoComponent implements OnInit {
         notes: formValue.notes
       };
 
-      console.log('Enviando para actualizar:', updateDto);
+
 
       this.projectsService.updateProject(this.projectId, updateDto).subscribe({
       next: () => {

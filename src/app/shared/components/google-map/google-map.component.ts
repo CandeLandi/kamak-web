@@ -40,7 +40,6 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     // Verificar si estamos en el servidor (SSR)
     if (typeof window === 'undefined') {
-      console.log('Google Map Component: Running on server, skipping initialization');
       this.loading = false;
       return;
     }
@@ -105,15 +104,31 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
     this.loading = true;
     this.error = false;
 
+    console.log('🔍 Loading projects for map...');
+
     this.projectsService.getPublicProjects().subscribe({
       next: (projects) => {
-        const projectsWithLocation = projects.filter(p =>
-          p.address &&
-          typeof p.address.lat === 'number' &&
-          typeof p.address.lng === 'number' &&
-          !isNaN(p.address.lat) &&
-          !isNaN(p.address.lng)
-        );
+        console.log('📦 Projects received:', projects);
+        console.log('📊 Total projects:', projects.length);
+
+        const projectsWithLocation = projects.filter(p => {
+          console.log(`📍 Checking project "${p.name}":`, {
+            hasAddress: !!p.address,
+            address: p.address,
+            lat: p.address?.lat,
+            lng: p.address?.lng,
+            latType: typeof p.address?.lat,
+            lngType: typeof p.address?.lng
+          });
+
+          return p.address &&
+            typeof p.address.lat === 'number' &&
+            typeof p.address.lng === 'number' &&
+            !isNaN(p.address.lat) &&
+            !isNaN(p.address.lng);
+        });
+
+        console.log('✅ Projects with location:', projectsWithLocation.length);
 
         this.markers = projectsWithLocation.map(p => ({
           lat: p.address.lat,
@@ -122,6 +137,8 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
           address: p.address.address || 'Dirección no disponible',
           imageAfter: p.imageAfter
         }));
+
+        console.log('🎯 Markers created:', this.markers.length);
 
         // Crear markers personalizados con tooltips si el mapa está listo
         if (this.mapReady && this.map) {
@@ -133,7 +150,7 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
         this.loading = false;
       },
       error: (err) => {
-        console.error('Error loading projects:', err);
+        console.error('❌ Error loading projects:', err);
         this.error = true;
         this.loading = false;
       }
@@ -142,12 +159,9 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
 
   private createCustomMarkers() {
     if (!this.map) {
-      console.log('Map not ready yet, retrying...');
       setTimeout(() => this.createCustomMarkers(), 200);
       return;
     }
-
-    console.log('Creating custom markers...', this.markers.length);
 
     // Limpiar markers anteriores
     this.customMarkers.forEach(marker => marker.setMap(null));
@@ -222,12 +236,9 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
 
       this.customMarkers.push(marker);
     });
-
-    console.log('Custom markers created:', this.customMarkers.length);
   }
 
   onMapReady(map: google.maps.Map) {
-    console.log('Map ready!');
     this.map = map;
     this.mapReady = true;
 

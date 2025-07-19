@@ -95,12 +95,6 @@ export class ProjectImagesComponent implements OnChanges {
     forkJoin(uploadObservables).subscribe(() => {
       this.snackBar.open('Subida a la galería completada.', 'Cerrar', { duration: 3000 });
       this.projectsService.getProjectById(this.project!.id).subscribe((updatedProject: Project) => {
-
-        // --- INICIO DE LA DEPURACIÓN ---
-        console.log('Proyecto recargado después de la subida:', updatedProject);
-        console.log('Galería recibida del backend:', updatedProject.gallery);
-        // --- FIN DE LA DEPURACIÓN ---
-
         this.gallery = updatedProject.gallery || [];
         this.isUploadingGallery = false;
       });
