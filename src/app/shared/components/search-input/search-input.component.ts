@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
-import { LucideAngularModule } from 'lucide-angular';
+
 
 @Component({
   selector: 'app-search-input',
@@ -16,8 +16,7 @@ import { LucideAngularModule } from 'lucide-angular';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatIconModule,
-    LucideAngularModule
+    MatIconModule
   ],
   templateUrl: './search-input.component.html',
 })
