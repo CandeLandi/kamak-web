@@ -71,9 +71,9 @@ export class LandingProjectComponent implements OnInit {
   loadVideos(): void {
     if (!this.project?.id) return;
     this.loading = true;
-    this.videoService.getVideos(this.project.id, { page: 1, limit: this.limit }).subscribe({
-      next: (response) => {
-        this.videos = response.data || [];
+    this.videoService.getPublicVideos(this.project.id, { page: 1, limit: this.limit }).subscribe({
+      next: (videos) => {
+        this.videos = videos || [];
         this.loading = false;
       },
       error: (error) => {
