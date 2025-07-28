@@ -50,21 +50,32 @@ export class ProjectsService {
     return this.http.get<Project>(`${this.baseUrl}/projects/${id}`);
   }
 
-  getPublicProjects(): Observable<Project[]> {
-    return this.http.get<{ data: Project[] }>(`${this.baseUrl}/projects`).pipe(
-      map(res => res.data)
+    getPublicProjects(): Observable<Project[]> {
+    const PUBLIC_CLIENT_ID = '78abe353-1728-49b0-b268-1d2ad5786317';
+
+    return this.http.get<any>(`${this.baseUrl}/projects/client/${PUBLIC_CLIENT_ID}`).pipe(
+      map(response => {
+        if (response && Array.isArray(response.data)) {
+          return response.data;
+        } else if (Array.isArray(response)) {
+          return response;
+        } else if (response && Array.isArray(response.projects)) {
+          return response.projects;
+        } else {
+          return [];
+        }
+      })
     );
   }
 
   getPublicProjectById(id: string): Observable<Project> {
-    return this.http.get<Project>(`${this.baseUrl}/projects/${id}/published`);
+    return this.http.get<Project>(`${this.baseUrl}/projects/${id}`);
   }
 
   getFeaturedProjects(): Observable<Project[]> {
     return this.http.get<Project[]>(`${this.baseUrl}/projects/featured`);
   }
 
-  // MULTIMEDIA METHODS
   deleteGalleryImage(projectId: string, imageId: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/projects/${projectId}/gallery/${imageId}`);
   }

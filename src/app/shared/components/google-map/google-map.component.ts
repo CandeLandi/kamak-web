@@ -40,7 +40,6 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     // Verificar si estamos en el servidor (SSR)
     if (typeof window === 'undefined') {
-      console.log('Google Map Component: Running on server, skipping initialization');
       this.loading = false;
       return;
     }
@@ -107,13 +106,20 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
 
     this.projectsService.getPublicProjects().subscribe({
       next: (projects) => {
-        const projectsWithLocation = projects.filter(p =>
-          p.address &&
-          typeof p.address.lat === 'number' &&
-          typeof p.address.lng === 'number' &&
-          !isNaN(p.address.lat) &&
-          !isNaN(p.address.lng)
-        );
+        const projectsWithLocation = projects.filter(p => {
+          if (!p.address || typeof p.address !== 'object' || !p.address.lat || !p.address.lng) {
+            return false;
+          }
+
+          const hasValidLat = typeof p.address.lat === 'number' && !isNaN(p.address.lat);
+          const hasValidLng = typeof p.address.lng === 'number' && !isNaN(p.address.lng);
+
+          if (!hasValidLat || !hasValidLng) {
+            return false;
+          }
+
+          return true;
+        });
 
         this.markers = projectsWithLocation.map(p => ({
           lat: p.address.lat,
@@ -133,7 +139,7 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
         this.loading = false;
       },
       error: (err) => {
-        console.error('Error loading projects:', err);
+        console.error('❌ Error loading projects:', err);
         this.error = true;
         this.loading = false;
       }
@@ -142,12 +148,9 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
 
   private createCustomMarkers() {
     if (!this.map) {
-      console.log('Map not ready yet, retrying...');
       setTimeout(() => this.createCustomMarkers(), 200);
       return;
     }
-
-    console.log('Creating custom markers...', this.markers.length);
 
     // Limpiar markers anteriores
     this.customMarkers.forEach(marker => marker.setMap(null));
@@ -222,12 +225,9 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
 
       this.customMarkers.push(marker);
     });
-
-    console.log('Custom markers created:', this.customMarkers.length);
   }
 
   onMapReady(map: google.maps.Map) {
-    console.log('Map ready!');
     this.map = map;
     this.mapReady = true;
 
