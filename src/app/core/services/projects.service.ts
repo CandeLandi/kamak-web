@@ -51,25 +51,17 @@ export class ProjectsService {
   }
 
     getPublicProjects(): Observable<Project[]> {
-    console.log('Fetching public projects from:', `${this.baseUrl}/projects`);
-
     // Usar el clientId público que se usa en el componente de proyectos
     const PUBLIC_CLIENT_ID = '78abe353-1728-49b0-b268-1d2ad5786317';
 
     return this.http.get<any>(`${this.baseUrl}/projects/client/${PUBLIC_CLIENT_ID}`).pipe(
-      tap(response => {
-        console.log('Raw response from /projects/client:', response);
-      }),
       map(response => {
         // Manejar diferentes estructuras de respuesta
         if (response && Array.isArray(response.data)) {
-          console.log('Response has data array, length:', response.data.length);
           return response.data;
         } else if (Array.isArray(response)) {
-          console.log('Response is direct array, length:', response.length);
           return response;
         } else if (response && Array.isArray(response.projects)) {
-          console.log('Response has projects array, length:', response.projects.length);
           return response.projects;
         } else {
           console.error('Unexpected response structure:', response);

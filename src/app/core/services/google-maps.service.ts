@@ -12,7 +12,6 @@ export class GoogleMapsService {
   loadGoogleMaps(): Promise<void> {
     // Verificar si estamos en el servidor (SSR)
     if (typeof window === 'undefined') {
-      console.log('Google Maps: Running on server, skipping load');
       return Promise.resolve();
     }
 

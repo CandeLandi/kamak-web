@@ -1,11 +1,10 @@
 import { Component, OnInit, inject, ViewChild, Inject, ElementRef, AfterViewInit } from '@angular/core';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { CommonModule } from '@angular/common';
-import { ProjectsService } from '../../../../app/core/services/projects.service';
-import { Project } from '../../../../app/pages/admin/interfaces/project.interface';
+import { ProjectsService } from '../../../core/services/projects.service';
 import { MapInfoWindow } from '@angular/google-maps';
-import { GoogleMapsService } from '../../../../app/core/services/google-maps.service';
-import { environment } from '../../../../environments/environment';
+import { GoogleMapsService } from '../../../core/services/google-maps.service';
+
 
 @Component({
   selector: 'app-google-map',
@@ -40,7 +39,6 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     // Verificar si estamos en el servidor (SSR)
     if (typeof window === 'undefined') {
-      console.log('Google Map Component: Running on server, skipping initialization');
       this.loading = false;
       return;
     }
@@ -105,19 +103,11 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
     this.loading = true;
     this.error = false;
 
-    console.log('Loading projects for map...');
-
     this.projectsService.getPublicProjects().subscribe({
       next: (projects) => {
-        console.log('Projects received:', projects);
-        console.log('Total projects:', projects.length);
-
         const projectsWithLocation = projects.filter(p => {
-          console.log(`Checking project "${p.name}":`, p);
-
           // Verificar si el proyecto tiene dirección
           if (!p.address) {
-            console.log(`Project "${p.name}" has no address`);
             return false;
           }
 
@@ -128,18 +118,8 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
           const hasValidLat = typeof lat === 'number' && !isNaN(lat);
           const hasValidLng = typeof lng === 'number' && !isNaN(lng);
 
-          console.log(`Project "${p.name}" coordinates:`, {
-            lat,
-            lng,
-            hasValidLat,
-            hasValidLng,
-            address: p.address
-          });
-
           return hasValidLat && hasValidLng;
         });
-
-        console.log('Projects with location:', projectsWithLocation.length);
 
         this.markers = projectsWithLocation.map(p => ({
           lat: p.address.lat,
@@ -148,8 +128,6 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
           address: p.address.address || 'Dirección no disponible',
           imageAfter: p.imageAfter
         }));
-
-        console.log('Markers created:', this.markers.length);
 
         // Crear markers personalizados con tooltips si el mapa está listo
         if (this.mapReady && this.map) {
@@ -161,7 +139,7 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
         this.loading = false;
       },
       error: (err) => {
-        console.error('Error loading projects:', err);
+        console.error('❌ Error loading projects:', err);
         this.error = true;
         this.loading = false;
       }
@@ -170,12 +148,9 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
 
   private createCustomMarkers() {
     if (!this.map) {
-      console.log('Map not ready yet, retrying...');
       setTimeout(() => this.createCustomMarkers(), 200);
       return;
     }
-
-    console.log('Creating custom markers...', this.markers.length);
 
     // Limpiar markers anteriores
     this.customMarkers.forEach(marker => marker.setMap(null));
@@ -250,12 +225,9 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
 
       this.customMarkers.push(marker);
     });
-
-    console.log('Custom markers created:', this.customMarkers.length);
   }
 
   onMapReady(map: google.maps.Map) {
-    console.log('Map ready!');
     this.map = map;
     this.mapReady = true;
 

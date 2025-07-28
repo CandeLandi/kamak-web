@@ -1,11 +1,11 @@
-import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, OnInit, Output, OnDestroy } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CommonModule } from '@angular/common';
 import { FormControl } from '@angular/forms';
-import { debounceTime, switchMap, map, Observable, of } from 'rxjs';
+import { debounceTime, switchMap, map, Observable, of, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'google-place-autocomplete',
@@ -20,7 +20,7 @@ import { debounceTime, switchMap, map, Observable, of } from 'rxjs';
     }
   ]
 })
-export class GooglePlaceAutocompleteComponent implements OnInit, ControlValueAccessor {
+export class GooglePlaceAutocompleteComponent implements OnInit, OnDestroy, ControlValueAccessor {
   @Input() label = 'Ubicación';
   @Input() placeholder = 'Buscar dirección o ciudad';
   @Output() placeSelected = new EventEmitter<{ address: string, lat: number, lng: number }>();
@@ -31,10 +31,12 @@ export class GooglePlaceAutocompleteComponent implements OnInit, ControlValueAcc
 
   private onChange = (_: any) => {};
   public onTouched = () => {};
+  private destroy$ = new Subject<void>();
 
   ngOnInit() {
     this.addressControl.valueChanges.pipe(
-      debounceTime(300),
+      debounceTime(400), // Aumentado para reducir llamadas
+      takeUntil(this.destroy$),
       switchMap(value => {
         if (!value || value.length < 3) {
           this.onChange(null);
@@ -49,10 +51,21 @@ export class GooglePlaceAutocompleteComponent implements OnInit, ControlValueAcc
     });
   }
 
-  getPlacePredictions(input: string): Observable<google.maps.places.AutocompletePrediction[]> {
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+        getPlacePredictions(input: string): Observable<google.maps.places.AutocompletePrediction[]> {
     return new Observable(observer => {
+      // Usar la API con sessionToken para mejorar rendimiento y reducir advertencias
+      const sessionToken = new google.maps.places.AutocompleteSessionToken();
       const service = new google.maps.places.AutocompleteService();
-      service.getPlacePredictions({ input }, (predictions, status) => {
+
+      service.getPlacePredictions({
+        input,
+        sessionToken
+      }, (predictions: google.maps.places.AutocompletePrediction[] | null, status: google.maps.places.PlacesServiceStatus) => {
         if (status === google.maps.places.PlacesServiceStatus.OK && predictions) {
           observer.next(predictions);
         } else {
@@ -64,21 +77,24 @@ export class GooglePlaceAutocompleteComponent implements OnInit, ControlValueAcc
   }
 
   onOptionSelected(option: google.maps.places.AutocompletePrediction) {
-    const geocoder = new google.maps.Geocoder();
-    geocoder.geocode({ placeId: option.place_id }, (results, status) => {
-      if (status === 'OK' && results && results[0]) {
-        const location = results[0].geometry?.location;
-        if (location) {
-          const value = {
-            address: results[0].formatted_address,
-            lat: location.lat(),
-            lng: location.lng()
-          };
-          this.addressControl.setValue(results[0].formatted_address, { emitEvent: false });
-          this.onChange(value);
-          this.placeSelected.emit(value);
+    // Usar requestAnimationFrame para evitar bloqueos de UI
+    requestAnimationFrame(() => {
+      const geocoder = new google.maps.Geocoder();
+      geocoder.geocode({ placeId: option.place_id }, (results, status) => {
+        if (status === 'OK' && results && results[0]) {
+          const location = results[0].geometry?.location;
+          if (location) {
+            const value = {
+              address: results[0].formatted_address,
+              lat: location.lat(),
+              lng: location.lng()
+            };
+            this.addressControl.setValue(results[0].formatted_address, { emitEvent: false });
+            this.onChange(value);
+            this.placeSelected.emit(value);
+          }
         }
-      }
+      });
     });
   }
 
