@@ -69,14 +69,11 @@ export class ProjectsService {
   }
 
   getPublicProjectById(id: string): Observable<Project> {
-    return this.http.get<Project>(`${this.baseUrl}/projects/${id}/published`);
+    return this.http.get<Project>(`${this.baseUrl}/projects/${id}`);
   }
 
-  getFeaturedProjects(): Observable<Project[]> {
-    return this.http.get<Project[]>(`${this.baseUrl}/projects/featured`);
-  }
 
-  // MULTIMEDIA METHODS
+
   deleteGalleryImage(projectId: string, imageId: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/projects/${projectId}/gallery/${imageId}`);
   }

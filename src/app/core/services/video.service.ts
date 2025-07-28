@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { ProjectVideo, PaginatedResponse } from '../../pages/admin/interfaces/project.interface';
 import { AuthService } from './auth.service';
@@ -41,7 +42,17 @@ export class VideoService {
     let httpParams = new HttpParams();
     if (params?.page) httpParams = httpParams.set('page', params.page.toString());
     if (params?.limit) httpParams = httpParams.set('limit', params.limit.toString());
-    return this.http.get<ProjectVideo[]>(`${this.baseUrl}/projects/${projectId}/videos/public`, { params: httpParams });
+    return this.http.get<any>(`${this.baseUrl}/projects/${projectId}/videos/public`, { params: httpParams }).pipe(
+      map(response => {
+        if (response && Array.isArray(response.data)) {
+          return response.data;
+        } else if (Array.isArray(response)) {
+          return response;
+        } else {
+          return [];
+        }
+      })
+    );
   }
 
   getVideoById(projectId: string, videoId: string): Observable<ProjectVideo> {

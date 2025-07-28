@@ -71,7 +71,7 @@ export class LandingProjectComponent implements OnInit {
   loadVideos(): void {
     if (!this.project?.id) return;
     this.loading = true;
-    this.videoService.getPublicVideos(this.project.id).subscribe({
+    this.videoService.getPublicVideos(this.project.id, { page: 1, limit: this.limit }).subscribe({
       next: (videos) => {
         this.videos = videos || [];
         this.loading = false;
@@ -194,7 +194,9 @@ export class LandingProjectComponent implements OnInit {
   }
 
   getSafeVideoUrl(url: string): SafeResourceUrl | null {
-    if (!url) return null;
+    if (!url) {
+      return null;
+    }
     if (this.isYoutube(url)) {
       const videoId = this.extractVideoId(url);
       if (!videoId) return null;

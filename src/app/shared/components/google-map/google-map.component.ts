@@ -83,17 +83,18 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
     this.projectsService.getPublicProjects().subscribe({
       next: (projects) => {
         const projectsWithLocation = projects.filter(p => {
-          if (!p.address) {
+          if (!p.address || typeof p.address !== 'object' || !p.address.lat || !p.address.lng) {
             return false;
           }
 
-          const lat = p.address.lat;
-          const lng = p.address.lng;
+          const hasValidLat = typeof p.address.lat === 'number' && !isNaN(p.address.lat);
+          const hasValidLng = typeof p.address.lng === 'number' && !isNaN(p.address.lng);
 
-          const hasValidLat = typeof lat === 'number' && !isNaN(lat);
-          const hasValidLng = typeof lng === 'number' && !isNaN(lng);
+          if (!hasValidLat || !hasValidLng) {
+            return false;
+          }
 
-          return hasValidLat && hasValidLng;
+          return true;
         });
 
         this.markers = projectsWithLocation.map(p => ({
