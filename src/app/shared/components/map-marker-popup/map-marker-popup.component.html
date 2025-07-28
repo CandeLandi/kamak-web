@@ -1,0 +1,20 @@
+<div class="w-48 sm:w-56 bg-white rounded-xl shadow-2xl overflow-hidden relative">
+  <!-- Botón de cerrar -->
+  <button
+    (click)="closePopup()"
+    class="absolute top-1 right-1 z-10 w-6 h-6 bg-white/80 hover:bg-white rounded-full shadow-md flex items-center justify-center transition-colors">
+    <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+    </svg>
+  </button>
+
+  @if (imageAfter) {
+    <div class="w-full h-16 sm:h-24 overflow-hidden cursor-pointer hover:opacity-90 transition-opacity" (click)="navigateToProject()">
+      <img [src]="imageAfter" [alt]="title" class="w-full h-full object-cover" />
+    </div>
+  }
+  <div class="p-2">
+    <div class="font-bold text-xs sm:text-sm text-primary mb-1 truncate">{{ title }}</div>
+    <div class="text-gray-500 text-xs truncate">{{ address }}</div>
+  </div>
+</div>

@@ -1,6 +1,6 @@
 import { Injectable, signal, effect, inject, WritableSignal } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, tap, map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Project, CreateProjectDto, UpdateProjectDto, ProjectVideo, PaginatedResponse, PaginationDto } from '../../pages/admin/interfaces/project.interface';
 import { environment } from '../../../environments/environment';
 import { AuthService } from './auth.service';
