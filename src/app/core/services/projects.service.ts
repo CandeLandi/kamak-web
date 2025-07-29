@@ -1,6 +1,6 @@
 import { Injectable, signal, effect, inject, WritableSignal } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, tap, map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Project, CreateProjectDto, UpdateProjectDto, ProjectVideo, PaginatedResponse, PaginationDto } from '../../pages/admin/interfaces/project.interface';
 import { environment } from '../../../environments/environment';
 import { AuthService } from './auth.service';
@@ -51,12 +51,10 @@ export class ProjectsService {
   }
 
     getPublicProjects(): Observable<Project[]> {
-    // Usar el clientId público que se usa en el componente de proyectos
     const PUBLIC_CLIENT_ID = '78abe353-1728-49b0-b268-1d2ad5786317';
 
     return this.http.get<any>(`${this.baseUrl}/projects/client/${PUBLIC_CLIENT_ID}`).pipe(
       map(response => {
-        // Manejar diferentes estructuras de respuesta
         if (response && Array.isArray(response.data)) {
           return response.data;
         } else if (Array.isArray(response)) {
@@ -64,7 +62,6 @@ export class ProjectsService {
         } else if (response && Array.isArray(response.projects)) {
           return response.projects;
         } else {
-          console.error('Unexpected response structure:', response);
           return [];
         }
       })
@@ -72,14 +69,11 @@ export class ProjectsService {
   }
 
   getPublicProjectById(id: string): Observable<Project> {
-    return this.http.get<Project>(`${this.baseUrl}/projects/${id}/published`);
+    return this.http.get<Project>(`${this.baseUrl}/projects/${id}`);
   }
 
-  getFeaturedProjects(): Observable<Project[]> {
-    return this.http.get<Project[]>(`${this.baseUrl}/projects/featured`);
-  }
 
-  // MULTIMEDIA METHODS
+
   deleteGalleryImage(projectId: string, imageId: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/projects/${projectId}/gallery/${imageId}`);
   }

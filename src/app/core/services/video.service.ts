@@ -42,11 +42,17 @@ export class VideoService {
     let httpParams = new HttpParams();
     if (params?.page) httpParams = httpParams.set('page', params.page.toString());
     if (params?.limit) httpParams = httpParams.set('limit', params.limit.toString());
-    // El endpoint devuelve una respuesta paginada, necesitamos extraer el array data
-    return this.http.get<PaginatedResponse<ProjectVideo>>(`${this.baseUrl}/projects/${projectId}/videos`, { params: httpParams })
-      .pipe(
-        map(response => response.data || [])
-      );
+    return this.http.get<any>(`${this.baseUrl}/projects/${projectId}/videos/public`, { params: httpParams }).pipe(
+      map(response => {
+        if (response && Array.isArray(response.data)) {
+          return response.data;
+        } else if (Array.isArray(response)) {
+          return response;
+        } else {
+          return [];
+        }
+      })
+    );
   }
 
   getVideoById(projectId: string, videoId: string): Observable<ProjectVideo> {

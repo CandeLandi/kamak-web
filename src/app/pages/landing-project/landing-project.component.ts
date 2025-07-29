@@ -194,7 +194,9 @@ export class LandingProjectComponent implements OnInit {
   }
 
   getSafeVideoUrl(url: string): SafeResourceUrl | null {
-    if (!url) return null;
+    if (!url) {
+      return null;
+    }
     if (this.isYoutube(url)) {
       const videoId = this.extractVideoId(url);
       if (!videoId) return null;

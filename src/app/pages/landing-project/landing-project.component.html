@@ -1,5 +1,7 @@
 <app-header></app-header>
 <div class="bg-[#111] pb-8 min-h-screen px-4 ">
+  <!-- Debug: Template rendering -->
+  <script>console.log('LandingProjectComponent template rendering');</script>
 
   <div class="container mx-auto pt-8 flex flex-col gap-8">
     @if (loading) {
@@ -123,19 +125,22 @@
     </div>
     }
 
-    <!-- Bloque: Videos del Proyecto -->
-    @if (mainVideo && getSafeVideoUrl(mainVideo.youtubeUrl)) {
+    <!-- Bloque: Videos del Proyecto (sin título) -->
+    @if (videos.length > 0) {
     <div class=" w-full max-w-screen-2xl mx-auto">
+      <h2 class="text-2xl font-bold my-4 text-white flex items-center gap-2">
+        <i-lucide name="video" class="w-6 h-6 text-[#195764]"></i-lucide>Videos del Proyecto
+      </h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
         <div >
           <div class="aspect-video w-full rounded-lg overflow-hidden border border-white/10 mb-2">
             <iframe *ngIf="
-                isYoutube(mainVideo.youtubeUrl) &&
+                mainVideo && mainVideo.youtubeUrl && isYoutube(mainVideo.youtubeUrl) &&
                 getSafeVideoUrl(mainVideo.youtubeUrl)
               " class="w-full h-full" [src]="getSafeVideoUrl(mainVideo.youtubeUrl)"
               [title]="mainVideo.title || 'Video del Proyecto'" frameborder="0" allowfullscreen></iframe>
             <video *ngIf="
-                !isYoutube(mainVideo.youtubeUrl) &&
+                mainVideo && mainVideo.youtubeUrl && !isYoutube(mainVideo.youtubeUrl) &&
                 getSafeVideoUrl(mainVideo.youtubeUrl)
               " class="w-full h-full" controls>
               <source [src]="mainVideo.youtubeUrl" type="video/mp4" />
@@ -144,10 +149,10 @@
         </div>
         <div>
           <h3 class="text-xl font-semibold text-white mb-2">
-            {{ mainVideo.title || "Video del Proyecto" }}
+            {{ mainVideo?.title || "Video del Proyecto" }}
           </h3>
           <p class="text-gray-300 whitespace-pre-wrap mb-4">
-            {{ mainVideo.description || " " }}
+            {{ mainVideo?.description || " " }}
           </p>
         </div>
       </div>
