@@ -58,10 +58,10 @@
     @if (project.gallery && project.gallery.length > 0) {
     <div class=" w-full max-w-screen-2xl mx-auto ">
       <div class="mb-2">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           @for (image of displayedGallery; track image.id; let index = $index) {
           <div
-            class="relative h-64 md:h-80 rounded-lg overflow-hidden cursor-pointer group flex items-center justify-center"
+            class="relative aspect-[4/3] rounded-lg overflow-hidden cursor-pointer group flex items-center justify-center"
             (click)="openImageLightbox(index)">
             <img [src]="image.url || '/placeholder.svg'" [alt]="project.name + ' - Imagen ' + (index + 1)"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 rounded-lg" />
@@ -201,7 +201,7 @@
             class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm font-semibold bg-white text-[#181c23] border border-[#195764] shadow">
             Antes
           </div>
-          <div class="relative h-[350px] md:h-[450px] rounded-md overflow-hidden">
+          <div class="relative aspect-[4/3] rounded-md overflow-hidden">
             <img [src]="project.imageBefore" [alt]="project.name + ' - Antes'"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               style="object-fit: cover; width: 100%; height: 100%" />
@@ -218,7 +218,7 @@
             class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm font-semibold bg-white text-[#181c23] border border-[#195764] shadow">
             Después
           </div>
-          <div class="relative h-[350px] md:h-[450px] rounded-md overflow-hidden">
+          <div class="relative aspect-[4/3] rounded-md overflow-hidden">
             <img [src]="project.imageAfter" [alt]="project.name + ' - Después'"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               style="object-fit: cover; width: 100%; height: 100%" />

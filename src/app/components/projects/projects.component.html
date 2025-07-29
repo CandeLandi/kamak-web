@@ -20,7 +20,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         @for (project of paginatedProjects(); track project.id) {
           <a [routerLink]="['/projects', project.id]" class="block group">
-            <div class="bg-[#181c23] border border-white/10 group-hover:border-[#195764] rounded-lg overflow-hidden transition-all duration-300 h-[300px] relative">
+            <div class="bg-[#181c23] border border-white/10 group-hover:border-[#195764] rounded-lg overflow-hidden transition-all duration-300 aspect-[4/3] relative">
             <div class="relative h-full w-full overflow-hidden">
               <img
                 [src]="project.imageAfter || 'assets/images/placeholder.svg'"
