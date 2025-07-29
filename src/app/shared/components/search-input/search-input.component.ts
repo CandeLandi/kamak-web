@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { LucideAngularModule } from 'lucide-angular';
 
 
 @Component({
@@ -16,7 +17,8 @@ import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatIconModule
+    MatIconModule,
+    LucideAngularModule
   ],
   templateUrl: './search-input.component.html',
 })
