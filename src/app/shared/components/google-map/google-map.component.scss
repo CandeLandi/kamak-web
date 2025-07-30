@@ -11,6 +11,7 @@
   .gm-style-iw-c {
     padding: 0 !important;
   }
+  
 
   .gm-style-iw-d {
     padding: 0 !important;
@@ -25,5 +26,93 @@
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
+  }
+
+  // Estilos para el popup personalizado
+  .custom-tooltip {
+    width: 192px; /* w-48 */
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .tooltip-image {
+    width: 100%;
+    height: 64px; /* h-16 */
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .tooltip-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    max-height: 64px !important;
+  }
+
+  .tooltip-close-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    z-index: 10;
+    width: 24px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+    border: none;
+    cursor: pointer;
+  }
+
+  .tooltip-close-btn:hover {
+    background: white;
+  }
+
+  .tooltip-content {
+    padding: 8px;
+  }
+
+  .tooltip-title {
+    font-weight: bold;
+    font-size: 12px;
+    color: #195764;
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .tooltip-address {
+    color: #6b7280;
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // Responsive para pantallas pequeñas
+  @media (min-width: 640px) {
+    .custom-tooltip {
+      width: 224px; /* w-56 */
+    }
+
+    .tooltip-image {
+      height: 96px; /* h-24 */
+    }
+
+    .tooltip-img {
+      max-height: 96px !important;
+    }
+
+    .tooltip-title {
+      font-size: 14px;
+    }
   }
 }
