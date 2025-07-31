@@ -1,11 +1,11 @@
 <div class="p-4">
-  <form [formGroup]="projectForm" (ngSubmit)="saveForm()" class="space-y-8">
-    <div class="flex items-center gap-3 mb-6">
-      <i-lucide name="file-text" class="w-5 h-5" style="color:#195764"></i-lucide>
-      <h3 class="text-xl font-bold text-white">General</h3>
+  <form [formGroup]="projectForm" (ngSubmit)="saveForm()" class="space-y-4 md:space-y-6">
+    <div class="flex items-center gap-3 md:gap-4 mb-2">
+      <i-lucide name="file-text" class="w-5 h-5 md:w-6 md:h-6" style="color:#195764"></i-lucide>
+      <h3 class="text-xl md:text-2xl font-bold text-white">General</h3>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div class="space-y-2">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
+      <div class="space-y-2 md:space-y-4">
         <mat-form-field class="w-full rounded-xl">
           <mat-label>Nombre del proyecto</mat-label>
           <input matInput formControlName="name" placeholder="Nombre del proyecto" />
@@ -28,8 +28,8 @@
           <textarea matInput formControlName="description" rows="3" placeholder="Breve descripción del proyecto" class="max-h-12"></textarea>
 
         </mat-form-field>
-        <div class="flex items-center justify-between px-2 ">
-          <span class="text-sm font-medium text-white">Mostrar en página principal</span>
+        <div class="flex items-center justify-between px-2 md:px-4">
+          <span class="text-sm md:text-base font-medium text-white">Mostrar en página principal</span>
           <mat-slide-toggle
             [checked]="isPublished()"
             (change)="toggleStatus()"
@@ -37,7 +37,7 @@
           </mat-slide-toggle>
         </div>
       </div>
-      <div class="space-y-2">
+      <div class="space-y-2 md:space-y-4">
         <div class="w-full rounded-xl">
           <google-place-autocomplete formControlName="address"></google-place-autocomplete>
 
@@ -98,17 +98,17 @@
       </div>
     </div>
 
-    <div class="flex items-center mb-4 mt-4 gap-3">
-      <i-lucide name="file-text" class="w-5 h-5" style="color:#195764"></i-lucide>
-      <h3 class="text-xl font-bold text-white">Detalles</h3>
+    <div class="flex items-center gap-3 md:gap-4 mb-2 mt-4">
+      <i-lucide name="file-text" class="w-5 h-5 md:w-6 md:h-6" style="color:#195764"></i-lucide>
+      <h3 class="text-xl md:text-2xl font-bold text-white">Detalles</h3>
     </div>
-    <div class=" pt-4">
+    <div class="pt-2">
       <mat-form-field class="w-full rounded-xl">
         <mat-label>Descripción Detallada</mat-label>
         <textarea matInput formControlName="longDescription" rows="5" placeholder="Descripción detallada del proyecto"></textarea>
 
       </mat-form-field>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
         <mat-form-field class="w-full rounded-xl">
           <mat-label>El Desafío</mat-label>
           <textarea matInput formControlName="challenge" rows="4" placeholder="Descripción del desafío del proyecto"></textarea>
@@ -128,14 +128,14 @@
 
     <!-- Información Interna -->
     <div>
-      <div class="flex items-center gap-3 mb-6">
-        <i-lucide name="file-text" class="w-5 h-5" style="color:#195764"></i-lucide>
-        <h3 class="text-xl font-bold text-white">Información Interna</h3>
+      <div class="flex items-center gap-3 md:gap-4 mb-2 mt-4">
+        <i-lucide name="file-text" class="w-5 h-5 md:w-6 md:h-6" style="color:#195764"></i-lucide>
+        <h3 class="text-xl md:text-2xl font-bold text-white">Información Interna</h3>
       </div>
 
-      <div class="px-1 space-y-6">
+      <div class="px-1 md:px-2 space-y-4 md:space-y-6">
         <!-- Información de Contacto -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
           <mat-form-field class="w-full">
             <mat-label>Nombre de Contacto</mat-label>
             <input matInput formControlName="contactName" />
@@ -151,7 +151,7 @@
         </div>
 
         <!-- Información Financiera -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           <mat-form-field class="w-full">
             <mat-label>Presupuesto</mat-label>
             <input matInput formControlName="budget" />
@@ -177,9 +177,9 @@
       </div>
     </div>
 
-    <div class="mt-6 flex justify-end gap-4">
-      <button mat-stroked-button type="button" (click)="cancel()">Cancelar</button>
-      <button mat-raised-button color="primary" type="submit" [disabled]="isSubmitting">Guardar</button>
+    <div class="mt-4 flex justify-end gap-4 md:gap-6">
+      <button mat-stroked-button type="button" (click)="cancel()" class="text-sm md:text-base">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="isSubmitting" class="text-sm md:text-base">Guardar</button>
     </div>
   </form>
 </div>

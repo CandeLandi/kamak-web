@@ -2,7 +2,7 @@
   <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-10">
     <!-- Imagen Antes -->
     <div>
-      <label class="block text-white mb-3 text-base font-semibold">Imagen Antes</label>
+      <label class="block text-white mb-3 text-xl md:text-2xl font-semibold">Imagen Antes</label>
       <div class="relative aspect-[4/3] mb-4 rounded-lg overflow-hidden bg-black/20">
         <img *ngIf="before" [src]="before" alt="Imagen Antes" class="w-full h-full object-cover" />
         <!-- Spinner Overlay -->
@@ -24,7 +24,7 @@
 
     <!-- Imagen Después -->
     <div>
-      <label class="block text-white mb-3 text-base font-semibold">Imagen Después</label>
+      <label class="block text-white mb-3 text-xl md:text-2xl font-semibold">Imagen Después</label>
       <div class="relative aspect-[4/3] mb-4 rounded-lg overflow-hidden bg-black/20">
         <img *ngIf="after" [src]="after" alt="Imagen Después" class="w-full h-full object-cover" />
         <!-- Spinner Overlay -->
@@ -47,7 +47,7 @@
 
   <!-- Galería de Imágenes -->
   <div class="mt-12">
-    <label class="text-white mb-4 block text-lg font-semibold">Galería de Imágenes</label>
+    <label class="text-white mb-4 block text-xl md:text-2xl font-semibold">Galería de Imágenes</label>
 
     <!-- Contenedor principal de la galería con estado de carga y vacío -->
     <div class="relative min-h-[12rem] bg-black/20 rounded-lg p-4 border border-white/10">

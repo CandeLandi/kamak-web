@@ -1,9 +1,9 @@
 <app-header></app-header>
-<div class="bg-[#111] pb-8 min-h-screen px-4 ">
+<div class="bg-[#111] pb-8 min-h-screen px-4 md:px-6 lg:px-8 pt-12">
   <!-- Debug: Template rendering -->
   <script>console.log('LandingProjectComponent template rendering');</script>
 
-  <div class="container mx-auto pt-8 flex flex-col gap-8">
+  <div class="max-w-7xl mx-auto pt-8 flex flex-col gap-8 md:gap-12">
     @if (loading) {
     <div class="flex justify-center items-center h-[80vh]">
       <mat-spinner diameter="60"></mat-spinner>
@@ -12,33 +12,33 @@
 
 
     <div>
-      <div class="mb-4 mt-8 w-full max-w-screen-2xl mx-auto">
-        <a routerLink="/"
-          class="flex items-center text-gray-300 hover:text-white transition-colors gap-2 text-sm font-medium">
-          <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <div class="mb-4 md:mb-6 mt-8 w-full max-w-screen-2xl mx-auto">
+        <a href="/#proyectos"
+          class="flex items-center text-gray-300 hover:text-white transition-colors gap-2 text-sm md:text-base font-medium">
+          <svg class="h-5 w-5 md:w-6 md:h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
           Volver a Proyectos
         </a>
       </div>
-      <div class="bg-[#181c23]/90 rounded-2xl py-8 shadow-lg  w-full max-w-screen-2xl mx-auto px-4">
-        <div class="space-y-6">
+      <div class="bg-[#181c23]/90 rounded-2xl py-8 md:py-12 shadow-lg w-full max-w-screen-2xl mx-auto px-4 md:px-6 lg:px-8">
+        <div class="space-y-6 md:space-y-8">
           <div>
-            <h1 class="text-3xl md:text-4xl font-bold text-white flex items-center gap-3">
-              <i-lucide name="star" class="w-7 h-7 text-[#195764]"></i-lucide>
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white flex items-center gap-3">
+              <i-lucide name="star" class="w-7 h-7 md:w-8 md:h-8 text-[#195764]"></i-lucide>
               {{ project.name }}
             </h1>
-            <p class="text-base sm:text-lg text-gray-300 max-w-3xl mt-6 break-words whitespace-pre-line">
+            <p class="text-base sm:text-lg md:text-xl text-gray-300 max-w-3xl mt-6 md:mt-8 break-words whitespace-pre-line">
               {{ project.description }}
             </p>
           </div>
-          <div class="flex flex-wrap justify-between pr-4 gap-4 ">
+          <div class="flex flex-wrap justify-between pr-4 gap-4 md:gap-6">
             <ng-container *ngFor="let detail of projectDetails">
               <div class="flex items-center gap-2 mb-4 lg:mb-0" *ngIf="detail.value">
-                <i-lucide [name]="detail.icon" class="w-5 h-5 text-[#195764]"></i-lucide>
+                <i-lucide [name]="detail.icon" class="w-5 h-5 md:w-6 md:h-6 text-[#195764]"></i-lucide>
                 <div>
-                  <span class="text-xs text-gray-400">{{ detail.label }}:</span>
-                  <p class="font-medium text-white" >
+                  <span class="text-xs md:text-sm text-gray-400">{{ detail.label }}:</span>
+                  <p class="font-medium text-white text-sm md:text-base">
                     <ng-container *ngIf="
                         detail.label === 'Fecha inicio' ||
                           detail.label === 'Fecha fin';
@@ -56,9 +56,9 @@
       </div>
     </div>
     @if (project.gallery && project.gallery.length > 0) {
-    <div class=" w-full max-w-screen-2xl mx-auto ">
-      <div class="mb-2">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    <div class="w-full max-w-screen-2xl mx-auto">
+      <div class="mb-2 md:mb-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
           @for (image of displayedGallery; track image.id; let index = $index) {
           <div
             class="relative aspect-[4/3] rounded-lg overflow-hidden cursor-pointer group flex items-center justify-center"
@@ -67,20 +67,20 @@
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 rounded-lg" />
             <div
               class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center bg-black/50">
-              <i-lucide name="expand" class="w-8 h-8 text-white"></i-lucide>
+              <i-lucide name="expand" class="w-8 h-8 md:w-10 md:h-10 text-white"></i-lucide>
             </div>
           </div>
           }
         </div>
         @if (hasMoreImages && !showAllImages) {
-        <div class="mt-6 text-center">
+        <div class="mt-6 md:mt-8 text-center">
           <button (click)="showAllImages = true"
-            class="border border-[#195764] text-[#195764] hover:bg-[#195764]/10 px-4 py-2 rounded-md font-semibold transition-colors flex items-center justify-center mx-auto">
+            class="border border-[#195764] text-[#195764] hover:bg-[#195764]/10 px-4 md:px-6 py-2 md:py-3 rounded-md font-semibold transition-colors flex items-center justify-center mx-auto text-sm md:text-base">
             Ver más imágenes
-            <i-lucide name="chevron-down" class="w-4 h-4 ml-2"></i-lucide>
+            <i-lucide name="chevron-down" class="w-4 h-4 md:w-5 md:h-5 ml-2"></i-lucide>
           </button>
           @if(project.gallery) {
-          <p class="text-sm text-gray-400 mt-2">
+          <p class="text-sm md:text-base text-gray-400 mt-2 md:mt-3">
             Mostrando {{ initialImageCount }} de
             {{ project.gallery.length }} imágenes
           </p>
@@ -92,30 +92,30 @@
     }
 
     @if(project.longDescription || project.challenge || project.solution) {
-    <div class=" w-full max-w-screen-2xl mx-auto">
+    <div class="w-full max-w-screen-2xl mx-auto">
       @if(project.longDescription) {
-      <p class="text-gray-300 mb-6 whitespace-pre-line break-words">
+      <p class="text-gray-300 mb-6 md:mb-8 text-base md:text-lg whitespace-pre-line break-words">
         {{ project.longDescription }}
       </p>
       }
       @if(project.challenge || project.solution) {
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
         @if(project.challenge) {
         <div>
-          <h3 class="text-xl font-semibold mb-3 text-white flex items-center gap-2">
-            <i-lucide name="alert-circle" class="w-5 h-5 text-[#195764]"></i-lucide>El desafío
+          <h3 class="text-xl md:text-2xl font-semibold mb-3 md:mb-4 text-white flex items-center gap-2">
+            <i-lucide name="alert-circle" class="w-5 h-5 md:w-6 md:h-6 text-[#195764]"></i-lucide>El desafío
           </h3>
-          <p class="text-gray-300 whitespace-pre-line break-words">
+          <p class="text-gray-300 text-base md:text-lg whitespace-pre-line break-words">
             {{ project.challenge }}
           </p>
         </div>
         }
         @if(project.solution) {
         <div>
-          <h3 class="text-xl font-semibold mb-3 text-white flex items-center gap-2">
-            <i-lucide name="star" class="w-5 h-5 text-[#195764]"></i-lucide>Nuestra solución
+          <h3 class="text-xl md:text-2xl font-semibold mb-3 md:mb-4 text-white flex items-center gap-2">
+            <i-lucide name="star" class="w-5 h-5 md:w-6 md:h-6 text-[#195764]"></i-lucide>Nuestra solución
           </h3>
-          <p class="text-gray-300 whitespace-pre-line break-words">
+          <p class="text-gray-300 text-base md:text-lg whitespace-pre-line break-words">
             {{ project.solution }}
           </p>
         </div>
@@ -127,13 +127,13 @@
 
     <!-- Bloque: Videos del Proyecto (sin título) -->
     @if (videos.length > 0) {
-    <div class=" w-full max-w-screen-2xl mx-auto">
-      <h2 class="text-2xl font-bold my-4 text-white flex items-center gap-2">
-        <i-lucide name="video" class="w-6 h-6 text-[#195764]"></i-lucide>Videos del Proyecto
+    <div class="w-full max-w-screen-2xl mx-auto">
+      <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold my-4 md:my-6 text-white flex items-center gap-2">
+        <i-lucide name="video" class="w-6 h-6 md:w-8 md:h-8 text-[#195764]"></i-lucide>Videos del Proyecto
       </h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
         <div>
-          <div class="aspect-video w-full rounded-lg overflow-hidden border border-white/10 mb-2">
+          <div class="aspect-video w-full rounded-lg overflow-hidden border border-white/10 mb-2 md:mb-4">
             <iframe *ngIf="
                 mainVideo && mainVideo.youtubeUrl && isYoutube(mainVideo.youtubeUrl) &&
                 getSafeVideoUrl(mainVideo.youtubeUrl)
@@ -148,10 +148,10 @@
           </div>
         </div>
         <div>
-          <h3 class="text-xl font-semibold text-white mb-2">
+          <h3 class="text-xl md:text-2xl font-semibold text-white mb-2 md:mb-4">
             {{ mainVideo?.title || "Video del Proyecto" }}
           </h3>
-          <p class="text-gray-300 whitespace-pre-wrap mb-4">
+          <p class="text-gray-300 text-base md:text-lg whitespace-pre-wrap mb-4 md:mb-6">
             {{ mainVideo?.description || " " }}
           </p>
         </div>
@@ -159,10 +159,10 @@
     </div>
     } @if (additionalVideos.length > 0) {
     <div class="w-full max-w-screen-2xl mx-auto">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 items-start">
         @for (video of additionalVideos; track video.id) {
-        <div class="flex flex-col gap-2">
-          <div class="aspect-video w-full rounded-lg overflow-hidden border border-white/10 mb-2">
+        <div class="flex flex-col gap-2 md:gap-4">
+          <div class="aspect-video w-full rounded-lg overflow-hidden border border-white/10 mb-2 md:mb-4">
             <iframe *ngIf="
                 isYoutube(video.youtubeUrl) && getSafeVideoUrl(video.youtubeUrl)
               " class="w-full h-full" [src]="getSafeVideoUrl(video.youtubeUrl)"
@@ -174,10 +174,10 @@
               <source [src]="video.youtubeUrl" type="video/mp4" />
             </video>
           </div>
-          <h3 class="text-lg font-semibold text-white mb-1">
+          <h3 class="text-lg md:text-xl font-semibold text-white mb-1 md:mb-2">
             {{ video.title || "Video adicional" }}
           </h3>
-          <p class="text-gray-300 whitespace-pre-wrap mb-2">
+          <p class="text-gray-300 text-sm md:text-base whitespace-pre-wrap mb-2 md:mb-3">
             {{ video.description || " " }}
           </p>
         </div>
@@ -189,16 +189,16 @@
     <!-- Bloque: Antes y Después -->
     @if(project.imageBefore && project.imageAfter) {
     <div class="w-full max-w-screen-2xl mx-auto">
-      <h2 class="text-2xl font-bold my-4 text-white flex items-center gap-2">
-        <i-lucide name="image" class="w-6 h-6 text-[#195764]"></i-lucide>Antes y
-        Después
+      <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold my-4 md:my-6 text-white flex items-center gap-2">
+        <i-lucide name="image" class="w-6 h-6 md:w-8 md:h-8 text-[#195764]"></i-lucide>Antes y
+        después
       </h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         <!-- Imagen Antes -->
-        <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-md cursor-pointer group"
+        <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-lg cursor-pointer group"
           (click)="openBeforeAfterLightbox(0)">
           <div
-            class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm font-semibold bg-white text-[#181c23] border border-[#195764] shadow">
+            class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm md:text-base font-semibold bg-white text-[#181c23] border border-[#195764] shadow">
             Antes
           </div>
           <div class="relative aspect-[4/3] rounded-md overflow-hidden">
@@ -208,14 +208,14 @@
           </div>
           <div
             class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center bg-black/30">
-            <i-lucide name="expand" class="w-8 h-8 text-white"></i-lucide>
+            <i-lucide name="expand" class="w-8 h-8 md:w-10 md:h-10 text-white"></i-lucide>
           </div>
         </div>
         <!-- Imagen Después -->
-        <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-md cursor-pointer group"
+        <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-lg cursor-pointer group"
           (click)="openBeforeAfterLightbox(1)">
           <div
-            class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm font-semibold bg-white text-[#181c23] border border-[#195764] shadow">
+            class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm md:text-base font-semibold bg-white text-[#181c23] border border-[#195764] shadow">
             Después
           </div>
           <div class="relative aspect-[4/3] rounded-md overflow-hidden">
@@ -225,7 +225,7 @@
           </div>
           <div
             class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center bg-black/30">
-            <i-lucide name="expand" class="w-8 h-8 text-white"></i-lucide>
+            <i-lucide name="expand" class="w-8 h-8 md:w-10 md:h-10 text-white"></i-lucide>
           </div>
         </div>
       </div>
@@ -233,16 +233,16 @@
     }
 
     <!-- CTA -->
-    <div class=" bg-[#195764] rounded-lg p-6 text-center w-full max-w-screen-2xl mx-auto px-4">
-      <h3 class="text-xl font-bold mb-2 text-white">
+    <div class="bg-[#195764] rounded-lg p-6 md:p-8 text-center w-full max-w-screen-2xl mx-auto px-4 md:px-6 lg:px-8">
+      <h3 class="text-xl md:text-2xl font-bold mb-2 md:mb-4 text-white">
         ¿Te interesa un proyecto similar?
       </h3>
-      <p class="text-gray-100 mb-4">
+      <p class="text-gray-100 mb-4 md:mb-6 text-base md:text-lg">
         Contáctanos para discutir cómo podemos ayudarte con tu próximo proyecto.
       </p>
       <a href="/#contacto">
         <button
-          class="border border-white text-white hover:bg-white/10 px-4 py-2 rounded-md font-semibold transition-colors">
+          class="border border-white text-white hover:bg-white/10 px-4 md:px-6 py-2 md:py-3 rounded-md font-semibold transition-colors text-sm md:text-base">
           Contactar ahora
         </button>
       </a>
