@@ -35,7 +35,7 @@ export class ServicesComponent {
     {
       id: '1',
       title: 'Diseño del proyecto',
-      description: 'Diseñamos un layout funcional y personalizado, adaptado a las necesidades operativas y comerciales. Presentamos planos, renders y visualizaciones que permiten entender con claridad cómo será el resultado final antes de comenzar la obra.',
+      description: 'Diseñamos un layout personalizado, adaptado a las necesidades operativas y comerciales. Presentamos planos, renders y visualizaciones que muestran cómo será el resultado final antes de comenzar la obra.',
       images: [
         'assets/images/project-design/one.webp',
         'assets/images/project-design/two.webp',
@@ -66,7 +66,7 @@ export class ServicesComponent {
     {
       id: '4',
       title: 'Fabricación de muebles',
-      description: 'Contamos con fábrica propia equipada con tecnología de producción automatizada, donde producimos muebles a medida para cada proyecto. Garantizamos precisión, calidad y diseño funcional, adaptado a las necesidades y estética de cada espacio.',
+      description: 'Contamos con fábrica propia equipada con tecnología de producción automatizada, donde producimos muebles a medida para cada proyecto.',
       video: {
         url: 'assets/images/gastronomic-equipment/fabrication.mp4',
         startTime: 0
