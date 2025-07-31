@@ -1,9 +1,9 @@
 <app-header></app-header>
-<div class="bg-[#111] pb-8 min-h-screen px-4">
+<div class="bg-[#111] pb-8 min-h-screen px-4 md:px-6 lg:px-8 pt-12">
   <!-- Debug: Template rendering -->
   <script>console.log('LandingProjectComponent template rendering');</script>
 
-  <div class="max-w-7xl mx-auto pt-8 flex flex-col gap-8">
+  <div class="max-w-7xl mx-auto pt-8 flex flex-col gap-8 md:gap-12">
     @if (loading) {
     <div class="flex justify-center items-center h-[80vh]">
       <mat-spinner diameter="60"></mat-spinner>
@@ -12,10 +12,10 @@
 
 
     <div>
-      <div class="mb-4 mt-8 w-full max-w-screen-2xl mx-auto">
-        <a routerLink="/"
-          class="flex items-center text-gray-300 hover:text-white transition-colors gap-2 text-sm font-medium">
-          <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <div class="mb-4 md:mb-6 mt-8 w-full max-w-screen-2xl mx-auto">
+        <a href="/#proyectos"
+          class="flex items-center text-gray-300 hover:text-white transition-colors gap-2 text-sm md:text-base font-medium">
+          <svg class="h-5 w-5 md:w-6 md:h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
           Volver a Proyectos
@@ -57,7 +57,7 @@
     </div>
     @if (project.gallery && project.gallery.length > 0) {
     <div class="w-full max-w-screen-2xl mx-auto">
-      <div class="mb-2">
+      <div class="mb-2 md:mb-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
           @for (image of displayedGallery; track image.id; let index = $index) {
           <div
