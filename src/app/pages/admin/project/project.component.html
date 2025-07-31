@@ -1,14 +1,14 @@
 <app-admin-header (logout)="handleLogout()"></app-admin-header>
 
-<div class="max-w-screen-2xl mx-auto px-4 flex flex-col bg-black text-white mt-20 mb-20">
-  <div class="mb-2">
-    <a [routerLink]="'/admin/dashboard'" class="flex items-center text-gray-300 hover:text-white transition-colors gap-2 text-sm font-medium">
-      <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+<div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex flex-col bg-black text-white mt-20 mb-20">
+  <div class="mb-4 md:mb-6">
+    <a [routerLink]="'/admin/dashboard'" class="flex items-center text-gray-300 hover:text-white transition-colors gap-2 text-sm md:text-base font-medium">
+      <svg class="h-5 w-5 md:w-6 md:h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
       Volver al dashboard
     </a>
   </div>
   <div>
-    <h1 class="text-3xl font-bold text-white mb-6">
+    <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 md:mb-8">
       {{ project?.name }}
     </h1>
   </div>
@@ -20,7 +20,7 @@
       class="bg-[#23272f]/80 border border-white/10 rounded-xl shadow-lg overflow-hidden w-full"
     >
       <mat-tab label="Información">
-        <div class="w-full">
+        <div class="w-full p-4">
           <app-project-info
             [projectId]="projectId"
             [isEditMode]="isEditMode"
@@ -29,12 +29,12 @@
         </div>
       </mat-tab>
       <mat-tab label="Imágenes" [disabled]="!isEditMode">
-        <div class="w-full">
+        <div class="w-full p-4">
           <app-project-images [project]="project" (imageUpdated)="loadProject(projectId!)"></app-project-images>
         </div>
       </mat-tab>
       <mat-tab label="Videos" [disabled]="!isEditMode">
-        <div class="w-full">
+        <div class="w-full p-4">
           <app-project-videos [project]="project"></app-project-videos>
         </div>
       </mat-tab>
