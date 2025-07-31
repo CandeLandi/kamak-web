@@ -1,23 +1,23 @@
-<section id="servicios" class="pt-16 md:pt-24 pb-8 md:pb-12 bg-black relative flex items-center min-h-screen">
-  <div class="container mx-auto px-4 relative z-10 w-full">
-    <div class="text-center mb-6 sm:mb-12 relative overflow-hidden rounded-lg p-6">
+<section id="servicios" class="py-16 md:py-20 lg:py-24 bg-black relative flex items-center min-h-screen">
+  <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 relative z-10 w-full">
+    <div class="text-center relative overflow-hidden rounded-lg mb-12 md:mb-16">
       <div class="relative z-10">
-        <h2 class="text-2xl sm:text-3xl font-bold mb-4 text-white">Nuestros Servicios</h2>
-        <p class="text-gray-300 max-w-3xl mx-auto mb-8">
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-white">Nuestros Servicios</h2>
+        <p class="text-gray-300 max-w-4xl mx-auto text-lg md:text-xl">
           Nos especializamos en la arquitectura comercial, brindando un servicio completo que abarca desde el
           diseño inicial hasta la entrega final.
         </p>
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-      @for (service of services; track service.id) {
-        <div class="bg-black border border-white/50 rounded-lg overflow-hidden flex flex-col h-full">
-          <div class="p-6 flex-1 flex flex-col justify-start">
-            <h3 class="text-xl font-bold text-white mb-3">{{ service.title }}</h3>
-            <p class="text-gray-300">{{ service.description }}</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-12 md:mb-16">
+      @for (service of services; track service.id; let index = $index) {
+        <div class="bg-[#282c34] border border-gray-400/30 rounded-xl overflow-hidden flex flex-col h-full shadow-lg border-t-4 border-t-gray-900">
+          <div class="p-6 md:p-8 flex-1 flex flex-col justify-start">
+            <h3 class="text-xl md:text-2xl font-bold text-white mb-4">{{ service.title }}</h3>
+            <p class="text-gray-300 text-base md:text-lg">{{ service.description }}</p>
           </div>
-          <div class="relative aspect-[4/3] w-full p-4">
+          <div class="relative h-[250px] md:h-[300px] w-full p-4 md:p-6">
             @if (service.video) {
               @if (service.video.url.endsWith('.mp4')) {
                 <video
@@ -43,8 +43,8 @@
       }
     </div>
 
-    <div class="text-center mt-12">
-      <p class="text-xl font-semibold text-white bg-[#195764] inline-block px-6 py-3 rounded-lg shadow-md">
+    <div class="text-center mt-12 md:mt-16">
+      <p class="text-xl md:text-2xl font-semibold text-white bg-[#195764] inline-block px-8 md:px-12 py-4 md:py-6 rounded-lg shadow-md">
         Nos encargamos de todo, para que vos no tengas que preocuparte por nada.
       </p>
     </div>
