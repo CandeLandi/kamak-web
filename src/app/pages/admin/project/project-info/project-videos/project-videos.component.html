@@ -4,7 +4,7 @@
     <div class="flex items-center gap-2">
       <lucide-icon *ngIf="isEditMode" name="pencil" class="w-5 h-5 text-primary" />
       <lucide-icon *ngIf="!isEditMode" name="plus" class="w-5 h-5 text-primary" />
-      <h3 class="text-lg font-semibold text-white">
+      <h3 class="text-xl md:text-2xl font-semibold text-white">
         {{ isEditMode ? 'Editar Video' : 'Agregar Nuevo Video' }}
       </h3>
     </div>
@@ -62,7 +62,7 @@
 
   <div class="w-full mt-8">
     <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-6">
-      <h3 class="text-lg font-semibold text-white mb-4">
+      <h3 class="text-xl md:text-2xl font-semibold text-white mb-4">
         Videos del Proyecto
         <span *ngIf="videos.length > 0" class="text-sm font-normal text-gray-400 ml-2">• Haz clic en un video para editarlo</span>
       </h3>

@@ -8,13 +8,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LucideAngularModule } from 'lucide-angular';
-import { debounceTime, distinctUntilChanged, Subject, takeUntil, tap } from 'rxjs';
 import { ProjectsService } from '../../core/services/projects.service';
 import { AuthService } from '../../core/services/auth.service';
 import { Project, PaginationDto } from '../../pages/admin/interfaces/project.interface';
-import { SearchInputComponent } from '../../shared/components/search-input/search-input.component';
 import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
-import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-projects',
@@ -29,7 +26,6 @@ import { environment } from '../../../environments/environment';
     MatIconModule,
     MatProgressSpinnerModule,
     LucideAngularModule,
-    SearchInputComponent,
     PaginationComponent,
   ],
   templateUrl: './projects.component.html',
@@ -45,13 +41,11 @@ export class ProjectsComponent implements OnInit {
   private allProjects = signal<Project[]>([]);
   public searchQuery = signal('');
 
-  // --- Paginación ---
   public pagination = signal({
     pageIndex: 0,
     pageSize: 6,
   });
 
-  // --- Selectores (Signals Computados) ---
   public filteredProjects = computed(() => {
     const query = this.searchQuery().toLowerCase();
     const projects = this.allProjects();
@@ -83,7 +77,6 @@ export class ProjectsComponent implements OnInit {
 
   private readonly PUBLIC_CLIENT_ID = '78abe353-1728-49b0-b268-1d2ad5786317';
 
-  // El effect debe ser un campo de clase, no dentro de ngOnInit
   private clientIdEffect = effect(() => {
     const clientId = this.authService.clientIdSignal();
     if (clientId) {
@@ -132,7 +125,6 @@ export class ProjectsComponent implements OnInit {
     const total = this.totalPages();
     const newPageIndex = Math.max(0, Math.min(pageIndex, total - 1));
 
-    // Forzar el repintado reiniciando el estado de paginación
     this.pagination.set({ ...this.pagination(), pageIndex: newPageIndex });
   }
 }
