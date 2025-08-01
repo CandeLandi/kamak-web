@@ -1,9 +1,7 @@
 <app-header></app-header>
-<div class="bg-[#111] pb-8 min-h-screen px-4 md:px-6 lg:px-8 pt-12">
-  <!-- Debug: Template rendering -->
-  <script>console.log('LandingProjectComponent template rendering');</script>
+<div class="bg-[#111] pb-8 min-h-screen pt-12">
 
-  <div class="max-w-7xl mx-auto pt-8 flex flex-col gap-8 md:gap-12 p-6">
+  <div class="max-w-7xl mx-auto pt-8 flex flex-col gap-8 md:gap-12 px-4 md:px-6 lg:px-8">
     @if (loading) {
     <div class="flex justify-center items-center h-[80vh]">
       <mat-spinner diameter="60"></mat-spinner>
@@ -12,7 +10,7 @@
 
 
     <div>
-      <div class="mb-4 md:mb-6 mt-8 w-full max-w-screen-2xl mx-auto">
+      <div class="mb-4 md:mb-6 mt-2 w-full max-w-screen-2xl mx-auto">
         <a href="/#proyectos"
           class="flex items-center text-gray-300 hover:text-white transition-colors gap-2 text-sm md:text-base font-medium">
           <svg class="h-5 w-5 md:w-6 md:h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -21,7 +19,7 @@
           Volver a Proyectos
         </a>
       </div>
-      <div class="bg-[#181c23]/90 rounded-2xl py-8 md:py-12 shadow-lg w-full max-w-screen-2xl mx-auto px-4 md:px-6 lg:px-8">
+             <div class="bg-[#181c23]/90 rounded-2xl py-8 md:py-12 shadow-lg w-full max-w-screen-2xl mx-auto px-4 md:px-6 lg:px-8">
         <div class="space-y-6 md:space-y-8">
           <div>
             <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white flex items-center gap-3">
@@ -233,7 +231,7 @@
     }
 
     <!-- CTA -->
-    <div class="bg-[#195764] rounded-lg p-6 md:p-8 text-center w-full max-w-screen-2xl mx-auto px-4 md:px-6 lg:px-8">
+    <div class="bg-[#195764] rounded-lg p-6 md:p-8 text-center w-full max-w-screen-2xl mx-auto">
       <h3 class="text-xl md:text-2xl font-bold mb-2 md:mb-4 text-white">
         ¿Te interesa un proyecto similar?
       </h3>
