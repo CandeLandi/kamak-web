@@ -8,7 +8,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7TgxF_PQp-050_Blm_ksDTkh1q0RPing&libraries=places" async defer></script>
 
     <base href="/" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="icon" type="image/svg+xml" href="/assets/logos/favicon.svg" />
     <link
       rel="stylesheet"
@@ -50,13 +50,13 @@
       (function() {
         var urlParams = new URLSearchParams(window.location.search);
         var path = urlParams.get('path');
-        
+
         if (path) {
           // Remove the path parameter from the URL
           urlParams.delete('path');
           var newSearch = urlParams.toString();
           var newUrl = path + (newSearch ? '?' + newSearch : '');
-          
+
           // Update the browser history without reloading
           window.history.replaceState(null, null, newUrl);
         }

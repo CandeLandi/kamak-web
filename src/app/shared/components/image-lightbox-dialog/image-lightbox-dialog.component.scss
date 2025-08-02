@@ -1,0 +1,14 @@
+:host {
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+}
+
+img {
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  pointer-events: none;
+}
