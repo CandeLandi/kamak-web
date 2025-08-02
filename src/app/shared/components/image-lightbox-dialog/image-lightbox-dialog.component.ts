@@ -21,7 +21,8 @@ export interface ImageLightboxData {
     MatIconModule,
     LucideAngularModule
   ],
-  templateUrl: './image-lightbox-dialog.component.html'
+  templateUrl: './image-lightbox-dialog.component.html',
+  styleUrls: ['./image-lightbox-dialog.component.scss']
 })
 export class ImageLightboxDialogComponent implements OnInit {
   currentIndex: number = 0;
@@ -84,5 +85,9 @@ export class ImageLightboxDialogComponent implements OnInit {
 
   get hasMultipleImages(): boolean {
     return this.images.length > 1;
+  }
+
+  preventZoom(event: MouseEvent): void {
+    event.preventDefault();
   }
 }

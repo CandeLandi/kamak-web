@@ -27,7 +27,8 @@
       [src]="currentImage"
       [alt]="projectName ? projectName + ' - Imagen ' + (currentIndex + 1) : 'Imagen ' + (currentIndex + 1)"
       class="max-w-full max-h-full object-contain rounded-lg shadow-2xl transition-transform duration-300 hover:scale-[1.02]"
-      loading="lazy" />
+      loading="lazy"
+      (dblclick)="preventZoom($event)" />
   </div>
 
   <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 md:p-8 pb-2 md:pb-3 flex flex-col items-center gap-2 md:gap-4 cursor-default" (click)="$event.stopPropagation()">

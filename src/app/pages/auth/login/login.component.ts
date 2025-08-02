@@ -36,7 +36,8 @@ export class LoginComponent {
     this.isLoading = true;
     this.error = null;
     const { email, password } = this.loginForm.value;
-    this.authService.login(email, password).subscribe({
+    const emailLowerCase = email.toLowerCase();
+    this.authService.login(emailLowerCase, password).subscribe({
       next: () => {
         setTimeout(() => {
           this.isLoading = false;

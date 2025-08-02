@@ -214,4 +214,8 @@ export class LandingProjectComponent implements OnInit {
     return match ? match[1] : null;
   }
 
+  preventZoom(event: MouseEvent): void {
+    event.preventDefault();
+  }
+
 }

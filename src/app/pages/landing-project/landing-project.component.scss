@@ -1,1 +1,6 @@
-
+.gallery-image {
+  touch-action: manipulation; // evita doble tap zoom
+  user-select: none;          // evita selección accidental
+  -webkit-user-drag: none;    // evita arrastrar en Safari
+  -webkit-touch-callout: none; // evita menú contextual en iOS
+}

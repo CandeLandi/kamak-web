@@ -59,8 +59,9 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
           @for (image of displayedGallery; track image.id; let index = $index) {
           <div
-            class="relative aspect-[4/3] rounded-lg overflow-hidden cursor-pointer group flex items-center justify-center"
-            (click)="openImageLightbox(index)">
+            class="relative aspect-[4/3] rounded-lg overflow-hidden cursor-pointer group flex items-center justify-center gallery-image"
+            (click)="openImageLightbox(index)"
+            (dblclick)="preventZoom($event)">
             <img [src]="image.url || '/placeholder.svg'" [alt]="project.name + ' - Imagen ' + (index + 1)"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 rounded-lg" />
             <div
@@ -193,8 +194,9 @@
       </h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         <!-- Imagen Antes -->
-        <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-lg cursor-pointer group"
-          (click)="openBeforeAfterLightbox(0)">
+        <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-lg cursor-pointer group gallery-image"
+          (click)="openBeforeAfterLightbox(0)"
+          (dblclick)="preventZoom($event)">
           <div
             class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm md:text-base font-semibold bg-white text-[#181c23] border border-[#195764] shadow">
             Antes
@@ -210,8 +212,9 @@
           </div>
         </div>
         <!-- Imagen Después -->
-        <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-lg cursor-pointer group"
-          (click)="openBeforeAfterLightbox(1)">
+        <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-lg cursor-pointer group gallery-image"
+          (click)="openBeforeAfterLightbox(1)"
+          (dblclick)="preventZoom($event)">
           <div
             class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm md:text-base font-semibold bg-white text-[#181c23] border border-[#195764] shadow">
             Después
