@@ -1,27 +1,47 @@
 <div class="bg-black min-h-screen pt-16">
-
   <app-admin-header (logout)="handleLogout()"></app-admin-header>
 
   <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-    <div class="flex flex-row items-center justify-between gap-4 md:gap-6 mt-8 md:mt-12 mb-8 md:mb-12">
-      <h1 class="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-white opacity-70">Dashboard</h1>
-      <button mat-raised-button color="primary" [routerLink]="'/admin/project'" class="flex items-center gap-2 bg-[#195764] px-4 md:px-6 lg:px-8 py-2 md:py-3 lg:py-4 rounded-md text-sm md:text-base lg:text-lg whitespace-nowrap">
-        <i-lucide name="plus" class="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6"></i-lucide>
-        <span class="hidden sm:inline">Nuevo Proyecto</span>
+    <div
+      class="flex flex-row items-center justify-between gap-4 md:gap-6 mt-2 md:mt-8 mb-4 md:mb-4"
+    >
+      <h1
+        class="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-white opacity-70"
+      >
+        Dashboard
+      </h1>
+      <button
+        [routerLink]="'/admin/project'"
+        class="flex items-center gap-2 bg-[#195764] hover:bg-[#195764]/90 p-3 rounded-md text-white font-medium transition-all duration-200 shadow-lg hover:shadow-xl text-sm"
+      >
+        <i-lucide name="plus" class="w-4 h-4"></i-lucide>
+        <span class="hidden sm:inline">Nuevo proyecto</span>
         <span class="sm:hidden">Nuevo</span>
       </button>
     </div>
 
     <app-dashboard-stats [projects]="allProjects"></app-dashboard-stats>
 
-    <div class="flex flex-col md:flex-row justify-between md:items-center gap-4 md:gap-6 mb-6 md:mb-8">
+    <div
+      class="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6"
+    >
       <div class="flex items-center gap-3 md:gap-4">
-        <h2 class="text-xl md:text-2xl font-semibold text-white">Todos los Proyectos</h2>
-        <div class="bg-gray-700 text-gray-200 px-3 md:px-4 py-1 md:py-2 rounded-full text-xs md:text-sm font-semibold">{{ filteredProjects().length }}</div>
+        <h2 class="text-xl md:text-2xl font-semibold text-white">
+          Todos los Proyectos
+        </h2>
+        <div
+          class="bg-gray-700 text-gray-200 px-3 md:px-4 py-1 md:py-2 rounded-full text-xs md:text-sm font-semibold"
+        >
+          {{ filteredProjects().length }}
+        </div>
       </div>
-      <div class="flex flex-col sm:flex-row items-center gap-4 md:gap-6 w-full md:w-auto">
+      <div
+        class="flex flex-col sm:flex-row items-center gap-4 md:gap-6 w-full md:w-auto"
+      >
         <div class="w-full sm:w-64 md:w-72">
-          <app-search-input (searchChange)="onSearch($event)"></app-search-input>
+          <app-search-input
+            (searchChange)="onSearch($event)"
+          ></app-search-input>
         </div>
         <div class="w-full sm:w-48 md:w-56">
           <mat-form-field appearance="outline" class="w-full">
@@ -29,7 +49,9 @@
             <mat-select [formControl]="categoryControl">
               <mat-option value="todos">Todas las categorías</mat-option>
               @for(category of projectCategories; track category) {
-                <mat-option [value]="category">{{ category | titlecase }}</mat-option>
+              <mat-option [value]="category">{{
+                category | titlecase
+              }}</mat-option>
               }
             </mat-select>
           </mat-form-field>
@@ -37,52 +59,64 @@
       </div>
     </div>
 
-    @if (clientReady()) {
-      @if (loading() && !error()) {
-        <div class="flex justify-center items-center py-12 md:py-16">
-          <mat-spinner diameter="48"></mat-spinner>
-        </div>
+    @if (clientReady()) { @if (loading() && !error()) {
+    <div class="flex justify-center items-center py-12 md:py-16">
+      <mat-spinner diameter="48"></mat-spinner>
+    </div>
+    } @if (!loading() && error()) {
+    <div
+      class="bg-red-500/10 border border-red-500/20 rounded-lg p-4 md:p-6 mb-6 md:mb-8"
+    >
+      <p class="text-red-400 text-base md:text-lg">{{ error() }}</p>
+      <button
+        mat-button
+        color="warn"
+        (click)="loadProjects()"
+        class="mt-2 md:mt-3 text-sm md:text-base"
+      >
+        Reintentar
+      </button>
+    </div>
+    } @if (!loading() && !error()) { @if (filteredProjects().length > 0) {
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12"
+    >
+      @for (project of paginatedProjects(); track project.id) {
+      <project-card
+        [project]="project"
+        (edit)="editProject($event)"
+        (delete)="deleteProject($event)"
+        (view)="viewProject($event)"
+      ></project-card>
       }
-      @if (!loading() && error()) {
-        <div class="bg-red-500/10 border border-red-500/20 rounded-lg p-4 md:p-6 mb-6 md:mb-8">
-          <p class="text-red-400 text-base md:text-lg">{{ error() }}</p>
-          <button mat-button color="warn" (click)="loadProjects()" class="mt-2 md:mt-3 text-sm md:text-base">
-            Reintentar
-          </button>
-        </div>
+    </div>
+    @if (totalPages() > 1) {
+    <app-pagination
+      [currentPage]="pagination().pageIndex"
+      [totalPages]="totalPages()"
+      (pageChange)="goToPage($event)"
+    ></app-pagination>
+    } } @else {
+    <div
+      class="text-center py-12 md:py-16 flex flex-col items-center justify-center"
+    >
+      <i-lucide
+        name="folder-search"
+        class="text-white/30 w-16 h-16 md:w-20 md:h-20 mb-4 md:mb-6"
+      ></i-lucide>
+      <h3 class="text-xl md:text-2xl font-semibold text-white mb-2 md:mb-4">
+        No se encontraron proyectos
+      </h3>
+      @if (searchQuery()) {
+      <p class="text-gray-400 text-base md:text-lg">
+        Intenta con otra búsqueda.
+      </p>
+      } @else {
+      <p class="text-gray-400 text-base md:text-lg">
+        No hay proyectos que coincidan con el filtro seleccionado.
+      </p>
       }
-      @if (!loading() && !error()) {
-        @if (filteredProjects().length > 0) {
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12">
-            @for (project of paginatedProjects(); track project.id) {
-              <project-card
-                [project]="project"
-                (edit)="editProject($event)"
-                (delete)="deleteProject($event)"
-                (view)="viewProject($event)"
-              ></project-card>
-            }
-          </div>
-          @if (totalPages() > 1) {
-            <app-pagination
-              [currentPage]="pagination().pageIndex"
-              [totalPages]="totalPages()"
-              (pageChange)="goToPage($event)"
-            ></app-pagination>
-          }
-        } @else {
-          <div class="text-center py-12 md:py-16 flex flex-col items-center justify-center">
-            <i-lucide name="folder-search" class="text-white/30 w-16 h-16 md:w-20 md:h-20 mb-4 md:mb-6"></i-lucide>
-            <h3 class="text-xl md:text-2xl font-semibold text-white mb-2 md:mb-4">No se encontraron proyectos</h3>
-            @if (searchQuery()) {
-              <p class="text-gray-400 text-base md:text-lg">Intenta con otra búsqueda.</p>
-            } @else {
-              <p class="text-gray-400 text-base md:text-lg">No hay proyectos que coincidan con el filtro seleccionado.</p>
-            }
-          </div>
-        }
-      }
-    }
+    </div>
+    } } }
   </div>
-
 </div>
