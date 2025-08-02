@@ -12,11 +12,12 @@ import { LucideAngularModule } from 'lucide-angular';
 import { ImageLightboxDialogComponent, ImageLightboxData } from '../../shared/components/image-lightbox-dialog/image-lightbox-dialog.component';
 import { VideoService } from '../../core/services/video.service';
 import { HeaderComponent } from '../../components/header/header.component';
+import { ProjectSkeletonComponent } from '../../shared/components/project-skeleton/project-skeleton.component';
 
 @Component({
   selector: 'app-landing-project',
   standalone: true,
-  imports: [FooterComponent, RouterModule, CommonModule, MatProgressSpinnerModule, LucideAngularModule, HeaderComponent],
+  imports: [FooterComponent, RouterModule, CommonModule, MatProgressSpinnerModule, LucideAngularModule, HeaderComponent, ProjectSkeletonComponent],
   templateUrl: './landing-project.component.html',
   styleUrls: ['./landing-project.component.scss']
 })
@@ -70,7 +71,6 @@ export class LandingProjectComponent implements OnInit {
 
   loadVideos(): void {
     if (!this.project?.id) return;
-    this.loading = true;
     this.videoService.getPublicVideos(this.project.id, { page: 1, limit: this.limit }).subscribe({
       next: (videos) => {
         this.videos = videos || [];
