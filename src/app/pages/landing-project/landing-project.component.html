@@ -30,24 +30,23 @@
               </p>
             </div>
             <div class="flex flex-wrap justify-between pr-4 gap-4 ">
-              <ng-container *ngFor="let detail of projectDetails">
-                <div class="flex items-center gap-2 mb-4 lg:mb-0" *ngIf="detail.value">
+              @for (detail of projectDetails; track detail.label) {
+                @if (detail.value) {
+                <div class="flex items-center gap-2 mb-4 lg:mb-0">
                   <i-lucide [name]="detail.icon" class="w-5 h-5 text-[#195764]"></i-lucide>
                   <div>
                     <span class="text-xs text-gray-400">{{ detail.label }}:</span>
-                    <p class="font-medium text-white" >
-                      <ng-container *ngIf="
-                          detail.label === 'Fecha inicio' ||
-                            detail.label === 'Fecha fin';
-                          else normalValue
-                        ">
-                        {{ detail.value | date : "dd/MM/yyyy" }}
-                      </ng-container>
-                      <ng-template #normalValue>{{ detail.value }}</ng-template>
-                    </p>
-                  </div>
-                </div>
-              </ng-container>
+                                         <p class="font-medium text-white" >
+                       @if (detail.label === 'Fecha inicio' || detail.label === 'Fecha fin') {
+                         {{ detail.value | date : "dd/MM/yyyy" }}
+                       } @else {
+                         {{ detail.value }}
+                       }
+                     </p>
+                   </div>
+                 </div>
+               }
+             }
             </div>
           </div>
         </div>
@@ -131,17 +130,14 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
           <div >
             <div class="aspect-video w-full rounded-lg overflow-hidden border border-white/10 mb-2">
-              <iframe *ngIf="
-                  mainVideo && mainVideo.youtubeUrl && isYoutube(mainVideo.youtubeUrl) &&
-                  getSafeVideoUrl(mainVideo.youtubeUrl)
-                " class="w-full h-full" [src]="getSafeVideoUrl(mainVideo.youtubeUrl)"
-                [title]="mainVideo.title || 'Video del Proyecto'" frameborder="0" allowfullscreen></iframe>
-              <video *ngIf="
-                  mainVideo && mainVideo.youtubeUrl && !isYoutube(mainVideo.youtubeUrl) &&
-                  getSafeVideoUrl(mainVideo.youtubeUrl)
-                " class="w-full h-full" controls>
-                <source [src]="mainVideo.youtubeUrl" type="video/mp4" />
-              </video>
+              @if (mainVideo && mainVideo.youtubeUrl && isYoutube(mainVideo.youtubeUrl) && getSafeVideoUrl(mainVideo.youtubeUrl)) {
+                <iframe class="w-full h-full" [src]="getSafeVideoUrl(mainVideo.youtubeUrl)"
+                  [title]="mainVideo.title || 'Video del Proyecto'" frameborder="0" allowfullscreen></iframe>
+              } @else if (mainVideo && mainVideo.youtubeUrl && !isYoutube(mainVideo.youtubeUrl) && getSafeVideoUrl(mainVideo.youtubeUrl)) {
+                <video class="w-full h-full" controls>
+                  <source [src]="mainVideo.youtubeUrl" type="video/mp4" />
+                </video>
+              }
             </div>
           </div>
           <div>
@@ -160,16 +156,14 @@
           @for (video of additionalVideos; track video.id) {
           <div class="flex flex-col gap-2">
             <div class="aspect-video w-full rounded-lg overflow-hidden border border-white/10 mb-2">
-              <iframe *ngIf="
-                  isYoutube(video.youtubeUrl) && getSafeVideoUrl(video.youtubeUrl)
-                " class="w-full h-full" [src]="getSafeVideoUrl(video.youtubeUrl)"
-                [title]="video.title || 'Video adicional'" frameborder="0" allowfullscreen></iframe>
-              <video *ngIf="
-                  !isYoutube(video.youtubeUrl) &&
-                  getSafeVideoUrl(video.youtubeUrl)
-                " class="w-full h-full" controls>
-                <source [src]="video.youtubeUrl" type="video/mp4" />
-              </video>
+              @if (isYoutube(video.youtubeUrl) && getSafeVideoUrl(video.youtubeUrl)) {
+                <iframe class="w-full h-full" [src]="getSafeVideoUrl(video.youtubeUrl)"
+                  [title]="video.title || 'Video adicional'" frameborder="0" allowfullscreen></iframe>
+              } @else if (!isYoutube(video.youtubeUrl) && getSafeVideoUrl(video.youtubeUrl)) {
+                <video class="w-full h-full" controls>
+                  <source [src]="video.youtubeUrl" type="video/mp4" />
+                </video>
+              }
             </div>
             <h3 class="text-lg font-semibold text-white mb-1">
               {{ video.title || "Video adicional" }}
