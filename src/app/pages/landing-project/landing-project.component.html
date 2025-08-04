@@ -1,11 +1,9 @@
 <app-header></app-header>
 
-@if (loading) {
+@if (loading || imagesLoading) {
   <app-project-skeleton></app-project-skeleton>
 } @else if (project) {
   <div class="bg-[#111] pb-8 min-h-screen">
-    <!-- Debug: Template rendering -->
-    <script>console.log('LandingProjectComponent template rendering');</script>
 
     <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 pt-8 flex flex-col gap-8">
       <div>
@@ -121,7 +119,6 @@
       </div>
       }
 
-      <!-- Bloque: Videos del Proyecto (sin título) -->
       @if (videos.length > 0) {
       <div class="w-full">
         <h2 class="text-2xl font-bold my-4 text-white flex items-center gap-2">
@@ -177,7 +174,6 @@
       </div>
       }
 
-      <!-- Bloque: Antes y Después -->
       @if(project.imageBefore && project.imageAfter) {
       <div class="w-full">
         <h2 class="text-2xl font-bold my-4 text-white flex items-center gap-2">
@@ -202,7 +198,6 @@
               <i-lucide name="expand" class="w-8 h-8 text-white"></i-lucide>
             </div>
           </div>
-          <!-- Imagen Después -->
           <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-md cursor-pointer group"
             (click)="openBeforeAfterLightbox(1)">
             <div
@@ -223,7 +218,6 @@
       </div>
       }
 
-      <!-- CTA -->
       <div class="bg-[#195764] rounded-lg p-6 text-center w-full">
         <h3 class="text-xl font-bold mb-2 text-white">
           ¿Te interesa un proyecto similar?
