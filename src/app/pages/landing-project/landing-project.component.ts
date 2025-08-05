@@ -25,6 +25,7 @@ export class LandingProjectComponent implements OnInit {
   project: Project | null = null;
   videos: ProjectVideo[] = [];
   loading = true;
+  imagesLoading = true;
   error: string | null = null;
 
   showAllImages = false;
@@ -47,6 +48,7 @@ export class LandingProjectComponent implements OnInit {
 
   loadProjectData(): void {
     this.loading = true;
+    this.imagesLoading = true;
     this.route.paramMap.pipe(
       switchMap(params => {
         const id = params.get('id');
@@ -56,6 +58,7 @@ export class LandingProjectComponent implements OnInit {
             this.project = project;
             this.loading = false;
             this.loadVideos();
+            this.loadImages();
           })
         );
       })
@@ -65,6 +68,7 @@ export class LandingProjectComponent implements OnInit {
         console.error('Error loading project data:', err);
         this.error = 'No se pudo cargar el proyecto. Intente más tarde.';
         this.loading = false;
+        this.imagesLoading = false;
       }
     });
   }
@@ -74,13 +78,56 @@ export class LandingProjectComponent implements OnInit {
     this.videoService.getPublicVideos(this.project.id, { page: 1, limit: this.limit }).subscribe({
       next: (videos) => {
         this.videos = videos || [];
-        this.loading = false;
       },
       error: (error) => {
         console.error('Error loading videos:', error);
         this.videos = [];
-        this.loading = false;
       }
+    });
+  }
+
+  loadImages(): void {
+    if (!this.project) {
+      this.imagesLoading = false;
+      return;
+    }
+
+    const imagesToLoad: string[] = [];
+
+    // Agregar imágenes de la galería
+    if (this.project.gallery) {
+      this.project.gallery.forEach(img => {
+        if (img.url) imagesToLoad.push(img.url);
+      });
+    }
+
+    // Agregar imágenes antes/después
+    if (this.project.imageBefore) imagesToLoad.push(this.project.imageBefore);
+    if (this.project.imageAfter) imagesToLoad.push(this.project.imageAfter);
+
+    if (imagesToLoad.length === 0) {
+      this.imagesLoading = false;
+      return;
+    }
+
+    let loadedCount = 0;
+    const totalImages = imagesToLoad.length;
+
+    imagesToLoad.forEach(url => {
+      const img = new Image();
+      img.onload = () => {
+        loadedCount++;
+        if (loadedCount === totalImages) {
+          this.imagesLoading = false;
+        }
+      };
+      img.onerror = () => {
+        loadedCount++;
+        if (loadedCount === totalImages) {
+          this.imagesLoading = false;
+        }
+      };
+      img.src = url;
     });
   }
 
