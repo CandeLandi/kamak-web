@@ -39,7 +39,16 @@ export class HeaderComponent implements OnInit {
   toggleMobileMenu() {
     if (this.isBrowser) {
       this.mobileMenuOpen = !this.mobileMenuOpen;
-      document.body.style.overflow = this.mobileMenuOpen ? 'hidden' : '';
+      // Permitir scroll en el menú móvil para que no se tape con la barra de navegación
+      if (this.mobileMenuOpen) {
+        document.body.style.overflow = 'auto';
+        document.body.style.position = 'fixed';
+        document.body.style.width = '100%';
+      } else {
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.width = '';
+      }
     }
   }
 }
