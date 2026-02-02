@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import { Gallery, CreateGalleryDto, UpdateGalleryDto } from '../../pages/admin/interfaces/gallery.interface';
 
 @Injectable({ providedIn: 'root' })
 export class GalleryService {
-  private readonly baseUrl = '/api/projects'; // Cambia esto si tu baseUrl es diferente
+  private readonly baseUrl = `${environment.apiUrl}/projects`;
 
   constructor(private http: HttpClient) {}
 
