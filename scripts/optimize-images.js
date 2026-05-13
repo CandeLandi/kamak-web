@@ -1,72 +1,107 @@
+const fs = require('node:fs/promises');
+const path = require('node:path');
 const sharp = require('sharp');
-const fs = require('fs').promises;
-const path = require('path');
 
-const IMAGES_DIR = path.join(__dirname, '../src/assets/images');
-const OUTPUT_DIR = path.join(__dirname, '../src/assets/images-optimized');
+const ROOT = path.resolve(__dirname, '..');
+const ASSET_DIRS = ['src/assets/hero', 'src/assets/images'];
+const MIN_SIZE_BYTES = 100 * 1024;
 
-const SIZES = {
-  small: { width: 400, height: 300 },
-  medium: { width: 800, height: 600 },
-  large: { width: 1200, height: 900 }
+const SETTINGS = {
+  webp: { quality: 72, effort: 6 },
+  png: { quality: 78, compressionLevel: 9, adaptiveFiltering: true },
 };
 
-async function optimizeImage(inputPath, outputPath, options = {}) {
-  try {
-    const { quality = 80, maxWidth = 1200, maxHeight = 900 } = options;
-    const metadata = await sharp(inputPath).metadata();
+async function optimizeImage(relativePath) {
+  const filePath = path.join(ROOT, relativePath);
+  const ext = path.extname(filePath).toLowerCase();
+  const original = await fs.readFile(filePath);
+  const before = original.byteLength;
+  const image = sharp(original, { animated: true }).rotate();
+  const metadata = await image.metadata();
 
-    if (metadata.format === 'svg') {
-      return;
-    }
+  let pipeline = image.resize({
+    width: Math.min(metadata.width || 1600, 1600),
+    height: Math.min(metadata.height || 1200, 1200),
+    fit: 'inside',
+    withoutEnlargement: true,
+  });
 
-    for (const [sizeName, { width, height }] of Object.entries(SIZES)) {
-      const sizedOutputPath = outputPath.replace(/\.[^.]+$/, `-${sizeName}`);
-      await sharp(inputPath).resize(width, height, { fit: 'inside', withoutEnlargement: true }).webp({ quality }).toFile(`${sizedOutputPath}.webp`);
-      await sharp(inputPath).resize(width, height, { fit: 'inside', withoutEnlargement: true }).jpeg({ quality, progressive: true }).toFile(`${sizedOutputPath}.jpg`);
-    }
-
-    await sharp(inputPath).resize(maxWidth, maxHeight, { fit: 'inside', withoutEnlargement: true }).webp({ quality }).toFile(outputPath.replace(/\.[^.]+$/, '.webp'));
-    await sharp(inputPath).resize(maxWidth, maxHeight, { fit: 'inside', withoutEnlargement: true }).jpeg({ quality, progressive: true }).toFile(outputPath.replace(/\.[^.]+$/, '.jpg'));
-
-  } catch (error) {
-    console.error(`❌ Error optimizando ${inputPath}:`, error);
+  if (ext === '.webp') {
+    pipeline = pipeline.webp(SETTINGS.webp);
+  } else if (ext === '.png') {
+    pipeline = pipeline.png(SETTINGS.png);
+  } else {
+    return null;
   }
+
+  const optimized = await pipeline.toBuffer();
+
+  if (optimized.byteLength >= before) {
+    return { relativePath, before, after: before, skipped: true };
+  }
+
+  await fs.writeFile(filePath, optimized);
+  return { relativePath, before, after: optimized.byteLength, skipped: false };
 }
 
-async function processDirectory(dirPath, outputDir) {
-  try {
-    const items = await fs.readdir(dirPath, { withFileTypes: true });
-    for (const item of items) {
-      const fullPath = path.join(dirPath, item.name);
-      const relativePath = path.relative(IMAGES_DIR, fullPath);
-      const outputPath = path.join(outputDir, relativePath);
-      if (item.isDirectory()) {
-        await fs.mkdir(path.dirname(outputPath), { recursive: true });
-        await processDirectory(fullPath, outputDir);
-      } else if (item.isFile()) {
-        const ext = path.extname(item.name).toLowerCase();
-        if (['.jpg', '.jpeg', '.png', '.webp'].includes(ext)) {
-          await fs.mkdir(path.dirname(outputPath), { recursive: true });
-          await optimizeImage(fullPath, outputPath);
-        }
-      }
+async function collectTargets(directory) {
+  const dirPath = path.join(ROOT, directory);
+  const entries = await fs.readdir(dirPath, { withFileTypes: true });
+  const targets = [];
+
+  for (const entry of entries) {
+    const entryPath = path.join(directory, entry.name);
+
+    if (entry.isDirectory()) {
+      targets.push(...await collectTargets(entryPath));
+      continue;
     }
-  } catch (error) {
-    console.error(`❌ Error procesando directorio ${dirPath}:`, error);
+
+    if (!entry.isFile()) {
+      continue;
+    }
+
+    const ext = path.extname(entry.name).toLowerCase();
+    if (!['.png', '.webp'].includes(ext)) {
+      continue;
+    }
+
+    const stats = await fs.stat(path.join(ROOT, entryPath));
+    if (stats.size >= MIN_SIZE_BYTES) {
+      targets.push(entryPath);
+    }
   }
+
+  return targets;
+}
+
+function formatBytes(bytes) {
+  return `${(bytes / 1024).toFixed(1)} KB`;
 }
 
 async function main() {
-  try {
-    await fs.rm(OUTPUT_DIR, { recursive: true, force: true });
-    await fs.mkdir(OUTPUT_DIR, { recursive: true });
-    await processDirectory(IMAGES_DIR, OUTPUT_DIR);
-  } catch (error) {
-    console.error('❌ Error durante la optimización:', error);
-    process.exit(1);
+  const targets = (await Promise.all(ASSET_DIRS.map(collectTargets))).flat();
+  const results = [];
+
+  for (const target of targets) {
+    results.push(await optimizeImage(target));
   }
+
+  const completed = results.filter(Boolean);
+  const before = completed.reduce((sum, item) => sum + item.before, 0);
+  const after = completed.reduce((sum, item) => sum + item.after, 0);
+
+  for (const item of completed) {
+    const status = item.skipped ? 'skipped' : 'optimized';
+    console.log(`${status}: ${item.relativePath} ${formatBytes(item.before)} -> ${formatBytes(item.after)}`);
+  }
+
+  console.log(`total: ${formatBytes(before)} -> ${formatBytes(after)}`);
 }
 
-if (require.main === module) { main(); }
-module.exports = { optimizeImage, processDirectory };
+if (require.main === module) {
+  main().catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+}
