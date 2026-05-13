@@ -16,12 +16,12 @@ La app carga Google Maps de forma dinamica desde `GoogleMapsService`. No hay cla
 
 ### Desarrollo local
 
-Para probar mapas en local, configura `src/assets/config.js` en tu copia local:
+Para probar mapas en local, crea `src/assets/config.local.json`:
 
-```js
-window.__KAMAK_CONFIG__ = {
-  googleMapsApiKey: 'tu_clave_restringida'
-};
+```json
+{
+  "googleMapsApiKey": "tu_clave_restringida"
+}
 ```
 
 No subas una clave real al repositorio.

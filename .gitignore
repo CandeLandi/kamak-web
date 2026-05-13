@@ -50,6 +50,7 @@ node_modules/
 .env
 .env.*
 /src/assets/config.local.js
+/src/assets/config.local.json
 
 # Generated docs folder
 docs/

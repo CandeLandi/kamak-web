@@ -36,7 +36,7 @@ export class GoogleMapsService {
 
       const script = document.createElement('script');
       script.type = 'text/javascript';
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${this.apiKey}&libraries=places`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${this.apiKey}&libraries=places&loading=async`;
       script.async = true;
       script.defer = true;
 
