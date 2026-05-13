@@ -32,12 +32,12 @@ npm run e2e:ui
 
 Google Maps is loaded dynamically. Do not commit real API keys.
 
-For local development, edit `src/assets/config.js` locally or inject this before loading the app:
+For local development, create `src/assets/config.local.json`:
 
-```js
-window.__KAMAK_CONFIG__ = {
-  googleMapsApiKey: 'your-restricted-browser-key'
-};
+```json
+{
+  "googleMapsApiKey": "your-restricted-browser-key"
+}
 ```
 
 For GitHub Pages, set the repository secret `GOOGLE_MAPS_API_KEY`; the deploy workflow writes `src/assets/config.js` during the build.
