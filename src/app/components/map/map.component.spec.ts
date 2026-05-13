@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
 
 import { MapComponent } from './map.component';
+import { GoogleMapsService } from '../../core/services/google-maps.service';
+import { ProjectsService } from '../../core/services/projects.service';
 
 describe('MapComponent', () => {
   let component: MapComponent;
@@ -8,7 +11,12 @@ describe('MapComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MapComponent]
+      imports: [MapComponent],
+      providers: [
+        { provide: 'GOOGLE_MAPS_API_KEY', useValue: 'test-key' },
+        { provide: GoogleMapsService, useValue: { loadGoogleMaps: () => Promise.resolve() } },
+        { provide: ProjectsService, useValue: { getPublicProjects: () => of([]) } },
+      ]
     })
     .compileComponents();
 

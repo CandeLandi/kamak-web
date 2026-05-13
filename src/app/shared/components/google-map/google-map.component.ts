@@ -15,16 +15,14 @@ import { MapMarkerPopupComponent } from '../map-marker-popup/map-marker-popup.co
 export class GoogleMapComponent implements OnInit, AfterViewInit {
   apiKey: string;
   center = { lat: -38.4161, lng: -63.6167 };
-
-  constructor(@Inject('GOOGLE_MAPS_API_KEY') apiKey: string) {
-    this.apiKey = apiKey;
-  }
   zoom = 4;
   markers: { lat: number; lng: number; title: string; address: string; imageAfter?: string; projectId?: string }[] = [];
-  @ViewChild('infoWindow') infoWindow!: MapInfoWindow;
   selectedMarker: { lat: number; lng: number; title: string; address: string; imageAfter?: string } | null = null;
   loading = true;
   error = false;
+  mapUnavailable = false;
+
+  @ViewChild('infoWindow') infoWindow!: MapInfoWindow;
 
   private map: google.maps.Map | null = null;
   private customMarkers: google.maps.Marker[] = [];
@@ -34,9 +32,12 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
   private appRef = inject(ApplicationRef);
   private popupComponentRef: ComponentRef<MapMarkerPopupComponent> | null = null;
   private environmentInjector = inject(EnvironmentInjector);
-
   private projectsService = inject(ProjectsService);
   private googleMapsService = inject(GoogleMapsService);
+
+  constructor(@Inject('GOOGLE_MAPS_API_KEY') apiKey: string) {
+    this.apiKey = apiKey;
+  }
 
   ngOnInit() {
     this.loadGoogleMapsAndProjects();
@@ -47,6 +48,12 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
   }
 
   private async loadGoogleMapsAndProjects() {
+    if (!this.apiKey) {
+      this.mapUnavailable = true;
+      this.loading = false;
+      return;
+    }
+
     try {
       await this.googleMapsService.loadGoogleMaps();
       this.loadProjects();
@@ -72,8 +79,7 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
       zIndex: 1000
     });
 
-    google.maps.event.addListener(this.customInfoWindow, 'closeclick', () => {
-    });
+    google.maps.event.addListener(this.customInfoWindow, 'closeclick', () => {});
   }
 
   loadProjects() {
@@ -90,23 +96,18 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
           const hasValidLat = typeof p.address.lat === 'number' && !isNaN(p.address.lat);
           const hasValidLng = typeof p.address.lng === 'number' && !isNaN(p.address.lng);
 
-          if (!hasValidLat || !hasValidLng) {
-            return false;
-          }
-
-          return true;
+          return hasValidLat && hasValidLng;
         });
 
         this.markers = projectsWithLocation.map(p => ({
           lat: p.address.lat,
           lng: p.address.lng,
           title: p.name,
-          address: p.address.address || 'Dirección no disponible',
+          address: p.address.address || 'Direccion no disponible',
           imageAfter: p.imageAfter,
           projectId: p.id
         }));
 
-        // Crear markers personalizados con tooltips si el mapa está listo
         if (this.mapReady && this.map) {
           setTimeout(() => {
             this.createCustomMarkers();
@@ -116,7 +117,7 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
         this.loading = false;
       },
       error: (err) => {
-        console.error('❌ Error loading projects:', err);
+        console.error('Error loading projects:', err);
         this.error = true;
         this.loading = false;
       }
@@ -174,7 +175,6 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
   onMapReady(map: google.maps.Map) {
     this.map = map;
     this.mapReady = true;
-
     this.setupCustomTooltips();
 
     if (this.markers.length > 0) {
@@ -190,7 +190,8 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
   }
 
   retryLoad() {
-    this.loadProjects();
+    this.mapUnavailable = false;
+    this.loadGoogleMapsAndProjects();
   }
 
   private openCustomInfoWindow(marker: google.maps.Marker, markerData: any) {
@@ -222,8 +223,8 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
     popupDiv.appendChild((ref.hostView as any).rootNodes[0]);
     this.popupComponentRef = ref;
 
-    this.customInfoWindow!.setContent(popupDiv);
-    this.customInfoWindow!.open(this.map, marker);
+    this.customInfoWindow.setContent(popupDiv);
+    this.customInfoWindow.open(this.map, marker);
 
     google.maps.event.addListenerOnce(this.customInfoWindow, 'closeclick', () => {
       this.appRef.detachView(ref.hostView);

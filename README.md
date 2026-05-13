@@ -1,59 +1,55 @@
-# KamakWeb
+# Kamak Web
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.8.
+Angular 19 site and admin panel for Kamak Desarrollos.
 
-## Development server
-
-To start a local development server, run:
+## Setup
 
 ```bash
-ng serve
+npm ci
+npm start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Open `http://localhost:4200/`.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+On Windows PowerShell, if script execution blocks `npm`, use `npm.cmd`:
 
 ```bash
-ng generate component component-name
+npm.cmd ci
+npm.cmd start
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Scripts
 
 ```bash
-ng generate --help
+npm run build
+npm run build:staging
+npm test -- --watch=false --browsers=ChromeHeadless
+npm run e2e
+npm run e2e:ui
 ```
 
-## Building
+## Runtime Config
 
-To build the project run:
+Google Maps is loaded dynamically. Do not commit real API keys.
+
+For local development, edit `src/assets/config.js` locally or inject this before loading the app:
+
+```js
+window.__KAMAK_CONFIG__ = {
+  googleMapsApiKey: 'your-restricted-browser-key'
+};
+```
+
+For GitHub Pages, set the repository secret `GOOGLE_MAPS_API_KEY`; the deploy workflow writes `src/assets/config.js` during the build.
+
+The key must be restricted in Google Cloud by domain and API.
+
+## Verification
+
+Before shipping changes, run:
 
 ```bash
-ng build
+npm run build
+npm test -- --watch=false --browsers=ChromeHeadless
+npm run e2e
 ```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

@@ -1,57 +1,38 @@
-# Configuración de Variables de Entorno
+# Configuracion de entorno
 
-## Configuración de Google Maps API
+## Google Maps
 
-Para usar Google Maps en este proyecto, necesitas configurar una clave de API de Google Maps.
+La app carga Google Maps de forma dinamica desde `GoogleMapsService`. No hay claves reales commiteadas en el repo.
 
-### 1. Obtener una clave de Google Maps API
+### Crear la clave
 
-1. Ve a la [Google Cloud Console](https://console.cloud.google.com/)
-2. Crea un nuevo proyecto o selecciona uno existente
-3. Habilita las siguientes APIs:
+1. Abrir Google Cloud Console.
+2. Habilitar estas APIs:
    - Maps JavaScript API
    - Places API
    - Geocoding API
-4. Ve a "Credentials" y crea una nueva API Key
-5. Restringe la clave a tu dominio para mayor seguridad
+3. Crear una API key.
+4. Restringirla por dominio y por APIs permitidas.
 
-### 2. Configurar el archivo .env
+### Desarrollo local
 
-Crea un archivo `.env` en la raíz del proyecto con el siguiente contenido:
+Para probar mapas en local, configura `src/assets/config.js` en tu copia local:
 
-```env
-# Google Maps API Key
-GOOGLE_MAPS_API_KEY=tu_clave_de_google_maps_aqui
-
-# API URL (opcional, ya está configurada por defecto)
-API_URL=https://rakium-be-production.up.railway.app
+```js
+window.__KAMAK_CONFIG__ = {
+  googleMapsApiKey: 'tu_clave_restringida'
+};
 ```
 
-### 3. Configuración para diferentes entornos
+No subas una clave real al repositorio.
 
-- **Desarrollo**: La clave se cargará desde el archivo `.env`
-- **Producción**: Asegúrate de que la clave esté configurada en tu servidor de producción
+### Produccion
 
-### 4. Seguridad
+En GitHub Pages, configura el secret `GOOGLE_MAPS_API_KEY`. El workflow genera `src/assets/config.js` durante el deploy.
 
-⚠️ **IMPORTANTE**: 
-- Nunca commits el archivo `.env` al repositorio
-- El archivo `.env` ya está incluido en `.gitignore`
-- Restringe tu clave de API a dominios específicos en Google Cloud Console
+### Verificacion
 
-### 5. Verificación
-
-Para verificar que la configuración funciona:
-
-1. Crea el archivo `.env` con tu clave
-2. Ejecuta `npm start`
-3. Ve a la página del mapa en tu aplicación
-4. El mapa debería cargarse correctamente
-
-### 6. Solución de problemas
-
-Si el mapa no se carga:
-1. Verifica que la clave de API sea válida
-2. Asegúrate de que las APIs necesarias estén habilitadas
-3. Revisa la consola del navegador para errores
-4. Verifica que las restricciones de dominio permitan tu dominio 
+1. Ejecuta `npm start`.
+2. Abre la pagina principal.
+3. Baja hasta el mapa.
+4. Si no carga, revisa la consola del navegador y las restricciones de la key.

@@ -6,15 +6,30 @@
         <p class="text-gray-600">Cargando proyectos...</p>
       </div>
     </div>
+  } @else if (mapUnavailable) {
+    <div class="flex justify-center items-center min-h-[320px] bg-[#101820] border border-white/10 rounded-lg">
+      <div class="text-center max-w-md px-6">
+        <div class="text-[#195764] mb-4">
+          <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"></path>
+            <circle cx="12" cy="9" r="2.5"></circle>
+          </svg>
+        </div>
+        <p class="text-white text-lg font-semibold mb-2">Mapa no configurado</p>
+        <p class="text-gray-300 text-sm leading-relaxed">
+          Agrega una clave de Google Maps en <code class="text-white">src/assets/config.js</code> para ver las ubicaciones.
+        </p>
+      </div>
+    </div>
   } @else if (error) {
-    <div class="flex justify-center items-center h-[600px] bg-gray-100 rounded-lg">
+    <div class="flex justify-center items-center min-h-[360px] bg-gray-100 rounded-lg">
       <div class="text-center">
         <div class="text-red-500 mb-4">
           <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
           </svg>
         </div>
-        <p class="text-gray-600 mb-4">Error al cargar los proyectos</p>
+        <p class="text-gray-600 mb-4">No se pudo cargar el mapa</p>
         <button
           (click)="retryLoad()"
           class="px-4 py-2 bg-[#195764] text-white rounded-lg hover:bg-[#134a54] transition-colors"
