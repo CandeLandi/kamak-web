@@ -26,6 +26,14 @@ Para probar mapas en local, crea `src/assets/config.local.json`:
 
 No subas una clave real al repositorio.
 
+## Imagenes
+
+Para recomprimir assets locales grandes sin cambiar rutas:
+
+```bash
+npm run optimize:images
+```
+
 ### Produccion
 
 En GitHub Pages, configura el secret `GOOGLE_MAPS_API_KEY`. El workflow genera `src/assets/config.js` durante el deploy.

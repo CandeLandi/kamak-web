@@ -26,6 +26,7 @@ npm run build:staging
 npm test -- --watch=false --browsers=ChromeHeadless
 npm run e2e
 npm run e2e:ui
+npm run optimize:images
 ```
 
 ## Runtime Config

@@ -34,8 +34,8 @@ export class ServicesComponent {
   services: Service[] = [
     {
       id: '1',
-      title: 'Diseño del proyecto',
-      description: 'Diseñamos un layout personalizado, adaptado a las necesidades operativas y comerciales. Presentamos planos, renders y visualizaciones que muestran cómo será el resultado final antes de comenzar la obra.',
+      title: 'Diseno del proyecto',
+      description: 'Disenamos un layout personalizado, adaptado a las necesidades operativas y comerciales. Presentamos planos, renders y visualizaciones que muestran como sera el resultado final antes de comenzar la obra.',
       images: [
         'assets/images/project-design/one.webp',
         'assets/images/project-design/two.webp',
@@ -47,8 +47,8 @@ export class ServicesComponent {
     },
     {
       id: '2',
-      title: 'Dirección de obra',
-      description: 'Coordinamos todos los gremios necesarios y designamos un arquitecto encargado que estará in situ durante todo el transcurso de la obra.',
+      title: 'Direccion de obra',
+      description: 'Coordinamos todos los gremios necesarios y designamos un arquitecto encargado que estara in situ durante todo el transcurso de la obra.',
       images: [
         'assets/images/construction-site/kamak-developments.webp',
         'assets/images/construction-site/kamak.webp',
@@ -56,8 +56,8 @@ export class ServicesComponent {
     },
     {
       id: '3',
-      title: 'Ejecución integral',
-      description: 'Trabajamos con gremios propios y externos, garantizando la calidad en cada etapa del proceso constructivo y optimizando tiempos de ejecución.',
+      title: 'Ejecucion integral',
+      description: 'Trabajamos con gremios propios y externos, garantizando la calidad en cada etapa del proceso constructivo y optimizando tiempos de ejecucion.',
       video: {
         url: 'https://www.youtube.com/watch?v=KdkwwQsLFIs',
         startTime: 15
@@ -65,8 +65,8 @@ export class ServicesComponent {
     },
     {
       id: '4',
-      title: 'Fabricación de muebles',
-      description: 'Contamos con fábrica propia equipada con tecnología de producción automatizada, donde producimos muebles a medida para cada proyecto.',
+      title: 'Fabricacion de muebles',
+      description: 'Contamos con fabrica propia equipada con tecnologia de produccion automatizada, donde producimos muebles a medida para cada proyecto.',
       video: {
         url: 'assets/images/gastronomic-equipment/fabrication.mp4',
         startTime: 0
@@ -74,8 +74,8 @@ export class ServicesComponent {
     },
     {
       id: '5',
-      title: 'Equipamiento gastronómico',
-      description: 'Proveemos el equipamiento gastronómico que tu negocio necesita, con soluciones a medida y productos de calidad.',
+      title: 'Equipamiento gastronomico',
+      description: 'Proveemos el equipamiento gastronomico que tu negocio necesita, con soluciones a medida y productos de calidad.',
       images: [
         'assets/images/gastronomic-equipment/big-fridge.webp',
         'assets/images/gastronomic-equipment/fridge.webp',
@@ -86,7 +86,7 @@ export class ServicesComponent {
     {
       id: '6',
       title: 'Opciones de financiamiento',
-      description: 'Ofrecemos diversas opciones de financiamiento para hacer tu obra realidad, adaptándonos a tus posibilidades y facilitando la concreción de tu proyecto.',
+      description: 'Ofrecemos diversas opciones de financiamiento para hacer tu obra realidad, adaptandonos a tus posibilidades y facilitando la concrecion de tu proyecto.',
       images: [
         'assets/images/financing/financing.webp',
       ]
