@@ -4,6 +4,7 @@
     <img
       [src]="heroImage"
       alt="Interior de construcción en proceso con estructura metálica y techo de madera"
+      fetchpriority="high"
       class="w-full h-full object-cover"
     />
     <!-- Opacity layer for better text readability -->
@@ -19,7 +20,8 @@
           alt="Kamak Desarrollos"
           width="400"
           height="160"
-          class="object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] w-[23rem] md:w-[35rem]"
+          fetchpriority="high"
+          class="w-full max-w-[20rem] sm:max-w-[23rem] md:max-w-[35rem] object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]"
         />
       </div>
       <h1 class="text-2xl sm:text-3xl md:text-4xl font-semibold text-white mb-4 leading-tight drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
@@ -30,9 +32,9 @@
       </p>
 
       <div class="mb-4 max-w-full">
-        <div class="flex items-center gap-3 bg-[#195764]/50 rounded-lg p-3 border border-[#195764]/70">
+        <div class="flex items-center gap-3 bg-[#195764]/50 rounded-lg p-3 border border-[#195764]/70 min-w-0">
           <i class="fas fa-clock h-5 w-5 text-white flex-shrink-0"></i>
-          <p class="text-white text-xs sm:text-sm font-medium">
+          <p class="text-white text-xs sm:text-sm font-medium leading-snug break-words min-w-0">
             Trabajamos 24/7 para cumplir con los plazos más exigentes sin comprometer la calidad del resultado.
           </p>
         </div>

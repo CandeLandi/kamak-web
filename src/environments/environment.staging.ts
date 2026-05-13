@@ -1,5 +1,5 @@
 export const environment = {
-  production: true,
+  production: false,
   apiUrl: 'https://rakium-be-production.up.railway.app/api',
   googleMapsApiKey: ''
 };

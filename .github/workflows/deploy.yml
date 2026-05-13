@@ -30,6 +30,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Create runtime config
+        run: |
+          cat > src/assets/config.js <<'EOF'
+          window.__KAMAK_CONFIG__ = {
+            googleMapsApiKey: '${{ secrets.GOOGLE_MAPS_API_KEY }}'
+          };
+          EOF
+
       - name: Build
         run: npm run build -- --configuration production
 

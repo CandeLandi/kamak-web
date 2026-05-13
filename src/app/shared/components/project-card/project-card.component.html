@@ -2,7 +2,7 @@
 
   <div class="relative w-full aspect-[4/3] overflow-hidden">
     @if (project.imageAfter) {
-      <img [src]="project.imageAfter" [alt]="project.name" class="w-full h-full object-cover">
+      <img [src]="project.imageAfter" [alt]="project.name" loading="lazy" decoding="async" class="w-full h-full object-cover">
     }
     @else {
       <div class="w-full h-full flex items-center justify-center bg-gray-800">

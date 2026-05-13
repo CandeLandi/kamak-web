@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
       <div class="flex transition-transform duration-500 h-full w-full" [style.transform]="'translateX(-' + (currentIndex * 100) + '%)'">
         @for (image of images; track image) {
           <div class="min-w-full h-full flex items-center justify-center">
-            <img [src]="image" [alt]="'Service image'" class="w-full h-full object-cover">
+            <img [src]="image" [alt]="'Service image'" loading="lazy" decoding="async" class="w-full h-full object-cover">
           </div>
         }
       </div>

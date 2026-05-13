@@ -11,6 +11,18 @@ import {
   LucideAngularModule, ChevronLeft, ChevronRight, FolderSearch, Eye, Edit, Trash2, Plus, EyeOff, Image, AlertCircle, FileText, Upload, X, ImageOff, MoreVertical, Star, User, DollarSign, Folder, Search, ArrowLeft, MapPin, Building, Ruler, Clock, Calendar, CalendarCheck, ChevronDown, Expand, PlayCircle, Pencil, Video
 } from 'lucide-angular';
 
+declare global {
+  interface Window {
+    __KAMAK_CONFIG__?: {
+      googleMapsApiKey?: string;
+    };
+  }
+}
+
+const googleMapsApiKey =
+  (typeof window !== 'undefined' ? window.__KAMAK_CONFIG__?.googleMapsApiKey : undefined) ||
+  environment.googleMapsApiKey;
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
@@ -19,7 +31,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
     {
       provide: 'GOOGLE_MAPS_API_KEY',
-      useValue: environment.googleMapsApiKey
+      useValue: googleMapsApiKey
     },
     importProvidersFrom(LucideAngularModule.pick({
       // Íconos de paginación y galería

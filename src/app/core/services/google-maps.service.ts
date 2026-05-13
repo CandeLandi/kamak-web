@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,6 @@ export class GoogleMapsService {
   constructor(@Inject('GOOGLE_MAPS_API_KEY') private apiKey: string) {}
 
   loadGoogleMaps(): Promise<void> {
-    // Verificar si estamos en el servidor (SSR)
     if (typeof window === 'undefined') {
       return Promise.resolve();
     }
@@ -24,14 +23,17 @@ export class GoogleMapsService {
     }
 
     this.loadPromise = new Promise<void>((resolve, reject) => {
-      // Verificar si ya está cargado
-      if (typeof window !== 'undefined' && window.google && window.google.maps) {
+      if (!this.apiKey) {
+        reject(new Error('Google Maps API key is not configured'));
+        return;
+      }
+
+      if (window.google?.maps) {
         this.isLoaded = true;
         resolve();
         return;
       }
 
-      // Crear el script dinámicamente
       const script = document.createElement('script');
       script.type = 'text/javascript';
       script.src = `https://maps.googleapis.com/maps/api/js?key=${this.apiKey}&libraries=places`;
@@ -54,6 +56,6 @@ export class GoogleMapsService {
   }
 
   isGoogleMapsLoaded(): boolean {
-    return this.isLoaded && !!(typeof window !== 'undefined' && window.google && window.google.maps);
+    return this.isLoaded && !!(typeof window !== 'undefined' && window.google?.maps);
   }
 }
