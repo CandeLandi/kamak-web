@@ -9,9 +9,10 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const router = inject(Router);
   const token = authService.getToken();
+  const isPublicProjectRequest = req.url.includes('/public') || req.url.includes('/published');
 
-  // No agregar token a endpoints públicos
-  if (req.url.includes('/public')) {
+  // No agregar token a endpoints públicos.
+  if (isPublicProjectRequest) {
     return next(req);
   }
 

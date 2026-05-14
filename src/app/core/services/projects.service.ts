@@ -50,10 +50,10 @@ export class ProjectsService {
     return this.http.get<Project>(`${this.baseUrl}/projects/${id}`);
   }
 
-    getPublicProjects(): Observable<Project[]> {
+  getPublicProjects(): Observable<Project[]> {
     const PUBLIC_CLIENT_ID = '78abe353-1728-49b0-b268-1d2ad5786317';
 
-    return this.http.get<any>(`${this.baseUrl}/projects/client/${PUBLIC_CLIENT_ID}`).pipe(
+    return this.http.get<any>(`${this.baseUrl}/projects/client/${PUBLIC_CLIENT_ID}/public`).pipe(
       map(response => {
         if (response && Array.isArray(response.data)) {
           return response.data;
@@ -69,7 +69,7 @@ export class ProjectsService {
   }
 
   getPublicProjectById(id: string): Observable<Project> {
-    return this.http.get<Project>(`${this.baseUrl}/projects/${id}`);
+    return this.http.get<Project>(`${this.baseUrl}/projects/${id}/published`);
   }
 
 
