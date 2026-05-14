@@ -1,9 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { signal } from '@angular/core';
 import { of } from 'rxjs';
 
 import { ProjectsComponent } from './projects.component';
-import { AuthService } from '../../core/services/auth.service';
 import { ProjectsService } from '../../core/services/projects.service';
 
 describe('ProjectsComponent', () => {
@@ -17,13 +15,7 @@ describe('ProjectsComponent', () => {
         {
           provide: ProjectsService,
           useValue: {
-            getProjectsByClientId: () => of({ data: [], meta: { total: 0, page: 1, limit: 100, totalPages: 0 } }),
-          },
-        },
-        {
-          provide: AuthService,
-          useValue: {
-            clientIdSignal: signal(null),
+            getPublicProjects: () => of([]),
           },
         },
       ]
