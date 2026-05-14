@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, computed, effect } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -9,8 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LucideAngularModule } from 'lucide-angular';
 import { ProjectsService } from '../../core/services/projects.service';
-import { AuthService } from '../../core/services/auth.service';
-import { Project, PaginationDto } from '../../pages/admin/interfaces/project.interface';
+import { Project } from '../../pages/admin/interfaces/project.interface';
 import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
 
 @Component({
@@ -33,7 +32,6 @@ import { PaginationComponent } from '../../shared/components/pagination/paginati
 })
 export class ProjectsComponent implements OnInit {
   private projectsService = inject(ProjectsService);
-  private authService = inject(AuthService);
 
   public loading = signal(true);
   public error = signal<string | null>(null);
@@ -75,41 +73,14 @@ export class ProjectsComponent implements OnInit {
     return Math.ceil(length / pageSize);
   });
 
-  private readonly PUBLIC_CLIENT_ID = '78abe353-1728-49b0-b268-1d2ad5786317';
-
-  private clientIdEffect = effect(() => {
-    const clientId = this.authService.clientIdSignal();
-    if (clientId) {
-      this.loadProjectsWithClientId(clientId);
-    }
-  });
-
   ngOnInit(): void {
     this.loading.set(true);
-    const pagination: PaginationDto = { page: 1, limit: 100 };
-    this.projectsService.getProjectsByClientId(this.PUBLIC_CLIENT_ID, pagination).subscribe({
-      next: (response) => {
-        this.allProjects.set(response.data);
+    this.projectsService.getPublicProjects().subscribe({
+      next: (projects) => {
+        this.allProjects.set(projects);
         this.loading.set(false);
       },
       error: () => {
-        this.loading.set(false);
-      }
-    });
-  }
-
-  loadProjectsWithClientId(clientId: string): void {
-    this.loading.set(true);
-    this.error.set(null);
-    const pagination: PaginationDto = { page: 1, limit: 100 };
-
-    this.projectsService.getProjectsByClientId(clientId, pagination).subscribe({
-      next: (response) => {
-        this.allProjects.set(response.data);
-        this.loading.set(false);
-      },
-      error: (err) => {
-        console.error(err);
         this.error.set('No se pudieron cargar los proyectos.');
         this.loading.set(false);
       }

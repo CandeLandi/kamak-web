@@ -9,9 +9,10 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const router = inject(Router);
   const token = authService.getToken();
+  const isPublicProjectRequest = req.url.includes('/public') || req.url.includes('/published');
 
-  // No agregar token a endpoints públicos
-  if (req.url.includes('/public')) {
+  // No agregar token a endpoints públicos.
+  if (isPublicProjectRequest) {
     return next(req);
   }
 
@@ -30,7 +31,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error) => {
       if (error.status === 401 || error.status === 403) {
         authService.logout();
-        router.navigate(['/login']);
+        router.navigate(['/admin/login']);
       }
       return throwError(() => error);
     })
