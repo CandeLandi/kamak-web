@@ -10,6 +10,7 @@ export class AuthService {
   private readonly API_URL = `${environment.apiUrl}/auth`;
   private readonly TOKEN_KEY = 'access_token';
   private readonly USER_KEY = 'user';
+  private readonly KAMAK_CLIENT_ID = '78abe353-1728-49b0-b268-1d2ad5786317';
 
   public clientIdSignal: WritableSignal<string | null> = signal(this.getClientId());
 
@@ -46,7 +47,11 @@ export class AuthService {
 
   getClientId(): string | null {
     const user = this.getUser();
-    return user?.clientId || null;
+    if (user?.clientId) {
+      return user.clientId;
+    }
+
+    return user?.role === 'ADMIN' ? this.KAMAK_CLIENT_ID : null;
   }
 
   isLoggedIn(): boolean {
