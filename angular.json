@@ -47,8 +47,11 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
-                        ],
+              "src/styles.scss",
+              "src/styles/kamak/kamak.css",
+              "src/styles/kamak/components.css",
+              "src/styles/kamak/obra.css"
+            ],
             "scripts": []
           },
           "configurations": {

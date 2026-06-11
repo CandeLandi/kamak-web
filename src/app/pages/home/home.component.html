@@ -1,8 +1,330 @@
-<app-header></app-header>
-<main class="min-h-screen">
-  <app-hero></app-hero>
-  <app-projects></app-projects>
-  <app-map ngSkipHydration></app-map>
-  <app-services></app-services>
-</main>
-<app-footer></app-footer>
+<div class="kamak-site">
+<kamak-header></kamak-header>
+
+<!-- ════════════ 1 · HERO ════════════ -->
+<section class="hero" id="top">
+  <div class="hero__bg">
+    <video class="hero__video" autoplay muted loop playsinline preload="auto" poster="">
+      <source src="assets/kamak/video/hero.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero__scrim"></div>
+  <div class="stripes stripes--br"><i></i></div>
+  <div class="wrap hero__in">
+    <p class="eyebrow hero__eyebrow"><span class="diamond"></span> Constructora llave en mano · Retail &amp; Estaciones de servicio</p>
+    <h1 class="display hero__title">Tu tienda,<br><span class="teal">lista para vender.</span></h1>
+    <p class="hero__sub">Tu shop reabre en <b>días, no en meses</b>. Obra civil, mobiliario propio, gastronomía e imagen de marca — entregamos la tienda funcionando. Porque cada día cerrado es <b>venta perdida</b>.</p>
+    <div class="hero__cta">
+      <a class="btn btn--primary" href="#contacto">Cotizar mi tienda <span class="arr">→</span></a>
+      <a class="btn btn--ghost" routerLink="/obras">Ver las obras</a>
+    </div>
+  </div>
+  <div class="hero__scroll">Scroll <span style="font-family:var(--mono)">▼</span></div>
+</section>
+
+<!-- ════════════ 2 · BARRA DE NÚMEROS ════════════ -->
+<section class="stats">
+  <div class="stripes stripes--bl"><i></i></div>
+  <div class="stats__grid stats__grid--3">
+    <div class="stat">
+      <div class="stat__num"><span [attr.data-count]="totalObras" data-suf="+">0</span></div>
+      <div class="stat__label">Tiendas<br>entregadas</div>
+    </div>
+    <div class="stat">
+      <div class="stat__num"><span data-count="20">0</span></div>
+      <div class="stat__label">Días promedio<br>por obra</div>
+    </div>
+    <div class="stat">
+      <div class="stat__num stat__num--word">Alcance</div>
+      <div class="stat__label">Construimos<br><span class="accent">donde estés</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ NOSOTROS ════════════ -->
+<section class="section section--paper section--tight" id="nosotros">
+  <div class="wrap">
+    <div class="reveal about-grid">
+      <div>
+        <p class="hairline">Nosotros</p>
+        <p class="eyebrow eyebrow--ink" style="margin-top:18px">Especialistas en<br>estaciones de servicio</p>
+      </div>
+      <div>
+        <p class="display" style="font-size:clamp(24px,3.4vw,40px);color:var(--ink);line-height:1.12;margin-bottom:24px">Innovación en servicio<br>integral de obra.</p>
+        <p style="font-size:18px;color:var(--gray-d);max-width:60ch;line-height:1.65">Somos una constructora argentina especializada en tiendas <b>"llave en mano"</b> para estaciones de servicio y franquicias de retail. Construimos la obra civil, fabricamos el mobiliario en nuestro propio taller, equipamos la gastronomía e instalamos la imagen de marca. Una sola empresa, una sola responsable: la tienda funcionando, en todo el país.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ 3 · PARA QUIÉN CONSTRUIMOS ════════════ -->
+<section class="section section--paper" data-nav-dark>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="label-flank"><span class="diamond"></span><span class="txt">Para quién construimos</span><span class="diamond"></span></p>
+      <h2 class="display title">Si vivís de tu tienda,<br>esto es para vos.</h2>
+    </div>
+    <div class="cards-4 reveal" data-d="1">
+      <div class="who hoverbrk"><span class="bk tl"></span><span class="bk tr"></span><span class="bk bl"></span><span class="bk br"></span>
+        <span class="diamond"></span>
+        <div class="who__n">01</div>
+        <div class="who__t">Operador de estación de servicio</div>
+        <div class="who__d">Renovás o sumás tu shop <b>en días, no en meses</b>, sin frenar la operación de la playa. Cada día cerrado es venta perdida.</div>
+      </div>
+      <div class="who hoverbrk"><span class="bk tl"></span><span class="bk tr"></span><span class="bk bl"></span><span class="bk br"></span>
+        <span class="diamond"></span>
+        <div class="who__n">02</div>
+        <div class="who__t">Franquiciado nuevo</div>
+        <div class="who__d">Tu primera franquicia, de la marca que sea: necesitás abrir rápido y cumplir el manual al detalle.</div>
+      </div>
+      <div class="who hoverbrk"><span class="bk tl"></span><span class="bk tr"></span><span class="bk bl"></span><span class="bk br"></span>
+        <span class="diamond"></span>
+        <div class="who__n">03</div>
+        <div class="who__t">Marca / Franquiciante</div>
+        <div class="who__d">Sabemos trabajar con <b>manual de imagen</b>: cada tienda de tu red sale idéntica, al detalle y en plazo.</div>
+      </div>
+      <div class="who hoverbrk"><span class="bk tl"></span><span class="bk tr"></span><span class="bk bl"></span><span class="bk br"></span>
+        <span class="diamond"></span>
+        <div class="who__n">04</div>
+        <div class="who__t">Cadena de retail</div>
+        <div class="who__d">Expandís puntos de proximidad con plazos predecibles y la tienda entregada completa, lista para operar.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ 4 · QUÉ ENTREGAMOS ════════════ -->
+<section class="section section--carbon on-carbon" id="entregamos">
+  <div class="stripes stripes--tr"><i></i></div>
+  <div class="wrap">
+    <div class="deliver">
+      <div>
+        <div class="section-head reveal">
+          <p class="label-flank"><span class="diamond"></span><span class="txt">Qué entregamos</span></p>
+          <h2 class="display title">Una sola empresa.<br>La tienda completa.</h2>
+        </div>
+        <div class="deliver__list reveal" data-d="1">
+          <div class="deliver__item"><span class="idx">01</span><span class="nm">Obra civil</span></div>
+          <div class="deliver__item"><span class="idx">02</span><span class="nm">Mobiliario de fabricación propia</span></div>
+          <div class="deliver__item"><span class="idx">03</span><span class="nm">Equipamiento gastronómico</span></div>
+          <div class="deliver__item"><span class="idx">04</span><span class="nm">Instalaciones</span></div>
+          <div class="deliver__item"><span class="idx">05</span><span class="nm">Imagen de marca y cartelería</span></div>
+        </div>
+        <div class="deliver__close brackets reveal" data-d="2">
+          La obra termina cuando<br><span class="teal">tu tienda está funcionando.</span>
+        </div>
+      </div>
+      <div class="deliver__media reveal" data-d="1">
+        <div class="pframe">
+          <div class="pframe__stripes" aria-hidden="true"></div>
+          <span class="pframe__bracket" aria-hidden="true"></span>
+          <div class="photo-reveal">
+            <img class="deliver__photo" data-parallax [src]="deliverPhoto" alt="Tienda completa terminada por Kamak">
+            <div class="pframe__caption"><span class="diamond diamond--sm"></span> {{ deliverCaption }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ 5 · OBRAS DESTACADAS ════════════ -->
+<section class="section section--paper" id="obras">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="label-flank"><span class="diamond"></span><span class="txt">Obras</span></p>
+      <h2 class="display title">{{ totalObras }}+ tiendas entregadas.<br>Esta podría ser la tuya.</h2>
+    </div>
+
+    <div class="works-grid reveal" data-d="1">
+      <a class="work" *ngFor="let o of destacadas" [routerLink]="['/obras', o.slug]">
+        <div class="work__media">
+          <img *ngIf="cover(o) as c" [src]="c" [alt]="o.titulo" style="width:100%;height:100%;object-fit:cover;display:block">
+          <div class="ph" *ngIf="!cover(o)"><div class="ph__tag"><span class="dia"></span>{{ o.localidad }}</div></div>
+        </div>
+        <span class="work__cat"><span class="tag tag--solid">{{ o.categoria || 'Tiendas' }}</span></span>
+        <div class="work__body">
+          <div class="work__name">{{ o.titulo }}</div>
+          <div class="work__meta">
+            <b *ngIf="o.m2">{{ o.m2 }} m²</b><span class="sep" *ngIf="o.m2 && o.dias">·</span>
+            <b *ngIf="o.dias">{{ o.dias }} días</b><span class="sep" *ngIf="(o.m2 || o.dias) && o.provincia">·</span>
+            <ng-container *ngIf="o.provincia">{{ o.provincia }}</ng-container>
+          </div>
+          <div class="work__go">Ver obra <span>→</span></div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Slider Antes / Después -->
+    <div class="ba-feature brackets reveal" data-d="1" style="margin-top:40px" *ngIf="baObra">
+      <div class="ba">
+        <div class="ba__layer"><img class="ba__img ba__img--antes" [src]="baObra.imageBefore" alt="Antes"></div>
+        <div class="ba__layer ba__after"><img class="ba__img ba__img--despues" [src]="baObra.imageAfter" alt="Después"></div>
+        <span class="ba__label ba__label--before">Antes</span>
+        <span class="ba__label ba__label--after">Después</span>
+        <div class="ba__handle"><div class="ba__grip">⟷</div></div>
+        <div class="ba__caption">{{ baObra.localidad }} · <b style="color:var(--teal-l)">{{ baObra.titulo }}</b><ng-container *ngIf="baObra.m2">. {{ baObra.m2 }} m².</ng-container></div>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:center;margin-top:40px" class="reveal">
+      <a class="btn btn--ink" routerLink="/obras">Ver las obras <span class="arr">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ 6 · MAPA NACIONAL ════════════ -->
+<section class="section section--carbon on-carbon">
+  <div class="stripes stripes--br"><i></i></div>
+  <div class="wrap">
+    <div class="map">
+      <div class="reveal">
+        <p class="label-flank"><span class="diamond"></span><span class="txt">Cobertura nacional</span></p>
+        <h2 class="display title" style="margin:18px 0 26px">Construimos en cualquier punto del país.</h2>
+        <p class="map__stat"><b><span data-map-localidades>—</span> localidades</b> · <b><span data-map-provincias>—</span> provincias</b><br>y donde tu próxima tienda lo necesite.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:26px">
+          <span class="tag">Taller propio</span><span class="tag">Logística por contenedor</span><span class="tag">Montaje in situ</span>
+        </div>
+      </div>
+      <div class="map__svg brackets reveal" data-d="1" id="mapPlot"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ 7 · CÓMO TRABAJAMOS ════════════ -->
+<section class="section section--paper">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="label-flank"><span class="diamond"></span><span class="txt">Cómo trabajamos</span></p>
+      <h2 class="display title">Por eso entregamos<br>en días, no en meses.</h2>
+    </div>
+    <div class="timeline">
+      <div class="step"><div class="step__n">01</div><div class="step__bar"><i></i></div><div class="step__t">Relevamiento y proyecto</div><div class="step__d">Medimos, proyectamos y cerramos el cómputo en sitio.</div></div>
+      <div class="step"><div class="step__n">02</div><div class="step__bar"><i></i></div><div class="step__t">Fabricación en paralelo</div><div class="step__d">El mobiliario se fabrica en el taller mientras avanza la obra. ~1 mes.</div></div>
+      <div class="step"><div class="step__n">03</div><div class="step__bar"><i></i></div><div class="step__t">Logística / contenedor</div><div class="step__d">Todo viaja listo al punto, en cualquier provincia.</div></div>
+      <div class="step"><div class="step__n">04</div><div class="step__bar"><i></i></div><div class="step__t">Montaje in situ</div><div class="step__d">Equipo propio arma la tienda en tiempo récord.</div></div>
+      <div class="step"><div class="step__n">05</div><div class="step__bar"><i></i></div><div class="step__t">Entrega lista para vender</div><div class="step__d">Abrís y facturás. Sin sorpresas.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ 8 · FABRICACIÓN PROPIA ════════════ -->
+<section class="section section--carbon2 on-carbon">
+  <div class="stripes stripes--tl"><i></i></div>
+  <div class="wrap">
+    <div class="maker">
+      <div class="maker__media reveal">
+        <div class="maker__strip maker__strip--video">
+          <video class="maker__video" autoplay muted loop playsinline preload="metadata">
+            <source src="assets/kamak/video/taller.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="maker__strip">
+          <img class="maker__photo maker__photo--1" src="assets/kamak/photos/taller-1.jpg" alt="Mobiliario de fabricación propia">
+        </div>
+        <div class="maker__strip">
+          <img class="maker__photo maker__photo--2" src="assets/kamak/photos/taller-2.jpg" alt="Góndolas de fabricación propia">
+        </div>
+      </div>
+      <div class="reveal" data-d="1">
+        <p class="label-flank"><span class="diamond"></span><span class="txt">Fabricación propia</span></p>
+        <h2 class="display title" style="margin:18px 0 24px">El mueble de tu tienda no lo improvisamos: lo fabricamos.</h2>
+        <p style="font-size:18px;color:var(--gray);line-height:1.65;max-width:46ch">Taller propio significa control total: <b style="color:var(--paper)">entregamos rápido y homogéneo</b> en todo el país. La misma calidad en Necochea, en Rosario o en Bahía Blanca — góndolas, mostradores, frentes de caja y equipamiento gastronómico, fabricados a medida.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ MÁS QUE UNA CONSTRUCTORA ════════════ -->
+<section class="vstatement">
+  <video class="vstatement__video" autoplay muted loop playsinline preload="metadata">
+    <source src="assets/kamak/video/diferencial.mp4" type="video/mp4">
+  </video>
+  <div class="vstatement__scrim"></div>
+  <div class="wrap vstatement__in">
+    <p class="label-flank" style="justify-content:center"><span class="diamond"></span><span class="txt">El diferencial</span><span class="diamond"></span></p>
+    <h2 class="display vstatement__title">Más que una<br><span class="teal">empresa constructora.</span></h2>
+    <p class="vstatement__sub">Un servicio atípico.</p>
+  </div>
+</section>
+
+<!-- ════════════ 9 · MARCAS ════════════ -->
+<section class="section section--carbon on-carbon" id="formatos">
+  <div class="stripes stripes--tr"><i></i></div>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="label-flank"><span class="diamond"></span><span class="txt">Marcas que construimos</span></p>
+      <h2 class="display title">Las marcas líderes<br>nos eligen.</h2>
+    </div>
+    <div class="brandgrid reveal" data-d="1">
+      <div class="brandtile hoverbrk"><span class="bk tl"></span><span class="bk tr"></span><span class="bk bl"></span><span class="bk br"></span>
+        <img class="brandtile__img" src="assets/kamak/brands/puma-energy.svg" alt="Puma Energy" loading="lazy"></div>
+      <div class="brandtile hoverbrk"><span class="bk tl"></span><span class="bk tr"></span><span class="bk bl"></span><span class="bk br"></span>
+        <img class="brandtile__img" src="assets/kamak/brands/dean-dennys.png" alt="Dean &amp; Dennys" loading="lazy"></div>
+      <div class="brandtile hoverbrk"><span class="bk tl"></span><span class="bk tr"></span><span class="bk bl"></span><span class="bk br"></span>
+        <img class="brandtile__img" src="assets/kamak/brands/fan-de-pan.png" alt="Fan de Pan" loading="lazy"></div>
+      <div class="brandtile hoverbrk"><span class="bk tl"></span><span class="bk tr"></span><span class="bk bl"></span><span class="bk br"></span>
+        <img class="brandtile__img" src="assets/kamak/brands/subway.svg" alt="Subway" loading="lazy"></div>
+      <div class="brandtile hoverbrk"><span class="bk tl"></span><span class="bk tr"></span><span class="bk bl"></span><span class="bk br"></span>
+        <img class="brandtile__img" src="assets/kamak/brands/cencosud.svg" alt="Cencosud" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ 11 · RESPALDO ════════════ -->
+<section class="section section--paper">
+  <div class="wrap">
+    <div class="backing reveal">
+      <p class="label-flank" style="justify-content:center"><span class="diamond"></span><span class="txt" style="color:var(--teal-d)">Respaldo</span><span class="diamond"></span></p>
+      <h2 class="display backing__big">{{ totalObras }}+ tiendas para las<br><span class="teal">marcas líderes del país.</span></h2>
+      <p class="backing__sub">Puma Energy, Dean &amp; Dennys, Fan de Pan, Subway y Cencosud. Obra civil, mobiliario propio, gastronomía, instalaciones e imagen de marca — la trayectoria que respalda cada nueva obra.</p>
+      <p class="backing__cred"><span class="diamond diamond--sm"></span> Empresa habilitada <span class="dot">·</span> Seguros y ART vigentes <span class="dot">·</span> Seguridad e higiene en obra <span class="diamond diamond--sm"></span></p>
+    </div>
+  </div>
+</section>
+
+<div class="teal-band teal-band--on-paper"></div>
+
+<!-- ════════════ CONTACTO ════════════ -->
+<section class="section section--paper" id="contacto" style="background:var(--paper-2)">
+  <div class="wrap">
+    <div class="contact">
+      <div class="contact__aside reveal">
+        <p class="label-flank"><span class="diamond"></span><span class="txt">Contacto</span></p>
+        <h2 class="display big">Contanos tu<br>proyecto.</h2>
+        <p>Dejanos los datos y te contactamos. O escribinos directo por WhatsApp y arrancamos hoy mismo.</p>
+        <div class="contact__direct">
+          <a data-wa="Hola Kamak, quiero cotizar mi tienda."><span class="diamond"></span>WhatsApp +54 9 2262 559474</a>
+          <a href="https://wa.me/5492262353629?text=Hola%20Kamak%2C%20quiero%20cotizar%20mi%20tienda." target="_blank" rel="noopener"><span class="diamond"></span>WhatsApp +54 9 2262 35-3629</a>
+          <a href="mailto:kamakdesarrollos&#64;gmail.com"><span class="diamond"></span>kamakdesarrollos&#64;gmail.com</a>
+          <a><span class="diamond"></span>Av. 42 N°3703, Necochea, Bs. As.</a>
+        </div>
+      </div>
+      <form class="reveal" data-d="1" data-wa-form #contactForm (submit)="onSubmit($event, contactForm)">
+        <div class="form-grid">
+          <div class="field"><label>Tipo de proyecto</label>
+            <select name="Tipo de proyecto"><option>Tienda nueva</option><option>Renovación / remodelación</option><option>Rollout de red</option><option>Otro</option></select>
+          </div>
+          <div class="field"><label>Marca / formato</label>
+            <select name="Marca / formato"><option>Shop Express</option><option>Super 7</option><option>YPF</option><option>Shell</option><option>Retail de proximidad</option><option>A definir</option></select>
+          </div>
+          <div class="field"><label>Ubicación</label><input name="Ubicación" placeholder="Localidad, provincia"></div>
+          <div class="field"><label>m² aproximados</label><input name="m² aprox" placeholder="Ej. 300"></div>
+          <div class="field"><label>Plazo deseado</label><input name="Plazo" placeholder="Ej. lo antes posible"></div>
+          <div class="field"><label>Nombre / empresa</label><input name="Nombre / empresa" placeholder="Tu nombre"></div>
+          <div class="field"><label>Teléfono</label><input name="Teléfono" placeholder="+54 9 ..."></div>
+          <div class="field"><label>Email</label><input name="Email" type="email" placeholder="tu@email.com"></div>
+          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+          <div class="form-actions">
+            <button type="submit" class="btn btn--primary">Enviar y que me contacten <span class="arr">→</span></button>
+            <a class="btn btn--wa" data-wa="Hola Kamak, quiero hablar de mi tienda.">Hablar por WhatsApp ahora</a>
+          </div>
+          <p class="field--full mono" style="color:var(--teal-d);font-size:13px" [style.display]="formOk ? 'block' : 'none'">✓ ¡Gracias! Recibimos tu consulta y te contactamos.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<kamak-footer></kamak-footer>
+</div>

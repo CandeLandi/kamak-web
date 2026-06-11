@@ -1,0 +1,79 @@
+/* ============================================================
+   KAMAK — Página de obra (case study)  ·  variantes A y B
+   ============================================================ */
+
+.obra-hero{
+  position:relative;background:var(--carbon);color:var(--paper);
+  padding-top:calc(var(--nav-h) + clamp(40px,6vw,84px));
+  padding-bottom:clamp(40px,5vw,68px);overflow:hidden;
+}
+.obra-hero__cat{margin-bottom:20px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.obra-hero__eyebrow{justify-content:flex-start}
+.obra-hero__title{font-size:clamp(36px,6vw,82px);letter-spacing:-.01em;margin:18px 0 22px;max-width:16ch}
+.obra-hero__facts{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--line-dark);margin-top:28px}
+.obra-hero__fact{padding:18px 32px 18px 0;margin-right:32px;border-right:1px solid var(--line-dark)}
+.obra-hero__fact:last-child{border-right:0}
+.obra-hero__fact .l{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--teal)}
+.obra-hero__fact .v{font-family:var(--mono);font-weight:700;font-size:24px;color:#fff;margin-top:6px}
+
+/* Protagonista: slider o galería terminada */
+.obra-feature{background:var(--carbon-2);padding-block:clamp(20px,3vw,40px)}
+.obra-feature .ba{aspect-ratio:16/7}
+.gallery-hero{position:relative;aspect-ratio:16/7;overflow:hidden}
+.gallery-hero .ph{width:100%;height:100%}
+.obra-feature__cap{
+  font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gray);margin-top:18px;display:flex;align-items:center;gap:12px;
+}
+
+/* Ficha técnica + texto del caso */
+.obra-body{padding-block:clamp(56px,7vw,96px)}
+.obra-grid{display:grid;grid-template-columns:1fr 340px;gap:clamp(36px,5vw,64px);align-items:start}
+.case-eyebrow{margin-bottom:20px}
+.case-title{font-size:clamp(26px,3.4vw,40px);color:var(--ink);margin:0 0 24px}
+.case-text p{font-size:17px;color:var(--gray-d);line-height:1.7;margin:0 0 18px;max-width:60ch}
+.case-text b{color:var(--ink)}
+
+.ficha{position:relative;background:var(--carbon);color:var(--paper);padding:30px 28px}
+.ficha h3{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin:0 0 18px}
+.ficha__row{display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px dashed var(--line-dark);font-size:14px}
+.ficha__row:last-child{border-bottom:0}
+.ficha__row .k{color:var(--gray);font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.ficha__row .val{font-family:var(--mono);font-weight:700;color:#fff;text-align:right}
+.ficha__cta{margin-top:24px}
+
+/* Galería */
+.obra-gallery{padding-bottom:clamp(56px,7vw,96px)}
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.gallery-grid .ph{aspect-ratio:1/1}
+.gallery-grid .ph.wide{grid-column:span 2;aspect-ratio:2/1}
+
+/* Nav prev/next */
+.obra-nav{border-top:1px solid var(--line-light);background:var(--paper)}
+.obra-nav__in{display:flex;justify-content:space-between;align-items:stretch}
+.obra-nav__lnk{display:flex;flex-direction:column;gap:8px;padding:30px 0;flex:1}
+.obra-nav__lnk.next{align-items:flex-end;text-align:right}
+.obra-nav__lnk .dir{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal-d);display:flex;gap:8px;align-items:center}
+.obra-nav__lnk .nm{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:clamp(18px,2.4vw,28px)}
+.obra-nav__lnk:hover .nm{color:var(--teal-d)}
+.obra-nav__mid{display:flex;align-items:center;padding:0 30px;border-inline:1px solid var(--line-light)}
+.obra-nav__mid a{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-d)}
+.obra-nav__mid a:hover{color:var(--teal-d)}
+
+@media(max-width:860px){
+  .obra-grid{grid-template-columns:1fr}
+  .obra-feature .ba,.gallery-hero{aspect-ratio:4/3}
+  .gallery-grid{grid-template-columns:repeat(2,1fr)}
+  .gallery-grid .ph.wide{grid-column:span 2}
+  .obra-nav__mid{display:none}
+}
+@media(max-width:560px){
+  .obra-hero__title{font-size:clamp(30px,9.5vw,42px)}
+  .obra-hero__fact{border-right:0;padding:10px 18px 10px 0;margin-right:18px}
+  .obra-hero__fact .v{font-size:18px}
+  .obra-hero__cat{gap:8px}
+  .ficha{padding:24px 20px}
+  .case-text p{font-size:16px}
+  .gallery-grid{gap:8px}
+  .obra-nav__lnk .nm{font-size:16px}
+}

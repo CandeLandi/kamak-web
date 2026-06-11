@@ -1,0 +1,281 @@
+/* ============================================================
+   KAMAK DESARROLLOS — Sistema de marca web
+   Carbón + teal + papel · Montserrat / Manrope / JetBrains Mono
+   ============================================================ */
+
+:root{
+  /* Paleta */
+  --teal:#1a9b9c;
+  --teal-d:#0d7475;
+  --teal-l:#3bb6b7;
+  --sapphire:#195764;       /* Blue Sapphire — profundo secundario (manual) */
+  --carbon:#1f2024;
+  --carbon-2:#171818;
+  --carbon-3:#26282d;
+  --paper:#f7f4ec;
+  --paper-2:#efeadd;
+  --ink:#2d2d2d;
+  --gray:#9a9892;
+  --gray-d:#5a5a58;
+  --line-dark:#34363b;
+  --line-light:#ddd6c6;
+
+  /* Tipografía */
+  --display:'Montserrat',system-ui,sans-serif;
+  --body:'Manrope',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+
+  /* Layout */
+  --maxw:1280px;
+  --gut:clamp(20px,5vw,72px);
+  --nav-h:76px;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{
+  margin:0;
+  font-family:var(--body);
+  background:var(--paper);
+  color:var(--ink);
+  font-size:17px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+::selection{background:var(--teal);color:#fff}
+
+/* ── Typographic primitives ──────────────────────────────── */
+.display{
+  font-family:var(--display);
+  font-weight:900;
+  text-transform:uppercase;
+  line-height:.98;
+  letter-spacing:.005em;
+  text-wrap:balance;
+  margin:0;
+}
+.mono{font-family:var(--mono);font-feature-settings:"tnum" 1,"lnum" 1}
+
+/* Eyebrow — mono mayúscula con tracking ancho */
+.eyebrow{
+  font-family:var(--mono);
+  font-size:12px;
+  font-weight:500;
+  letter-spacing:.34em;
+  text-transform:uppercase;
+  color:var(--teal);
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+  margin:0;
+}
+.eyebrow--ink{color:var(--teal-d)}
+
+/* Diamante ◆ */
+.diamond{
+  width:9px;height:9px;background:var(--teal);
+  transform:rotate(45deg);flex:0 0 auto;display:inline-block;
+}
+.diamond--sm{width:6px;height:6px}
+.diamond--lg{width:13px;height:13px}
+
+/* Label flanqueado por diamantes:  ◆ OBRAS ◆ */
+.label-flank{display:inline-flex;align-items:center;gap:14px}
+.label-flank .txt{
+  font-family:var(--mono);font-size:12px;font-weight:500;
+  letter-spacing:.34em;text-transform:uppercase;color:var(--teal);
+}
+
+/* Hairline subtítulo:  ——— TEXTO ——— */
+.hairline{
+  display:flex;align-items:center;gap:16px;
+  font-family:var(--mono);font-size:12px;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--gray);
+}
+.hairline::before,.hairline::after{
+  content:"";height:1px;flex:1;background:currentColor;opacity:.4;max-width:80px;
+}
+
+/* ── Botones ─────────────────────────────────────────────── */
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:13px;font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;
+  padding:15px 26px;border:1.5px solid transparent;
+  transition:background .2s,color .2s,border-color .2s,transform .2s;
+  white-space:nowrap;line-height:1;
+}
+.btn .arr{transition:transform .2s}
+.btn:hover .arr{transform:translateX(4px)}
+.btn--primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn--primary:hover{background:var(--teal-d);border-color:var(--teal-d)}
+.btn--ghost{background:transparent;color:var(--paper);border-color:rgba(247,244,236,.3)}
+.btn--ghost:hover{border-color:var(--teal);color:var(--teal)}
+.btn--ink{background:transparent;color:var(--ink);border-color:rgba(45,45,45,.25)}
+.btn--ink:hover{border-color:var(--teal);color:var(--teal-d)}
+.btn--wa{background:#fff;color:var(--carbon);border-color:var(--carbon)}
+.btn--wa:hover{background:var(--carbon);color:#fff}
+.btn--block{width:100%;justify-content:center}
+
+/* ── Motivos de marca ────────────────────────────────────── */
+
+/* Rayas Kamak — diagonales paralelas que llenan un triángulo en la esquina,
+   con gaps parejos y largos escalonados (la más larga hacia el interior),
+   igual que en las piezas de marca. Se dibujan como SVG (ver kamak.js).
+   Tuneable por instancia: --st-size, --st-op, --st-color. */
+/* Trama diagonal con grosor y separación FIJOS en px → idéntica en todo el
+   sitio sin importar el tamaño de la sección. Una sola dirección (paralelas,
+   al ángulo del logo). Recortada a la esquina para que crucen hasta los márgenes.
+   Perillas: --st-w (grosor), --st-gap (separación), --st-op (opacidad). */
+.stripes{
+  position:absolute;pointer-events:none;z-index:0;overflow:hidden;
+  width:var(--st-size,460px);height:var(--st-size,460px);
+  opacity:var(--st-op,.12);
+  --st-w:44px; --st-gap:40px; --st-color:#1a9b9c;
+}
+.stripes i{display:none}
+/* Una sola dirección consistente en todo el sitio (como las piezas de marca) */
+.stripes--br{bottom:0;right:0;clip-path:polygon(100% 0,100% 100%,0 100%)}
+.stripes--tl{top:0;left:0;clip-path:polygon(0 0,100% 0,0 100%)}
+.stripes--tr{top:0;right:0;clip-path:polygon(0 0,100% 0,100% 100%)}
+.stripes--bl{bottom:0;left:0;clip-path:polygon(0 0,0 100%,100% 100%)}
+/* Rayas paralelas a la diagonal de SU esquina → en todas se ven como líneas
+   limpias (igual que la sección del mapa), sin cortes escalonados. */
+.stripes--br,.stripes--tl{
+  background-image:repeating-linear-gradient(135deg,var(--st-color) 0 var(--st-w),transparent var(--st-w) calc(var(--st-w) + var(--st-gap)))}
+.stripes--tr,.stripes--bl{
+  background-image:repeating-linear-gradient(45deg,var(--st-color) 0 var(--st-w),transparent var(--st-w) calc(var(--st-w) + var(--st-gap)))}
+.stripes--lg{--st-size:clamp(560px,64vw,940px);--st-gap:60px}
+.stripes--soft{--st-op:.09}
+@media(max-width:760px){.stripes{--st-size:clamp(260px,70vw,400px)}}
+
+/* Franja teal con diamante centrado (separador entre bloques) */
+.teal-band{position:relative;height:6px;background:var(--teal)}
+.teal-band::after{
+  content:"";position:absolute;left:50%;top:50%;
+  width:16px;height:16px;background:var(--teal);
+  transform:translate(-50%,-50%) rotate(45deg);
+  box-shadow:0 0 0 7px var(--band-halo,var(--paper));
+}
+.teal-band--on-carbon{--band-halo:var(--carbon)}
+.teal-band--on-carbon2{--band-halo:var(--carbon-2)}
+.teal-band--on-paper{--band-halo:var(--paper)}
+.teal-band--infooter{margin-top:54px;z-index:3}
+
+/* Corner brackets — esquinas en "L" teal */
+.brackets{position:relative}
+.brackets::before,.brackets::after{
+  content:"";position:absolute;width:22px;height:22px;
+  border:2px solid var(--teal);pointer-events:none;transition:all .25s;
+}
+.brackets::before{top:-1px;left:-1px;border-right:0;border-bottom:0}
+.brackets::after{bottom:-1px;right:-1px;border-left:0;border-top:0}
+.brackets--4{}
+.brackets--4 .bk{position:absolute;width:22px;height:22px;border:2px solid var(--teal);pointer-events:none}
+.brackets--4 .bk.tr{top:-1px;right:-1px;border-left:0;border-bottom:0}
+.brackets--4 .bk.bl{bottom:-1px;left:-1px;border-right:0;border-top:0}
+/* Hover grow on cards */
+.hoverbrk{position:relative}
+.hoverbrk .bk{position:absolute;width:0;height:0;border:0 solid var(--teal);transition:all .28s ease;pointer-events:none;z-index:2}
+.hoverbrk:hover .bk{width:20px;height:20px;border-width:2px}
+.hoverbrk .bk.tl{top:8px;left:8px;border-right:0;border-bottom:0}
+.hoverbrk .bk.tr{top:8px;right:8px;border-left:0;border-bottom:0}
+.hoverbrk .bk.bl{bottom:8px;left:8px;border-right:0;border-top:0}
+.hoverbrk .bk.br{bottom:8px;right:8px;border-left:0;border-top:0}
+
+/* ── Placeholder de foto premium ─────────────────────────── */
+.ph{
+  position:relative;overflow:hidden;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.07);
+  background:
+    repeating-linear-gradient(135deg,rgba(255,255,255,.018) 0 2px,transparent 2px 20px),
+    linear-gradient(160deg,#26282d,#1a1b1f 60%,#141518);
+  display:flex;align-items:center;justify-content:center;
+}
+.ph::before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
+  background-size:38px 38px;opacity:.5;
+}
+.ph__tag{
+  position:relative;z-index:1;text-align:center;
+  font-family:var(--mono);font-size:11px;letter-spacing:.22em;
+  text-transform:uppercase;color:rgba(247,244,236,.55);
+  display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px;
+}
+.ph__tag .dia{width:11px;height:11px;background:var(--teal);transform:rotate(45deg);opacity:.85}
+.ph--light{
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.06);
+  background:
+    repeating-linear-gradient(135deg,rgba(0,0,0,.02) 0 2px,transparent 2px 20px),
+    linear-gradient(160deg,#e7e1d2,#ded7c5);
+}
+.ph--light .ph__tag{color:rgba(45,45,45,.45)}
+
+/* ── Layout helpers ──────────────────────────────────────── */
+.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--gut)}
+.section{padding-block:clamp(72px,9vw,128px);position:relative;overflow:hidden}
+.section--carbon{background:var(--carbon);color:var(--paper)}
+.section--carbon2{background:var(--carbon-2);color:var(--paper)}
+.section--paper{background:var(--paper);color:var(--ink)}
+.section--tight{padding-block:clamp(48px,6vw,84px)}
+.section-head{display:flex;flex-direction:column;gap:18px;margin-bottom:clamp(36px,5vw,60px)}
+.section-head .title{font-size:clamp(28px,4.4vw,52px)}
+.on-carbon .title,.section--carbon .title,.section--carbon2 .title{color:var(--paper)}
+
+/* Tags / chips mono */
+.tag{
+  font-family:var(--mono);font-size:11px;letter-spacing:.18em;
+  text-transform:uppercase;padding:5px 11px;border:1px solid var(--line-light);
+  color:var(--gray-d);display:inline-flex;align-items:center;gap:7px;
+}
+.tag--teal{border-color:var(--teal);color:var(--teal-d)}
+.tag--solid{background:var(--teal);border-color:var(--teal);color:#fff}
+.on-carbon .tag{border-color:var(--line-dark);color:var(--gray)}
+
+/* Scroll reveal — caída Kamak con rebote (lenguaje de entrada global) */
+.reveal{opacity:0}
+.reveal.in{animation:kDrop .8s cubic-bezier(.22,.9,.32,1) both}
+.reveal[data-d="1"].in{animation-delay:.1s}
+.reveal[data-d="2"].in{animation-delay:.2s}
+.reveal[data-d="3"].in{animation-delay:.3s}
+.reveal[data-d="4"].in{animation-delay:.4s}
+@keyframes kDrop{
+  0%{opacity:0;transform:translateY(-44px) scale(.99)}
+  58%{opacity:1;transform:translateY(7px)}
+  80%{transform:translateY(-3px)}
+  100%{opacity:1;transform:none}
+}
+/* Grupos: el contenedor no anima — caen sus hijos en cascada */
+.cards-4.reveal,.brandgrid.reveal,.gallery-grid.reveal{opacity:1}
+.cards-4.reveal.in,.brandgrid.reveal.in,.gallery-grid.reveal.in{animation:none}
+.cards-4.reveal .who,.brandgrid.reveal .brandtile,.gallery-grid.reveal .ph{opacity:0}
+.cards-4.reveal.in .who,.brandgrid.reveal.in .brandtile,.gallery-grid.reveal.in .ph{
+  animation:kDrop .75s cubic-bezier(.22,.9,.32,1) both;
+}
+.cards-4.reveal.in > :nth-child(2),.brandgrid.reveal.in > :nth-child(2),.gallery-grid.reveal.in > :nth-child(2){animation-delay:.08s}
+.cards-4.reveal.in > :nth-child(3),.brandgrid.reveal.in > :nth-child(3),.gallery-grid.reveal.in > :nth-child(3){animation-delay:.16s}
+.cards-4.reveal.in > :nth-child(4),.brandgrid.reveal.in > :nth-child(4),.gallery-grid.reveal.in > :nth-child(4){animation-delay:.24s}
+.cards-4.reveal.in > :nth-child(5),.brandgrid.reveal.in > :nth-child(5),.gallery-grid.reveal.in > :nth-child(5){animation-delay:.32s}
+.gallery-grid.reveal.in > :nth-child(6){animation-delay:.4s}
+.gallery-grid.reveal.in > :nth-child(7){animation-delay:.48s}
+.gallery-grid.reveal.in > :nth-child(8){animation-delay:.56s}
+.gallery-grid.reveal.in > :nth-child(9){animation-delay:.64s}
+.gallery-grid.reveal.in > :nth-child(10){animation-delay:.72s}
+/* Animaciones de entrada SIEMPRE visibles (pedido del cliente): sin gate de reduced-motion */
+
+/* "Qué entregamos": configuración anterior — fade-up suave, sin caída.
+   La foto conserva su barrido lateral (krClip) como protagonista. */
+.deliver__media.reveal,.deliver__list.reveal{
+  opacity:0;transform:translateY(26px);
+  transition:opacity .7s ease .08s,transform .7s ease .08s;
+}
+.deliver__media.reveal.in,.deliver__list.reveal.in{animation:none;opacity:1;transform:none}

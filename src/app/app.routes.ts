@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
+import { ObrasComponent } from './pages/obras/obras.component';
+import { ObraComponent } from './pages/obra/obra.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { LandingProjectComponent } from './pages/landing-project/landing-project.component';
 import { DashboardComponent } from './pages/admin/dashboard/dashboard.component';
@@ -12,6 +14,16 @@ export const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
+    data: { animation: 'fade' }
+  },
+  {
+    path: 'obras',
+    component: ObrasComponent,
+    data: { animation: 'fade' }
+  },
+  {
+    path: 'obras/:slug',
+    component: ObraComponent,
     data: { animation: 'fade' }
   },
   {

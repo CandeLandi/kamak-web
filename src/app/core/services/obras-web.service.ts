@@ -32,9 +32,17 @@ export class ObrasWebService {
   }
 
   getObra(slug: string): Observable<ObraWeb | null> {
-    return this.http.get<{ obra: ObraWeb }>(`${this.baseUrl()}/obras/${encodeURIComponent(slug)}`).pipe(
+    return this.http.get<{ obra: ObraWeb }>(`${this.baseUrl()}/obras?slug=${encodeURIComponent(slug)}`).pipe(
       map(r => r?.obra ?? null),
       catchError(() => of(null)),
+    );
+  }
+
+  // Form de contacto → lead en el embudo Comercial del ERP. Fire-and-forget
+  // (el front igual abre WhatsApp como fallback).
+  postLead(body: Record<string, string>): Observable<{ ok: boolean }> {
+    return this.http.post<{ ok: boolean }>(`${this.baseUrl()}/leads`, body).pipe(
+      catchError(() => of({ ok: false })),
     );
   }
 }
