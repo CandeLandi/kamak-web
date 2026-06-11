@@ -67,10 +67,27 @@ export function initSiteInteractions(): void {
     b.setAttribute('rel', 'noopener');
   });
 
-  // Scroll reveal (re-trigger)
+  // Scroll reveal (re-trigger): la caída kDrop se ve CADA vez que la sección
+  // reaparece. Al re-entrar limpiamos el inline que el safety-net pudo dejar
+  // (animation:none / opacity:1) y forzamos reflow → la animación CSS vuelve a
+  // dispararse. Sin esto quedaba "pegada" visible y no re-caía al volver a subir.
   const revealEls = d.querySelectorAll('.reveal, .step');
   const io = new IntersectionObserver((entries) => {
-    entries.forEach(en => { en.target.classList.toggle('in', en.isIntersecting); });
+    entries.forEach(en => {
+      const el = en.target as HTMLElement;
+      if (en.isIntersecting) {
+        el.style.animation = '';
+        el.style.opacity = '';
+        el.querySelectorAll<HTMLElement>('.who,.brandtile,.ph,.work').forEach(c => {
+          c.style.animation = '';
+          c.style.opacity = '';
+        });
+        void el.offsetWidth; // reflow → re-dispara kDrop
+        el.classList.add('in');
+      } else {
+        el.classList.remove('in');
+      }
+    });
   }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
   revealEls.forEach(el => io.observe(el));
   const forceVisible = (el: HTMLElement) => { if (getComputedStyle(el).opacity === '0') { el.style.animation = 'none'; el.style.opacity = '1'; } };

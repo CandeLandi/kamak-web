@@ -23,6 +23,7 @@ import { KamakFooterComponent } from '../kamak-shared/kamak-footer.component';
     .obras-list{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
     @media(max-width:980px){.obras-list{grid-template-columns:1fr 1fr}}
     @media(max-width:600px){.obras-list{grid-template-columns:1fr}.filters{gap:8px}.filter{padding:14px 13px;font-size:11px;flex:1 1 calc(50% - 8px)}.obras-head__stat{font-size:12px;line-height:1.8}}
+    @media(max-width:430px){.filters{gap:6px}.filter{padding:11px 8px;font-size:10px}.ocard__body{padding:14px 14px 18px}}
     .ocard{position:relative;background:#fff;border:1px solid var(--line-light);display:flex;flex-direction:column;overflow:hidden;transition:transform .25s,box-shadow .25s}
     .ocard:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(20,21,24,.1)}
     .ocard__media{position:relative;aspect-ratio:4/3;overflow:hidden}
@@ -31,7 +32,7 @@ import { KamakFooterComponent } from '../kamak-shared/kamak-footer.component';
     .ocard:hover .ocard__media .ph,.ocard:hover .ocard__img{transform:scale(1.05)}
     .ocard__badges{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;z-index:3}
     .ocard__body{padding:18px 18px 22px;display:flex;flex-direction:column;gap:10px}
-    .ocard__name{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:18px;letter-spacing:.01em;line-height:1.1}
+    .ocard__name{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:clamp(14px,3.5vw,18px);letter-spacing:.01em;line-height:1.2}
     .ocard__meta{font-family:var(--mono);font-size:12px;color:var(--gray-d);letter-spacing:.03em}
     .ocard__meta b{color:var(--ink)}
     .ba-mini{position:absolute;bottom:12px;right:12px;z-index:3;font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;background:var(--teal);color:#fff;padding:4px 8px}

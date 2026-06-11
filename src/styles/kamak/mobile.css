@@ -1,0 +1,65 @@
+/* ============================================================
+   KAMAK — Refinamientos responsive MÓVIL (capa sobre el diseño)
+   Solo afina pantallas chicas: evita overflow horizontal, mejora
+   legibilidad y touch targets. NO cambia el diseño desktop.
+   Cargado último en angular.json para poder ajustar el mockup.
+   ============================================================ */
+
+/* — Mapa nacional: el SVG (380×600) nunca debe desbordar — */
+.map__svg { width: 100%; max-width: 100%; overflow: hidden; }
+.map__svg svg { width: 100%; height: auto; display: block; }
+
+/* — Burger → X cuando el menú mobile está abierto (faltaba el estado .active) — */
+.nav__burger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav__burger.active span:nth-child(2) { opacity: 0; }
+.nav__burger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* — Hero video: cubrir sin desbordar en cualquier viewport — */
+@media (max-width: 768px) {
+  .hero__video { width: 100%; height: 100%; object-fit: cover; }
+}
+
+/* ════════ Teléfono medio (≤560px) ════════ */
+@media (max-width: 560px) {
+  .btn { min-height: 48px; }                 /* touch target cómodo */
+  .timeline { grid-template-columns: 1fr; }  /* 5 pasos en columna */
+  .form-actions { flex-direction: column; }
+  .form-actions .btn { width: 100%; }
+
+  /* Página de obra */
+  .gallery-grid { grid-template-columns: 1fr; gap: 10px; }
+  .gallery-grid .ph.wide { grid-column: span 1; aspect-ratio: 2 / 1; }
+  .case-title { font-size: clamp(20px, 5.5vw, 28px); }
+  .obra-nav__lnk { padding: 20px 0; }
+  .obra-nav__lnk .nm { font-size: 15px; }
+}
+
+/* ════════ Teléfono chico (≤430px) ════════ */
+@media (max-width: 430px) {
+  /* Home — hero */
+  .hero__title { font-size: clamp(28px, 10vw, 40px); letter-spacing: -.005em; }
+  .hero__sub { font-size: 15px; line-height: 1.5; }
+  .hero__eyebrow { font-size: 11px; letter-spacing: .26em; margin-bottom: 16px; }
+  .hero__cta { flex-direction: column; gap: 10px; }
+  .hero__cta .btn { width: 100%; }
+
+  /* Home — stats */
+  .stat__num { font-size: clamp(22px, 7vw, 30px); }
+  .stat__label { font-size: 11px; }
+
+  /* Slider antes/después: grip y caption usables al tacto */
+  .ba__grip { width: 42px; height: 42px; font-size: 14px; }
+  .ba__caption { font-size: 11px; left: 12px; right: 12px; bottom: 12px; padding: 6px 12px; }
+
+  /* Footer + contacto */
+  .footer__col a, .footer__col p { font-size: 13px; }
+  .footer__col h4 { font-size: 10px; }
+  .contact__direct a { font-size: 13px; gap: 11px; }
+
+  /* Página de obra — hero facts en columna, no apretados */
+  .obra-hero__facts { flex-direction: column; gap: 10px; border-top: none; margin-top: 18px; }
+  .obra-hero__fact { padding: 8px 0; margin-right: 0; border-right: none; border-bottom: 1px solid var(--line-dark); }
+  .obra-hero__fact:last-child { border-bottom: 0; }
+  .obra-feature .ba, .gallery-hero { aspect-ratio: 4 / 5; }
+  .ficha { padding: 20px 16px; }
+}
