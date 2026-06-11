@@ -131,13 +131,22 @@ export function initSiteInteractions(): void {
     plx();
   }
 
-  // Videos de fondo: autoplay + loop
+  // Videos de fondo: autoplay + loop. CLAVE: setear v.muted = true por PROPIEDAD
+  // (no solo el atributo del template) — los browsers bloquean el autoplay si la
+  // propiedad muted no está en true, y Angular no la setea desde el atributo.
   d.querySelectorAll<HTMLVideoElement>('.hero__video, .vstatement__video, .maker__video').forEach(v => {
+    v.muted = true;
+    v.defaultMuted = true;
     v.loop = true;
-    const play = () => { const p = v.play(); if (p && p.catch) p.catch(() => {}); };
+    v.setAttribute('playsinline', '');
+    const play = () => { const p = v.play(); if (p && typeof p.catch === 'function') p.catch(() => {}); };
     if (v.readyState >= 2) play();
     v.addEventListener('loadeddata', play, { once: true });
     v.addEventListener('canplay', play, { once: true });
+    v.addEventListener('canplaythrough', play, { once: true });
+    // Respaldo: reintentar al primer gesto/scroll por si el autoplay igual se bloqueó.
+    window.addEventListener('scroll', play, { once: true, passive: true });
+    d.addEventListener('touchstart', play, { once: true, passive: true });
     d.addEventListener('click', play, { once: true });
   });
 }

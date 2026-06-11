@@ -27,7 +27,7 @@
   <div class="stripes stripes--bl"><i></i></div>
   <div class="stats__grid stats__grid--3">
     <div class="stat">
-      <div class="stat__num"><span [attr.data-count]="totalObras" data-suf="+">0</span></div>
+      <div class="stat__num"><span data-count="40" data-suf="+">0</span></div>
       <div class="stat__label">Tiendas<br>entregadas</div>
     </div>
     <div class="stat">
@@ -119,8 +119,8 @@
           <div class="pframe__stripes" aria-hidden="true"></div>
           <span class="pframe__bracket" aria-hidden="true"></span>
           <div class="photo-reveal">
-            <img class="deliver__photo" data-parallax [src]="deliverPhoto" alt="Tienda completa terminada por Kamak">
-            <div class="pframe__caption"><span class="diamond diamond--sm"></span> {{ deliverCaption }}</div>
+            <img class="deliver__photo" data-parallax src="assets/kamak/photos/elena-00.jpg" alt="Tienda completa terminada por Kamak: salón gastronómico, góndolas e imagen de marca">
+            <div class="pframe__caption"><span class="diamond diamond--sm"></span> Baradero · Costa Paraná — Tienda entregada</div>
           </div>
         </div>
       </div>
@@ -133,7 +133,7 @@
   <div class="wrap">
     <div class="section-head reveal">
       <p class="label-flank"><span class="diamond"></span><span class="txt">Obras</span></p>
-      <h2 class="display title">{{ totalObras }}+ tiendas entregadas.<br>Esta podría ser la tuya.</h2>
+      <h2 class="display title">40+ tiendas entregadas.<br>Esta podría ser la tuya.</h2>
     </div>
 
     <div class="works-grid reveal" data-d="1">
@@ -155,15 +155,15 @@
       </a>
     </div>
 
-    <!-- Slider Antes / Después -->
-    <div class="ba-feature brackets reveal" data-d="1" style="margin-top:40px" *ngIf="baObra">
+    <!-- Slider Antes / Después (showcase fijo del diseño: San Clemente) -->
+    <div class="ba-feature brackets reveal" data-d="1" style="margin-top:40px">
       <div class="ba">
-        <div class="ba__layer"><img class="ba__img ba__img--antes" [src]="baObra.imageBefore" alt="Antes"></div>
-        <div class="ba__layer ba__after"><img class="ba__img ba__img--despues" [src]="baObra.imageAfter" alt="Después"></div>
+        <div class="ba__layer"><img class="ba__img ba__img--antes" src="assets/kamak/photos/sanclemente-antes.jpg" alt="Antes: local El Faro de San Clemente en obra, con surtidores y materiales"></div>
+        <div class="ba__layer ba__after"><img class="ba__img ba__img--despues" src="assets/kamak/photos/sanclemente-despues.jpg" alt="Después: tienda Shop Express terminada con mostradores Café Express"></div>
         <span class="ba__label ba__label--before">Antes</span>
         <span class="ba__label ba__label--after">Después</span>
         <div class="ba__handle"><div class="ba__grip">⟷</div></div>
-        <div class="ba__caption">{{ baObra.localidad }} · <b style="color:var(--teal-l)">{{ baObra.titulo }}</b><ng-container *ngIf="baObra.m2">. {{ baObra.m2 }} m².</ng-container></div>
+        <div class="ba__caption">San Clemente del Tuyú · <b style="color:var(--teal-l)">De depósito a tienda en 7 días.</b> 100 m².</div>
       </div>
     </div>
 
@@ -276,7 +276,7 @@
   <div class="wrap">
     <div class="backing reveal">
       <p class="label-flank" style="justify-content:center"><span class="diamond"></span><span class="txt" style="color:var(--teal-d)">Respaldo</span><span class="diamond"></span></p>
-      <h2 class="display backing__big">{{ totalObras }}+ tiendas para las<br><span class="teal">marcas líderes del país.</span></h2>
+      <h2 class="display backing__big">40+ tiendas para las<br><span class="teal">marcas líderes del país.</span></h2>
       <p class="backing__sub">Puma Energy, Dean &amp; Dennys, Fan de Pan, Subway y Cencosud. Obra civil, mobiliario propio, gastronomía, instalaciones e imagen de marca — la trayectoria que respalda cada nueva obra.</p>
       <p class="backing__cred"><span class="diamond diamond--sm"></span> Empresa habilitada <span class="dot">·</span> Seguros y ART vigentes <span class="dot">·</span> Seguridad e higiene en obra <span class="diamond diamond--sm"></span></p>
     </div>
