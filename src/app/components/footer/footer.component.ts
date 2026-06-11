@@ -10,16 +10,17 @@ import { RouterModule } from '@angular/router';
 })
 export class FooterComponent {
   services = [
-    { title: 'Proyectos y Renders', link: '#' },
-    { title: 'Soluciones Integrales', link: '#' },
-    { title: 'Horario Continuo', link: '#' },
-    { title: 'Planos Eléctricos', link: '#' }
+    { title: 'Diseño de proyecto', link: '#servicios' },
+    { title: 'Dirección de obra', link: '#servicios' },
+    { title: 'Fabricación de muebles', link: '#servicios' },
+    { title: 'Equipamiento gastronómico', link: '#servicios' }
   ];
 
   links = [
-    { title: 'Inicio', link: '#' },
+    { title: 'Proyectos', link: '#proyectos' },
     { title: 'Servicios', link: '#servicios' },
-    { title: 'Proyectos', link: '#proyectos' }
+    { title: 'Proceso', link: '#proceso' },
+    { title: 'Contacto', link: '#contacto' }
   ];
 
   contactInfo = {

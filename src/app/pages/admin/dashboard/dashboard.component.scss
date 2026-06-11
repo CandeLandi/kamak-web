@@ -11,8 +11,8 @@
       }
 
       &.mat-mdc-chip-selected {
-        background-color: #195764 !important;
-        border-color: #195764 !important;
+        background-color: #009596 !important;
+        border-color: #009596 !important;
       }
     }
   }
@@ -53,7 +53,7 @@
 
   // Button
   .mat-mdc-raised-button.mat-primary {
-    background-color: #195764 !important;
+    background-color: #009596 !important;
 
     &:hover {
       background-color: #1a6b7a !important;
@@ -63,7 +63,7 @@
   // Snackbar
   .mat-mdc-snack-bar-container {
     &.success-snackbar {
-      --mdc-snackbar-container-color: #195764;
+      --mdc-snackbar-container-color: #009596;
       --mat-mdc-snack-bar-button-color: white;
       --mdc-snackbar-supporting-text-color: white;
     }
@@ -87,7 +87,7 @@
 
 // Loading Spinner
 .mat-mdc-progress-spinner {
-  --mdc-circular-progress-active-indicator-color: #195764;
+  --mdc-circular-progress-active-indicator-color: #009596;
 }
 
 // Responsive Adjustments

@@ -10,7 +10,16 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LucideAngularModule } from 'lucide-angular';
 import { ProjectsService } from '../../core/services/projects.service';
 import { Project } from '../../pages/admin/interfaces/project.interface';
-import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
+
+interface ProjectPreview {
+  id: string;
+  name: string;
+  location: string;
+  category: string;
+  scope: string;
+  image: string;
+  isFallback?: boolean;
+}
 
 @Component({
   selector: 'app-projects',
@@ -25,7 +34,6 @@ import { PaginationComponent } from '../../shared/components/pagination/paginati
     MatIconModule,
     MatProgressSpinnerModule,
     LucideAngularModule,
-    PaginationComponent,
   ],
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss']
@@ -38,11 +46,55 @@ export class ProjectsComponent implements OnInit {
 
   private allProjects = signal<Project[]>([]);
   public searchQuery = signal('');
+  public visibleProjectCount = signal(5);
 
-  public pagination = signal({
-    pageIndex: 0,
-    pageSize: 6,
-  });
+  private fallbackProjects: ProjectPreview[] = [
+    {
+      id: 'zarate-traslux',
+      name: 'Zárate — Traslux',
+      location: 'Zárate',
+      category: 'Estación de servicio',
+      scope: 'Obra comercial integral · Puesta en marcha',
+      image: 'assets/images/work-done/zarate-traslux/traslux.webp',
+      isFallback: true
+    },
+    {
+      id: 'las-toninas-trearie',
+      name: 'Las Toninas — Trearie',
+      location: 'Costa Atlántica',
+      category: 'Gastronomía',
+      scope: 'Interior comercial · Mobiliario a medida',
+      image: 'assets/images/work-done/las-toninos-trearie/portada.webp',
+      isFallback: true
+    },
+    {
+      id: 'baradero-costa-parana',
+      name: 'Baradero — Costa Paraná',
+      location: 'Baradero',
+      category: 'Comercial',
+      scope: 'Reforma integral · Equipamiento operativo',
+      image: 'assets/images/work-done/baradero-costa-parana/portada.webp',
+      isFallback: true
+    },
+    {
+      id: 'necochea-cq',
+      name: 'Necochea — CQ',
+      location: 'Necochea',
+      category: 'Local comercial',
+      scope: 'Diseño + ejecución · Terminaciones',
+      image: 'assets/images/work-done/necochea-cq/necochea-cq.webp',
+      isFallback: true
+    },
+    {
+      id: 'azul-sapeda',
+      name: 'Azul — Sapeda',
+      location: 'Azul',
+      category: 'Estación de servicio',
+      scope: 'Intervención comercial · Instalación final',
+      image: 'assets/images/work-done/azul-sapeda/station.webp',
+      isFallback: true
+    }
+  ];
 
   public filteredProjects = computed(() => {
     const query = this.searchQuery().toLowerCase();
@@ -54,23 +106,34 @@ export class ProjectsComponent implements OnInit {
 
     return projects.filter(p =>
       p.name.toLowerCase().includes(query) ||
-      p.description.toLowerCase().includes(query)
+      (p.description || '').toLowerCase().includes(query)
     );
   });
 
-  public paginatedProjects = computed(() => {
+  public displayProjects = computed<ProjectPreview[]>(() => {
     const projects = this.filteredProjects();
-    const { pageIndex, pageSize } = this.pagination();
-    const start = pageIndex * pageSize;
-    const end = start + pageSize;
-    return projects.slice(start, end);
+
+    if (!projects.length) {
+      return this.fallbackProjects;
+    }
+
+    return projects.slice(0, this.visibleProjectCount()).map(project => ({
+      id: project.id,
+      name: project.name,
+      location: project.address?.address?.split(',')[0] || 'Argentina',
+      category: this.formatCategory(project.category),
+      scope: project.description || project.area || 'Obra comercial integral',
+      image: project.imageAfter || project.imageBefore || 'assets/images/work-done/zarate-traslux/traslux.webp'
+    }));
   });
 
-  public totalPages = computed(() => {
-    const length = this.filteredProjects().length;
-    const pageSize = this.pagination().pageSize;
-    if (!length || !pageSize) return 0;
-    return Math.ceil(length / pageSize);
+  public hasMoreProjects = computed(() => this.filteredProjects().length > this.visibleProjectCount());
+
+  public visibleProjectsLabel = computed(() => {
+    const total = this.filteredProjects().length;
+    const visible = Math.min(this.visibleProjectCount(), total);
+
+    return `Mostrando ${visible} de ${total} proyectos`;
   });
 
   ngOnInit(): void {
@@ -82,20 +145,22 @@ export class ProjectsComponent implements OnInit {
       },
       error: () => {
         this.error.set('No se pudieron cargar los proyectos.');
+        this.allProjects.set([]);
         this.loading.set(false);
       }
     });
   }
 
-  onSearch(query: string): void {
-    this.searchQuery.set(query);
-    this.goToPage(0);
+  private formatCategory(category?: string | null): string {
+    return category?.toLowerCase().replaceAll('_', ' ') || 'Comercial';
   }
 
-  goToPage(pageIndex: number): void {
-    const total = this.totalPages();
-    const newPageIndex = Math.max(0, Math.min(pageIndex, total - 1));
+  onSearch(query: string): void {
+    this.searchQuery.set(query);
+    this.visibleProjectCount.set(5);
+  }
 
-    this.pagination.set({ ...this.pagination(), pageIndex: newPageIndex });
+  showMoreProjects(): void {
+    this.visibleProjectCount.update(count => count + 5);
   }
 }

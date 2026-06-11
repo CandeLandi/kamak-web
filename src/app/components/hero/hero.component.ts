@@ -9,5 +9,6 @@ import { CommonModule } from '@angular/common';
   templateUrl: './hero.component.html',
 })
 export class HeroComponent {
-  heroImage = 'assets/hero/hero.webp';
+  heroImage = 'assets/images/construction-site/kamak-developments.webp';
+  badges = ['Diseño + obra', 'Fabricación propia', 'Equipo técnico permanente'];
 }

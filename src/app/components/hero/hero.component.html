@@ -1,62 +1,51 @@
-<section class="relative h-screen flex items-center bg-transparent">
-  <!-- Background image -->
-  <div class="absolute inset-0 z-0">
+<section class="hero" data-testid="home-hero">
+  <picture class="hero__image">
     <img
       [src]="heroImage"
-      alt="Interior de construcción en proceso con estructura metálica y techo de madera"
+      alt="Obra comercial integral desarrollada por Kamak"
       fetchpriority="high"
-      class="w-full h-full object-cover"
+      decoding="async"
     />
-    <!-- Opacity layer for better text readability -->
-    <div class="absolute inset-0 bg-black/70"></div>
-  </div>
+  </picture>
+  <div class="hero__overlay" aria-hidden="true"></div>
+  <div class="hero__grid" aria-hidden="true"></div>
 
-  <div class="container mx-auto px-4 relative z-10">
-    <div class="max-w-2xl mx-auto text-center">
-      <!-- Logo -->
-      <div class="flex justify-center mb-2">
-        <img
-          src="assets/logos/logo-kamak.svg"
-          alt="Kamak Desarrollos"
-          width="400"
-          height="160"
-          fetchpriority="high"
-          class="w-full max-w-[20rem] sm:max-w-[23rem] md:max-w-[35rem] object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]"
-        />
-      </div>
-      <h1 class="text-2xl sm:text-3xl md:text-4xl font-semibold text-white mb-4 leading-tight drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
-        La forma más rápida y eficiente de construir tu negocio
-      </h1>
-      <p class="text-base sm:text-lg text-white/90 mb-4 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
-        Nos ocupamos del proyecto, dirección y ejecución completa de tu obra.
+  <div class="kamak-container hero__content">
+    <div class="hero__copy">
+      <span class="eyebrow">SOLUCIONES INTEGRALES DE OBRA COMERCIAL</span>
+      <h1>Espacios comerciales <strong>listos para operar.</strong></h1>
+      <p>
+        Diseñamos, fabricamos y ejecutamos <strong>obras integrales</strong> para estaciones de servicio,
+        locales gastronómicos y <strong>espacios comerciales</strong> en distintos puntos del país.
       </p>
 
-      <div class="mb-4 max-w-full">
-        <div class="flex items-center gap-3 bg-[#195764]/50 rounded-lg p-3 border border-[#195764]/70 min-w-0">
-          <i class="fas fa-clock h-5 w-5 text-white flex-shrink-0"></i>
-          <p class="text-white text-xs sm:text-sm font-medium leading-snug break-words min-w-0">
-            Trabajamos 24/7 para cumplir con los plazos más exigentes sin comprometer la calidad del resultado.
-          </p>
-        </div>
-      </div>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
+      <div class="button-row">
         <a
-          href="https://wa.me/5492262559474?text=Hola%2C%20me%20interesa%20solicitar%20un%20presupuesto"
+          class="btn btn-primary"
+          href="https://wa.me/5492262559474?text=Hola%2C%20quiero%20solicitar%20una%20propuesta%20para%20un%20proyecto%20comercial"
           target="_blank"
           rel="noopener noreferrer"
-          class="w-full sm:w-auto"
+          data-testid="hero-proposal-link"
         >
-          <button class="w-full bg-[#195764] hover:bg-[#124450] text-white font-medium text-base px-6 py-2 rounded-md transition-colors duration-200 flex items-center justify-center gap-2">
-            <i class="fas fa-comment"></i>
-            Hablemos
-          </button>
+          Solicitar propuesta
         </a>
-        <a href="#proyectos" class="w-full sm:w-auto">
-          <button class="w-full bg-white hover:bg-gray-50 text-[#195764] font-medium text-base px-6 py-2 rounded-md transition-colors duration-200">
-            Ver proyectos
-          </button>
+        <a class="btn btn-secondary btn-secondary--light" href="#proyectos" data-testid="hero-projects-link">
+          Ver proyectos realizados
         </a>
       </div>
+
+      <div class="hero__badges" aria-label="Indicadores de confianza">
+        @for (badge of badges; track badge) {
+          <span>{{ badge }}</span>
+        }
+      </div>
     </div>
+  </div>
+
+  <div class="hero__bottom-signal" aria-hidden="true">
+    <span>Diseño</span>
+    <span>Obra</span>
+    <span>Fabricación</span>
+    <span>Entrega</span>
   </div>
 </section>

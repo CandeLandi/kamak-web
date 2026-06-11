@@ -21,26 +21,26 @@ export class TeamComponent {
   teamMembers: TeamMember[] = [
     {
       id: '1',
-      title: 'Supervision de obra',
-      description: 'Nuestros arquitectos permanecen en obra durante todo el proceso, supervisando cada detalle de la construccion y asegurando que se cumplan los estandares de calidad y diseno establecidos en el proyecto.',
+      title: 'Supervisión de obra',
+      description: '<strong>Seguimiento técnico</strong>, control de avances y coordinación de equipos para mantener el proyecto alineado a los objetivos definidos.',
       image: 'assets/images/working-people/asistencia-operativa.webp',
-      tags: ['Supervision 24/7', 'Resolucion inmediata', 'Control de calidad'],
+      tags: ['Coordinación', 'Supervisión', 'Control técnico'],
       imageOrder: 'left'
     },
     {
       id: '2',
-      title: 'Logistica',
-      description: 'Nuestro personal de logistica se encarga de la coordinacion y entrega puntual de materiales y equipos, optimizando los tiempos de trabajo y evitando retrasos en la ejecucion del proyecto.',
+      title: 'Logística',
+      description: 'Organización de <strong>materiales, traslados, entregas e instalaciones</strong> para asegurar continuidad durante la ejecución.',
       image: 'assets/images/working-people/working-people.webp',
-      tags: ['Entregas programadas', 'Gestion de inventario', 'Optimizacion de recursos'],
+      tags: ['Materiales', 'Traslados', 'Instalación'],
       imageOrder: 'right'
     },
     {
       id: '3',
       title: 'Asistencia operativa',
-      description: 'Contamos con un asistente operativo en obra que se encarga de tareas clave que no corresponden a ningun gremio en particular. Da soporte a los distintos equipos, resuelve necesidades imprevistas y colabora con proveedores externos.',
+      description: 'Acompañamiento en <strong>decisiones técnicas, ajustes finales y necesidades específicas</strong> durante la puesta en marcha.',
       image: 'assets/images/working-people/construction.webp',
-      tags: ['Coordinacion de gremios', 'Comunicacion con el cliente', 'Seguimiento de avances'],
+      tags: ['Ajustes finales', 'Soporte técnico', 'Puesta en marcha'],
       imageOrder: 'left'
     }
   ];

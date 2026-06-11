@@ -20,7 +20,7 @@
           <div class="space-y-6">
             <div>
               <h1 class="text-3xl md:text-4xl font-bold text-white flex items-center gap-3">
-                <i-lucide name="star" class="w-7 h-7 text-[#195764]"></i-lucide>
+                <i-lucide name="star" class="w-7 h-7 text-[#009596]"></i-lucide>
                 {{ project.name }}
               </h1>
               <p class="text-base sm:text-lg text-gray-300 max-w-3xl mt-6 break-words whitespace-pre-line">
@@ -31,7 +31,7 @@
               @for (detail of projectDetails; track detail.label) {
                 @if (detail.value) {
                 <div class="flex items-center gap-2 mb-4 lg:mb-0">
-                  <i-lucide [name]="detail.icon" class="w-5 h-5 text-[#195764]"></i-lucide>
+                  <i-lucide [name]="detail.icon" class="w-5 h-5 text-[#009596]"></i-lucide>
                   <div>
                     <span class="text-xs text-gray-400">{{ detail.label }}:</span>
                                          <p class="font-medium text-white" >
@@ -69,7 +69,7 @@
           @if (hasMoreImages && !showAllImages) {
           <div class="mt-6 text-center">
             <button (click)="showAllImages = true"
-              class="border border-[#195764] text-[#195764] hover:bg-[#195764]/10 px-4 py-2 rounded-md font-semibold transition-colors flex items-center justify-center mx-auto">
+              class="border border-[#009596] text-[#009596] hover:bg-[#009596]/10 px-4 py-2 rounded-md font-semibold transition-colors flex items-center justify-center mx-auto">
               Ver más imágenes
               <i-lucide name="chevron-down" class="w-4 h-4 ml-2"></i-lucide>
             </button>
@@ -97,7 +97,7 @@
           @if(project.challenge) {
           <div>
             <h3 class="text-xl font-semibold mb-3 text-white flex items-center gap-2">
-              <i-lucide name="alert-circle" class="w-5 h-5 text-[#195764]"></i-lucide>El desafío
+              <i-lucide name="alert-circle" class="w-5 h-5 text-[#009596]"></i-lucide>El desafío
             </h3>
             <p class="text-gray-300 whitespace-pre-line break-words">
               {{ project.challenge }}
@@ -107,7 +107,7 @@
           @if(project.solution) {
           <div>
             <h3 class="text-xl font-semibold mb-3 text-white flex items-center gap-2">
-              <i-lucide name="star" class="w-5 h-5 text-[#195764]"></i-lucide>Nuestra solución
+              <i-lucide name="star" class="w-5 h-5 text-[#009596]"></i-lucide>Nuestra solución
             </h3>
             <p class="text-gray-300 whitespace-pre-line break-words">
               {{ project.solution }}
@@ -122,7 +122,7 @@
       @if (videos.length > 0) {
       <div class="w-full">
         <h2 class="text-2xl font-bold my-4 text-white flex items-center gap-2">
-          <i-lucide name="video" class="w-6 h-6 text-[#195764]"></i-lucide>Videos del Proyecto
+          <i-lucide name="video" class="w-6 h-6 text-[#009596]"></i-lucide>Videos del Proyecto
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
           <div >
@@ -177,7 +177,7 @@
       @if(project.imageBefore && project.imageAfter) {
       <div class="w-full">
         <h2 class="text-2xl font-bold my-4 text-white flex items-center gap-2">
-          <i-lucide name="image" class="w-6 h-6 text-[#195764]"></i-lucide>Antes y
+          <i-lucide name="image" class="w-6 h-6 text-[#009596]"></i-lucide>Antes y
           Después
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -185,7 +185,7 @@
           <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-md cursor-pointer group"
             (click)="openBeforeAfterLightbox(0)">
             <div
-              class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm font-semibold bg-white text-[#181c23] border border-[#195764] shadow">
+              class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm font-semibold bg-white text-[#181c23] border border-[#009596] shadow">
               Antes
             </div>
             <div class="relative aspect-[4/3] rounded-md overflow-hidden">
@@ -201,7 +201,7 @@
           <div class="relative bg-[#181c23] rounded-lg overflow-hidden shadow-md cursor-pointer group"
             (click)="openBeforeAfterLightbox(1)">
             <div
-              class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm font-semibold bg-white text-[#181c23] border border-[#195764] shadow">
+              class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-sm font-semibold bg-white text-[#181c23] border border-[#009596] shadow">
               Después
             </div>
             <div class="relative aspect-[4/3] rounded-md overflow-hidden">
@@ -218,7 +218,7 @@
       </div>
       }
 
-      <div class="bg-[#195764] rounded-lg p-6 text-center w-full">
+      <div class="bg-[#009596] rounded-lg p-6 text-center w-full">
         <h3 class="text-xl font-bold mb-2 text-white">
           ¿Te interesa un proyecto similar?
         </h3>

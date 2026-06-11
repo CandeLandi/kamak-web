@@ -10,9 +10,15 @@ import { RouterLink } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
   scrolled = false;
-  pastLogo = false;
   mobileMenuOpen = false;
   private isBrowser: boolean;
+  navItems = [
+    { label: 'Proyectos', href: '#proyectos' },
+    { label: 'Servicios', href: '#servicios' },
+    { label: 'Proceso', href: '#proceso' },
+    { label: 'Equipo', href: '#equipo' },
+    { label: 'Contacto', href: '#contacto' }
+  ];
 
   constructor(@Inject(PLATFORM_ID) platformId: Object) {
     this.isBrowser = isPlatformBrowser(platformId);
@@ -33,22 +39,12 @@ export class HeaderComponent implements OnInit {
 
   private checkScroll() {
     this.scrolled = window.scrollY > 50;
-    this.pastLogo = window.scrollY > 100;
   }
 
   toggleMobileMenu() {
     if (this.isBrowser) {
       this.mobileMenuOpen = !this.mobileMenuOpen;
-      // Permitir scroll en el menú móvil para que no se tape con la barra de navegación
-      if (this.mobileMenuOpen) {
-        document.body.style.overflow = 'auto';
-        document.body.style.position = 'fixed';
-        document.body.style.width = '100%';
-      } else {
-        document.body.style.overflow = '';
-        document.body.style.position = '';
-        document.body.style.width = '';
-      }
+      document.body.style.overflow = this.mobileMenuOpen ? 'hidden' : '';
     }
   }
 }

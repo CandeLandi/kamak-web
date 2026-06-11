@@ -1,48 +1,46 @@
-<section id="proyectos" class="py-12 md:py-20 lg:py-24 bg-black relative overflow-hidden">
-  <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 relative z-10">
-    <div class="text-center mb-8 md:mb-12">
-      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-white">Proyectos realizados</h2>
-      <p class="text-gray-400 max-w-3xl mx-auto text-lg md:text-xl">
-        Conocé una selección de obras listas para operar,
-        entregadas en tiempo récord.
-      </p>
+<section id="proyectos" class="kamak-section-dark section-pad projects-section">
+  <div class="kamak-container">
+    <div class="section-heading section-heading--split">
+      <div>
+        <span class="eyebrow">OBRAS REALIZADAS</span>
+        <h2>Proyectos realizados</h2>
+      </div>
+      <p>Obras comerciales ejecutadas con foco en funcionalidad, terminación y puesta en marcha.</p>
     </div>
 
-    @if (loading()) {
-      <div class="flex justify-center items-center h-64">
-        <mat-spinner diameter="50"></mat-spinner>
+    @if (loading() && !displayProjects().length) {
+      <div class="projects-grid" data-testid="projects-loading-skeleton">
+        @for (item of [1, 2, 3, 4, 5]; track item) {
+          <div class="project-card skeleton-sheen"></div>
+        }
       </div>
     } @else {
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12">
-        @for (project of paginatedProjects(); track project.id) {
-          <a [routerLink]="['/projects', project.id]" class="block group">
-            <div class="bg-[#181c23] border border-white/10 group-hover:border-[#195764] rounded-lg overflow-hidden transition-all duration-300 aspect-[4/3] relative">
-            <div class="relative h-full w-full overflow-hidden">
-              <img
-                [src]="project.imageAfter || 'assets/images/placeholder.svg'"
-                  [alt]="project.name"
-                  loading="lazy"
-                  decoding="async"
-                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-              />
-                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-4 md:p-6">
-                  <h3 class="text-lg md:text-xl font-bold text-white text-center">{{ project.name }}</h3>
-                </div>
-              </div>
+      <div class="projects-grid" data-testid="projects-grid">
+        @for (project of displayProjects(); track project.id; let index = $index) {
+          <a [routerLink]="project.isFallback ? null : ['/projects', project.id]" class="project-card" [class.project-card--featured]="index === 0">
+            <img [src]="project.image" [alt]="project.name" loading="lazy" decoding="async" />
+            <div class="project-card__overlay"></div>
+            <div class="project-card__meta">
+              <span>{{ project.location }}</span>
+              <span>{{ project.category }}</span>
+            </div>
+            <div class="project-card__content">
+              <h3>{{ project.name }}</h3>
+              <p>{{ project.scope }}</p>
+              <span class="project-card__cta">Ver proyecto</span>
             </div>
           </a>
         }
-    </div>
+      </div>
 
-    @if (totalPages() > 1) {
-      <app-pagination
-        [currentPage]="pagination().pageIndex"
-        [totalPages]="totalPages()"
-        (pageChange)="goToPage($event)"
-      ></app-pagination>
+      @if (hasMoreProjects()) {
+        <div class="projects-actions" data-testid="projects-load-more">
+          <span>{{ visibleProjectsLabel() }}</span>
+          <button class="btn btn-secondary btn-secondary--light" type="button" (click)="showMoreProjects()" data-testid="projects-load-more-button">
+            Ver más proyectos
+          </button>
+        </div>
+      }
     }
-    }
-
-
   </div>
 </section>

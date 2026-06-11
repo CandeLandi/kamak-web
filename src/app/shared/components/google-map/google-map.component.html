@@ -1,15 +1,17 @@
 <div class="relative">
   @if (loading) {
-    <div class="flex justify-center items-center h-[600px] bg-gray-100 rounded-lg">
-      <div class="text-center">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#195764] mx-auto mb-4"></div>
-        <p class="text-gray-600">Cargando proyectos...</p>
+    <div class="kamak-panel h-[600px] rounded-lg p-4" data-testid="map-loading-skeleton">
+      <div class="relative h-full w-full overflow-hidden rounded-md skeleton-sheen">
+        <div class="absolute left-6 top-6 h-8 w-52 rounded bg-white/10"></div>
+        <div class="absolute left-[18%] top-[34%] h-5 w-5 rounded-full bg-[#009596]/80"></div>
+        <div class="absolute right-[24%] top-[26%] h-5 w-5 rounded-full bg-[#009596]/70"></div>
+        <div class="absolute left-[42%] bottom-[28%] h-5 w-5 rounded-full bg-[#009596]/70"></div>
       </div>
     </div>
   } @else if (mapUnavailable) {
     <div class="flex justify-center items-center min-h-[320px] bg-[#101820] border border-white/10 rounded-lg">
       <div class="text-center max-w-md px-6">
-        <div class="text-[#195764] mb-4">
+        <div class="text-[#009596] mb-4">
           <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"></path>
             <circle cx="12" cy="9" r="2.5"></circle>
@@ -22,24 +24,24 @@
       </div>
     </div>
   } @else if (error) {
-    <div class="flex justify-center items-center min-h-[360px] bg-gray-100 rounded-lg">
+    <div class="kamak-panel flex justify-center items-center min-h-[360px] rounded-lg">
       <div class="text-center">
         <div class="text-red-500 mb-4">
           <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
           </svg>
         </div>
-        <p class="text-gray-600 mb-4">No se pudo cargar el mapa</p>
+        <p class="text-gray-300 mb-4">No se pudo cargar el mapa</p>
         <button
           (click)="retryLoad()"
-          class="px-4 py-2 bg-[#195764] text-white rounded-lg hover:bg-[#134a54] transition-colors"
+          class="px-4 py-2 bg-[#009596] text-white rounded-lg hover:bg-[#007a7b] transition-colors"
         >
           Reintentar
         </button>
       </div>
     </div>
   } @else if (markers.length === 0) {
-    <div class="flex justify-center items-center h-[600px] bg-gray-100 rounded-lg">
+    <div class="kamak-panel flex justify-center items-center h-[600px] rounded-lg">
       <div class="text-center">
         <div class="text-gray-400 mb-4">
           <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -47,11 +49,11 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
           </svg>
         </div>
-        <p class="text-gray-600">No hay proyectos con ubicación disponible</p>
+        <p class="text-gray-300">No hay proyectos con ubicación disponible</p>
       </div>
     </div>
   } @else {
-    <div #mapContainer class="relative">
+    <div #mapContainer class="kamak-media-frame relative overflow-hidden rounded-lg">
       <google-map
         height="600px"
         width="100%"
@@ -70,7 +72,7 @@
                 />
               </div>
             }
-            <div class="font-semibold text-[#195764] text-lg mb-1">{{ selectedMarker?.title }}</div>
+            <div class="font-semibold text-[#009596] text-lg mb-1">{{ selectedMarker?.title }}</div>
             <div class="text-sm text-gray-600">{{ selectedMarker?.address }}</div>
           </div>
         </map-info-window>

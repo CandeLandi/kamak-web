@@ -1,127 +1,58 @@
-<header [ngClass]="{'fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-2 md:py-4': true, 'bg-black/80 backdrop-blur-md py-1 md:py-2': scrolled}">
-  <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 flex items-center justify-between">
-    <nav class="hidden md:flex items-center gap-6 md:gap-8">
-      <a href="#proyectos" class="text-white text-sm md:text-base font-medium relative group">
-        Proyectos
-        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#195764] transition-all duration-300 group-hover:w-full"></span>
-      </a>
-      <a href="#servicios" class="text-white text-sm md:text-base font-medium relative group">
-        Servicios
-        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#195764] transition-all duration-300 group-hover:w-full"></span>
-      </a>
+<header class="site-header" [class.site-header--scrolled]="scrolled" data-testid="site-header">
+  <div class="site-header__inner">
+    <a routerLink="/" class="site-header__logo" aria-label="Kamak Desarrollos">
+      <img src="assets/logos/logo-kamak.svg" alt="Kamak Desarrollos" width="154" height="42" />
+    </a>
+
+    <nav class="site-header__nav" aria-label="Navegación principal">
+      @for (item of navItems; track item.label) {
+        <a [href]="item.href">{{ item.label }}</a>
+      }
     </nav>
 
-    <div [ngClass]="{'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 opacity-0 pointer-events-none scale-90': true, 'opacity-100 pointer-events-auto scale-100': pastLogo}">
-      <a routerLink="/">
-        <img
-        src="assets/logos/logo-kamak.svg"
-        alt="Kamak Desarrollos"
-        width="140"
-        height="40"
-        class="object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]"
-        />
-      </a>
-    </div>
-
-    <div class="flex items-center gap-2 md:gap-4">
+    <div class="site-header__actions">
       <a
-        href="https://wa.me/5492262559474?text=Hola%2C%20me%20interesa%20solicitar%20un%20presupuesto"
+        href="https://wa.me/5492262559474?text=Hola%2C%20quiero%20solicitar%20una%20propuesta%20para%20un%20proyecto%20comercial"
         target="_blank"
         rel="noopener noreferrer"
-        class="hidden sm:inline-flex"
+        class="btn btn-primary site-header__cta"
+        data-testid="header-proposal-link"
       >
-        <button class="bg-[#195764] hover:bg-[#124450] text-white font-medium text-sm md:text-base px-4 md:px-6 py-2 md:py-3 rounded-md transition-colors duration-200 flex items-center justify-center gap-2">
-          <i class="fas fa-comment"></i>
-          Solicitar Presupuesto
-        </button>
+        Solicitar propuesta
       </a>
-
-      <button class="p-2 block md:hidden rounded-md hover:bg-white/10 transition-colors duration-200" (click)="toggleMobileMenu()">
-        <i class="fas fa-bars text-xl text-white"></i>
+      <button
+        type="button"
+        class="site-header__menu"
+        (click)="toggleMobileMenu()"
+        aria-label="Abrir menú"
+        data-testid="header-menu-button"
+      >
+        <span></span>
+        <span></span>
       </button>
     </div>
   </div>
 </header>
 
 @if (mobileMenuOpen) {
-<div *ngIf="mobileMenuOpen" class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex flex-col overflow-y-auto">
-  <div class="flex items-center justify-between py-2 md:py-4 px-4 md:px-6 lg:px-8 border-b border-gray-800/50">
-    <button class="p-2 rounded-md hover:bg-white/10 transition-colors duration-200" (click)="toggleMobileMenu()">
-      <i class="fas fa-times text-xl text-white"></i>
-    </button>
-  </div>
-
-  <div class="flex-1 flex flex-col justify-between p-4 md:p-6 pb-20">
-    <nav class="flex flex-col gap-4 md:gap-6">
-      <h3 class="text-white text-lg md:text-xl font-bold mb-2">Explorar</h3>
-      <a href="#servicios" class="text-white text-lg md:text-xl font-semibold hover:text-[#195764] transition-colors duration-200 py-3 border-b border-gray-800/30" (click)="toggleMobileMenu()">
-        Servicios
-      </a>
-      <a href="#proyectos" class="text-white text-lg md:text-xl font-semibold hover:text-[#195764] transition-colors duration-200 py-3 border-b border-gray-800/30" (click)="toggleMobileMenu()">
-        Proyectos
-      </a>
-      <a href="#equipo" class="text-white text-lg md:text-xl font-semibold hover:text-[#195764] transition-colors duration-200 py-3 border-b border-gray-800/30" (click)="toggleMobileMenu()">
-        Equipo
-      </a>
+  <div class="mobile-menu" data-testid="mobile-menu">
+    <div class="mobile-menu__top">
+      <img src="assets/logos/logo-kamak.svg" alt="Kamak Desarrollos" width="132" height="36" />
+      <button type="button" (click)="toggleMobileMenu()" aria-label="Cerrar menú" data-testid="mobile-menu-close">Cerrar</button>
+    </div>
+    <nav>
+      @for (item of navItems; track item.label) {
+        <a [href]="item.href" (click)="toggleMobileMenu()">{{ item.label }}</a>
+      }
     </nav>
-
-    <!-- Logo KAMAK centrado -->
-    <div class="flex justify-center py-8">
-      <a routerLink="/" (click)="toggleMobileMenu()">
-        <img
-        src="assets/logos/logo-kamak.svg"
-        alt="Kamak Desarrollos"
-        width="120"
-        height="35"
-        class="object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]"
-        />
-      </a>
-    </div>
-
-    <div class="border-t border-gray-800/50 pt-4 md:pt-6 flex flex-col gap-3 md:gap-4">
-      <h3 class="text-white text-lg md:text-xl font-bold mb-2">Información de Contacto</h3>
-      <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors duration-200">
-        <div class="w-8 h-8 bg-[#195764]/20 rounded-full flex items-center justify-center">
-          <i class="fas fa-phone text-[#195764] text-sm"></i>
-        </div>
-        <div class="flex flex-col">
-          <span class="text-white text-xs font-medium">Administración</span>
-          <span class="text-gray-300 text-sm">2262 223704</span>
-        </div>
-      </div>
-      <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors duration-200">
-        <div class="w-8 h-8 bg-[#195764]/20 rounded-full flex items-center justify-center">
-          <i class="fas fa-phone text-[#195764] text-sm"></i>
-        </div>
-        <div class="flex flex-col">
-          <span class="text-white text-xs font-medium">Ventas</span>
-          <span class="text-gray-300 text-sm">2262 559474</span>
-        </div>
-      </div>
-      <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors duration-200">
-        <div class="w-8 h-8 bg-[#195764]/20 rounded-full flex items-center justify-center">
-          <i class="fas fa-envelope text-[#195764] text-sm"></i>
-        </div>
-        <div class="flex flex-col">
-          <span class="text-white text-xs font-medium">Email</span>
-          <span class="text-gray-300 text-sm">kamakdesarrollos&#64;gmail.com</span>
-        </div>
-      </div>
-      <div class="flex items-start gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors duration-200">
-        <div class="w-8 h-8 bg-[#195764]/20 rounded-full flex items-center justify-center mt-0.5">
-          <i class="fas fa-map-marker-alt text-[#195764] text-sm"></i>
-        </div>
-        <div class="flex flex-col">
-          <span class="text-white text-xs font-medium mb-0.5">Ubicación</span>
-          <span class="text-gray-300 text-sm leading-tight">Avenida 42 N°3703 Necochea, Buenos Aires, Argentina.</span>
-        </div>
-      </div>
-      <button class="w-full bg-[#195764] hover:bg-[#124450] text-white font-semibold text-sm md:text-base px-4 py-3 rounded-lg transition-colors duration-200 mt-3 flex items-center justify-center gap-2" (click)="toggleMobileMenu()">
-        <i class="fas fa-comment text-sm"></i>
-        Solicitar Presupuesto
-      </button>
-    </div>
+    <a
+      href="https://wa.me/5492262559474?text=Hola%2C%20quiero%20solicitar%20una%20propuesta%20para%20un%20proyecto%20comercial"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="btn btn-primary"
+      data-testid="mobile-menu-proposal-link"
+    >
+      Solicitar propuesta
+    </a>
   </div>
-</div>
 }
-

@@ -65,8 +65,8 @@ export class GooglePlaceAutocompleteComponent implements OnInit, OnDestroy, Cont
       service.getPlacePredictions({
         input,
         sessionToken
-      }, (predictions: google.maps.places.AutocompletePrediction[] | null, status: google.maps.places.PlacesServiceStatus) => {
-        if (status === google.maps.places.PlacesServiceStatus.OK && predictions) {
+      }, (predictions, status) => {
+        if (status === 'OK' && predictions) {
           observer.next(predictions);
         } else {
           observer.next([]);

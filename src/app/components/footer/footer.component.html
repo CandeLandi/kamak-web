@@ -1,94 +1,57 @@
-<footer class="bg-black text-white py-12 md:py-16 lg:py-20 w-full">
-  <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
-      <div class="md:col-span-2 lg:col-span-1">
-        <div class="h-12 w-auto relative mb-6">
-          <img
-            src="assets/logos/logo-kamak.svg"
-            alt="Kamak Desarrollos"
-            class="object-contain h-12"
-          />
-
-        </div>
-        <p class="text-gray-400 text-base md:text-lg mb-6">
-          La empresa de construcción con más proyección de crecimiento junto a sus clientes para este 2025.
+<footer class="site-footer">
+  <div class="kamak-container">
+    <div class="site-footer__grid">
+      <div class="site-footer__brand">
+        <img src="assets/logos/logo-kamak.svg" alt="Kamak Desarrollos" width="156" height="44" />
+        <p>
+          Soluciones integrales de obra comercial: diseño, ejecución, fabricación y equipamiento para espacios listos
+          para operar.
         </p>
-        <h4 class="text-base font-medium text-white mb-3">Ubicación:</h4>
-        <div class="flex items-start gap-3">
-          <i class="fas fa-map-marker-alt h-5 w-5 text-[#195764] mt-0.5 flex-shrink-0"></i>
-          <span class="text-gray-400 text-base">Avenida 42 N°3703 Necochea, Buenos Aires, Argentina.</span>
-        </div>
       </div>
 
       <div>
-        <h3 class="text-xl font-semibold mb-6">Servicios</h3>
-        <ul class="space-y-3">
+        <h3>Servicios</h3>
+        <ul>
           @for (service of services; track service.title) {
-            <li>
-              <a [href]="service.link" class="text-gray-400 hover:text-white transition-colors text-base">
-                {{ service.title }}
-              </a>
-            </li>
+            <li><a [href]="service.link">{{ service.title }}</a></li>
           }
         </ul>
       </div>
 
       <div>
-        <h3 class="text-xl font-semibold mb-6">Enlaces</h3>
-        <ul class="space-y-3">
+        <h3>Links</h3>
+        <ul>
           @for (link of links; track link.title) {
-            <li>
-              <a [href]="link.link" class="text-gray-400 hover:text-white transition-colors text-base">
-                {{ link.title }}
-              </a>
-            </li>
+            <li><a [href]="link.link">{{ link.title }}</a></li>
           }
         </ul>
       </div>
 
-      <div class="md:col-span-2 lg:col-span-1">
-        <h3 class="text-xl font-semibold mb-6">Contacto</h3>
-        <div class="space-y-6">
-          <div>
-            <h4 class="text-base font-medium text-white mb-3">Ventas:</h4>
-          <ul class="space-y-3">
-            <li class="flex items-center gap-3">
-              <i class="fas fa-phone h-5 w-5 text-[#195764] flex-shrink-0"></i>
-                <span class="text-gray-400 text-base">{{ contactInfo.sales.phone }}</span>
-            </li>
-              <li class="flex items-center gap-3">
-                <i class="fas fa-envelope h-5 w-5 text-[#195764] flex-shrink-0"></i>
-                <a class="text-gray-400 hover:text-white transition-colors text-base break-all" [href]="'mailto:' + contactInfo.sales.email">{{ contactInfo.sales.email }}</a>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="text-base font-medium text-white mb-3">Administración:</h4>
-            <ul class="space-y-3">
-            <li class="flex items-center gap-3">
-              <i class="fas fa-phone h-5 w-5 text-[#195764] flex-shrink-0"></i>
-                <span class="text-gray-400 text-base">{{ contactInfo.admin.phone }}</span>
-            </li>
-            <li class="flex items-center gap-3">
-              <i class="fas fa-envelope h-5 w-5 text-[#195764] flex-shrink-0"></i>
-                <a class="text-gray-400 hover:text-white transition-colors text-base break-all" [href]="'mailto:' + contactInfo.admin.email">{{ contactInfo.admin.email }}</a>
-            </li>
-          </ul>
-          </div>
-        </div>
+      <div>
+        <h3>Contacto</h3>
+        <ul>
+          <li><a [href]="'https://wa.me/549' + contactInfo.sales.phone" target="_blank" rel="noopener noreferrer">WhatsApp ventas</a></li>
+          <li><a [href]="'mailto:' + contactInfo.sales.email">{{ contactInfo.sales.email }}</a></li>
+          <li><a [href]="'mailto:' + contactInfo.admin.email">{{ contactInfo.admin.email }}</a></li>
+          <li>{{ contactInfo.location }}</li>
+        </ul>
       </div>
+    </div>
+
+    <div class="site-footer__bottom">
+      <span>Kamak Desarrollos</span>
+      <span>Diseño · Obra · Fabricación · Equipamiento</span>
     </div>
   </div>
 </footer>
 
-<!-- WhatsApp Float Button -->
-<div class="fixed bottom-6 right-6 z-50">
-  <a
-    href="https://wa.me/5492262559474?text=Hola%2C%20me%20interesa%20solicitar%20un%20presupuesto"
-    target="_blank"
-    rel="noopener noreferrer"
-    class="bg-[#25D366] text-white w-14 h-14 rounded-full shadow-lg hover:bg-[#128C7E] transition-colors duration-200 flex items-center justify-center"
-  >
-    <i class="fab fa-whatsapp text-2xl"></i>
-  </a>
-</div>
+<a
+  href="https://wa.me/5492262559474?text=Hola%2C%20quiero%20solicitar%20una%20propuesta%20para%20un%20proyecto%20comercial"
+  target="_blank"
+  rel="noopener noreferrer"
+  class="whatsapp-float"
+  aria-label="Contactar por WhatsApp"
+  data-testid="whatsapp-float"
+>
+  WA
+</a>

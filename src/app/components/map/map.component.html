@@ -1,14 +1,27 @@
-<div class="py-16 md:py-20 lg:py-24 bg-black">
-  <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-    <div class="flex flex-col items-center mb-8 md:mb-12">
-      <div class="flex flex-col items-center gap-4 mb-6 text-center w-full">
-        <svg class="w-10 h-10 md:w-12 md:h-12 text-[#195764] mx-auto" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center w-full">Presencia de Kamak en Argentina</h2>
+<section class="presence-section section-pad">
+  <div class="kamak-container presence-section__grid">
+    <div class="presence-section__copy">
+      <span class="eyebrow">ALCANCE OPERATIVO</span>
+      <h2>Presencia en proyectos comerciales de distintas regiones</h2>
+      <p>
+        Kamak acompaña obras y desarrollos comerciales en diferentes puntos del país, adaptándose a las necesidades
+        técnicas y operativas de cada proyecto.
+      </p>
+
+      <div class="presence-list">
+        @for (item of reachItems; track item) {
+          <span>{{ item }}</span>
+        }
       </div>
-      <p class="text-gray-300 text-lg md:text-xl text-center w-full max-w-3xl">Nuestros proyectos realizados en diferentes lugares del pais</p>
     </div>
-    <div class="w-full">
-      <app-google-map></app-google-map>
+
+    <div class="presence-map" aria-label="Mapa conceptual de presencia en Argentina">
+      <div class="presence-map__shape"></div>
+      @for (point of mapPoints; track point.name) {
+        <span class="presence-map__point" [style.left.%]="point.left" [style.top.%]="point.top">
+          <span>{{ point.name }}</span>
+        </span>
+      }
     </div>
   </div>
-</div>
+</section>
