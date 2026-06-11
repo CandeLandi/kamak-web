@@ -32,15 +32,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.obrasSrv.getObras().subscribe(obras => {
       this.obras = obras || [];
-      this.totalObras = Math.max(40, this.obras.length);
-      const conFoto = this.obras.filter(o => this.cover(o));
-      this.destacadas = [...conFoto].sort((a, b) => (b.destacada ? 1 : 0) - (a.destacada ? 1 : 0)).slice(0, 3);
-      this.baObra = this.obras.find(o => o.antes && !!o.imageBefore && !!o.imageAfter) || null;
-      const lead = conFoto[0];
-      if (lead) {
-        this.deliverPhoto = this.cover(lead)!;
-        this.deliverCaption = `${lead.localidad || lead.titulo} — Tienda entregada`;
-      }
+      // Home featured = SOLO las obras marcadas "destacada en home" en app.kamak,
+      // ordenadas por `orden`. Sin relleno con no-destacadas (ese era el bug).
+      this.destacadas = this.obras
+        .filter(o => o.destacada)
+        .sort((a, b) => (Number.isFinite(a.orden) ? a.orden : 999) - (Number.isFinite(b.orden) ? b.orden : 999));
       this.runWhenReady();
     });
   }
