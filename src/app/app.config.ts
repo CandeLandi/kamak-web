@@ -1,5 +1,5 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -25,7 +25,10 @@ const googleMapsApiKey =
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes),
+    // anchorScrolling: hace que los links del menú (routerLink="/" fragment="...")
+    // scrolleen a su sección (#nosotros, #entregamos, #formatos, #contacto).
+    // El offset del header fijo se compensa con scroll-padding-top en kamak.css.
+    provideRouter(routes, withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' })),
     provideClientHydration(),
     provideAnimationsAsync(),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
