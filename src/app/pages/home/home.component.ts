@@ -60,6 +60,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     e.preventDefault();
     const fd = new FormData(form);
     const get = (k: string) => (fd.get(k) || '').toString().trim();
+    // Honeypot anti-spam: si un bot rellena el campo oculto, simulamos éxito y cortamos.
+    if (get('_gotcha')) { this.formOk = true; return; }
     const body = {
       nombre: get('Nombre / empresa'),
       empresa: get('Nombre / empresa'),
@@ -72,6 +74,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
       marca: get('Marca / formato'),
       _gotcha: get('_gotcha'),
     };
+    // Validación mínima: exigimos nombre + un canal de contacto (el preventDefault anula la nativa).
+    if (!body.nombre || (!body.telefono && !body.email)) return;
     this.obrasSrv.postLead(body).subscribe();   // lead → ERP (fire-and-forget)
     let msg = '*Nueva consulta — Kamak Desarrollos*\n\n';
     for (const [k, v] of fd.entries()) {

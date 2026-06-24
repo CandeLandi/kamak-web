@@ -53,5 +53,9 @@ export const routes: Routes = [
     component: ProjectComponent,
     canActivate: [AuthGuard],
     data: { animation: 'fade' }
+  },
+  {
+    path: '**',
+    redirectTo: ''
   }
 ];

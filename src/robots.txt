@@ -1,0 +1,5 @@
+# robots.txt — kamak.com.ar
+User-agent: *
+Allow: /
+
+# Sitemap: https://kamak.com.ar/sitemap.xml  (pendiente: generar sitemap dinámico desde el ERP)

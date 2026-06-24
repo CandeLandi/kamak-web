@@ -61,7 +61,7 @@ import { KamakFooterComponent } from '../kamak-shared/kamak-footer.component';
     <div class="obras-list">
       <a class="ocard drop" *ngFor="let o of filtradas; let i = index; trackBy: trackSlug" [routerLink]="['/obras', o.slug]" [style.animationDelay.ms]="i*70">
         <div class="ocard__media">
-          <img *ngIf="cover(o) as c" [src]="c" [alt]="o.titulo" class="ocard__img">
+          <img *ngIf="cover(o) as c" [src]="c" [alt]="o.titulo" class="ocard__img" loading="lazy" decoding="async">
           <div class="ph" *ngIf="!cover(o)"><div class="ph__tag"><span class="dia"></span>{{ o.localidad }}</div></div>
           <div class="ocard__badges"><span class="tag tag--solid">{{ o.categoria || 'Tiendas' }}</span></div>
           <span class="ba-mini" *ngIf="o.antes && o.imageBefore && o.imageAfter">Antes / Después</span>

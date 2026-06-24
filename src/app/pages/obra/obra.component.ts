@@ -79,7 +79,7 @@ import { KamakFooterComponent } from '../kamak-shared/kamak-footer.component';
       <div class="gallery-grid brackets reveal" data-d="1">
         <div *ngFor="let g of galeria; let k = index" class="ph" [class.wide]="k===0 || k===5">
           <a [href]="g.url" target="_blank" rel="noreferrer">
-            <img [src]="g.url" [alt]="o.titulo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+            <img [src]="g.url" [alt]="o.titulo + ' — foto ' + (k+1)" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
           </a>
         </div>
       </div>
@@ -117,8 +117,8 @@ export class ObraComponent implements OnInit, OnDestroy {
 
   private select(slug: string | null): void {
     if (!this.obras.length) return;
-    let i = this.obras.findIndex(o => o.slug === slug);
-    if (i < 0) i = 0;
+    const i = this.obras.findIndex(o => o.slug === slug);
+    if (i < 0) { this.obra = null; this.prev = null; this.next = null; return; }
     this.obra = this.obras[i];
     this.prev = this.obras[(i - 1 + this.obras.length) % this.obras.length];
     this.next = this.obras[(i + 1) % this.obras.length];

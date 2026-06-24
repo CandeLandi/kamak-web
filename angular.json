@@ -29,6 +29,7 @@
               "src/favicon.ico",
               "src/assets",
               "src/404.html",
+              "src/robots.txt",
 
               {
                 "glob": "**/*",
