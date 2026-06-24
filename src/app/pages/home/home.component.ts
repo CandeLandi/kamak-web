@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { Title, Meta } from '@angular/platform-browser';
 import { ObrasWebService } from '../../core/services/obras-web.service';
 import { ObraWeb } from '../../core/models/obra-web.interface';
 import { initSiteInteractions, renderKamakMap } from './site-interactions';
@@ -17,6 +18,8 @@ import { KamakFooterComponent } from '../kamak-shared/kamak-footer.component';
 export class HomeComponent implements OnInit, AfterViewInit {
   private obrasSrv = inject(ObrasWebService);
   private platformId = inject(PLATFORM_ID);
+  private title = inject(Title);
+  private meta = inject(Meta);
 
   obras: ObraWeb[] = [];
   destacadas: ObraWeb[] = [];
@@ -30,6 +33,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   private viewReady = false;
 
   ngOnInit(): void {
+    this.title.setTitle('Kamak Desarrollos — Tiendas y locales llave en mano, en días no meses');
+    this.meta.updateTag({ name: 'description', content: 'Construimos tu tienda de estación de servicio o local de franquicia llave en mano: proyecto, obra civil, mobiliario, equipamiento e imagen — por una sola empresa, en días no meses y en todo el país.' });
+    this.meta.updateTag({ property: 'og:title', content: 'Kamak Desarrollos — Construcción de tiendas llave en mano' });
+    this.meta.updateTag({ property: 'og:description', content: 'Tu tienda funcionando en días, no meses. Una sola empresa: proyecto, obra, mobiliario, equipamiento e imagen. Cobertura nacional.' });
     this.obrasSrv.getObras().subscribe(obras => {
       this.obras = obras || [];
       // Home featured = SOLO las obras marcadas "destacada en home" en app.kamak,

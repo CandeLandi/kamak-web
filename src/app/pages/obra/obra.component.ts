@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
+import { Title, Meta } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import { ObrasWebService } from '../../core/services/obras-web.service';
 import { ObraWeb } from '../../core/models/obra-web.interface';
@@ -101,6 +102,8 @@ export class ObraComponent implements OnInit, OnDestroy {
   private srv = inject(ObrasWebService);
   private route = inject(ActivatedRoute);
   private platformId = inject(PLATFORM_ID);
+  private title = inject(Title);
+  private meta = inject(Meta);
   obras: ObraWeb[] = [];
   obra: ObraWeb | null = null;
   prev: ObraWeb | null = null;
@@ -118,14 +121,34 @@ export class ObraComponent implements OnInit, OnDestroy {
   private select(slug: string | null): void {
     if (!this.obras.length) return;
     const i = this.obras.findIndex(o => o.slug === slug);
-    if (i < 0) { this.obra = null; this.prev = null; this.next = null; return; }
+    if (i < 0) {
+      this.obra = null; this.prev = null; this.next = null;
+      this.title.setTitle('Obra no encontrada — Kamak Desarrollos');
+      return;
+    }
     this.obra = this.obras[i];
+    this.aplicarSeo(this.obra);
     this.prev = this.obras[(i - 1 + this.obras.length) % this.obras.length];
     this.next = this.obras[(i + 1) % this.obras.length];
     if (isPlatformBrowser(this.platformId)) {
       window.scrollTo(0, 0);
       setTimeout(() => initSiteInteractions(), 0);
     }
+  }
+
+  // Title + meta por obra: horneados en el HTML prerenderizado (SEO + previews).
+  private aplicarSeo(o: ObraWeb): void {
+    const loc = o.localidad || 'Argentina';
+    // Solo m² en la descripción (dato sano). NO incluimos `dias`: algunas obras de
+    // arrastre traen valores raros y "(529 días)" contradice el mensaje de la marca.
+    const ficha = o.m2 ? ` (${o.m2} m²)` : '';
+    const desc = `Tienda llave en mano construida por Kamak en ${loc}${ficha}. Obra civil, mobiliario propio, equipamiento e imagen de marca — por una sola empresa.`;
+    this.title.setTitle(`${o.titulo} — ${loc} | Kamak Desarrollos`);
+    this.meta.updateTag({ name: 'description', content: desc });
+    this.meta.updateTag({ property: 'og:title', content: `${o.titulo} — Kamak Desarrollos` });
+    this.meta.updateTag({ property: 'og:description', content: desc });
+    const img = this.cover(o);
+    if (img) this.meta.updateTag({ property: 'og:image', content: img });
   }
 
   cover(o: ObraWeb): string | null { return o.portada || o.imageAfter || (o.gallery && o.gallery[0]?.url) || null; }
