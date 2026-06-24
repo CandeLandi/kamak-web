@@ -24,7 +24,7 @@ import { RouterModule } from '@angular/router';
     </div>
     <div class="footer__col">
       <h4>Contacto</h4>
-      <a data-wa="Hola Kamak" class="mono">+54 9 2262 559474</a>
+      <a data-wa="Hola Kamak" href="https://wa.me/5492262559474?text=Hola%20Kamak" target="_blank" rel="noopener" class="mono">+54 9 2262 559474</a>
       <a href="https://wa.me/5492262353629?text=Hola%20Kamak" target="_blank" rel="noopener" class="mono">+54 9 2262 35-3629</a>
       <p class="mono">Ventas · 2262 559474</p>
       <a href="mailto:kamakdesarrollos&#64;gmail.com">kamakdesarrollos&#64;gmail.com</a>
