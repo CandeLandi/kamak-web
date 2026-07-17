@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, PLATFORM_ID, HostListener } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
@@ -79,9 +79,9 @@ import { KamakFooterComponent } from '../kamak-shared/kamak-footer.component';
       <p class="label-flank reveal" style="margin-bottom:24px"><span class="diamond"></span><span class="txt" style="color:var(--teal-d)">Galería</span><span class="diamond"></span></p>
       <div class="gallery-grid brackets reveal" data-d="1">
         <div *ngFor="let g of galeria; let k = index" class="ph" [class.wide]="k===0 || k===5">
-          <a [href]="g.url" target="_blank" rel="noreferrer">
+          <button type="button" class="ph__btn" (click)="openLightbox(k)" [attr.aria-label]="'Ampliar foto ' + (k+1) + ' de ' + galeria.length">
             <img [src]="g.url" [alt]="o.titulo + ' — foto ' + (k+1)" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
-          </a>
+          </button>
         </div>
       </div>
     </div>
@@ -95,8 +95,42 @@ import { KamakFooterComponent } from '../kamak-shared/kamak-footer.component';
     </div>
   </nav>
 </main>
+
+<div class="lightbox" *ngIf="lightboxOpen" (click)="closeLightbox()" role="dialog" aria-modal="true" aria-label="Galería de fotos">
+  <button type="button" class="lightbox__close" (click)="closeLightbox(); $event.stopPropagation()" aria-label="Cerrar (Esc)">✕</button>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" *ngIf="galeria.length > 1" (click)="prevImg(); $event.stopPropagation()" aria-label="Foto anterior (←)">‹</button>
+  <figure class="lightbox__stage" (click)="$event.stopPropagation()">
+    <img class="lightbox__img" [src]="galeria[lightboxIndex].url" [alt]="(obra?.titulo || 'Obra') + ' — foto ' + (lightboxIndex + 1)" (click)="nextImg()" draggable="false">
+    <figcaption class="lightbox__cap" *ngIf="galeria.length > 1">{{ lightboxIndex + 1 }} / {{ galeria.length }} · tocá la foto o usá ← → para cambiar</figcaption>
+  </figure>
+  <button type="button" class="lightbox__nav lightbox__nav--next" *ngIf="galeria.length > 1" (click)="nextImg(); $event.stopPropagation()" aria-label="Foto siguiente (→)">›</button>
+</div>
+
 <kamak-footer></kamak-footer>
 `,
+  styles: [`
+    .gallery-grid .ph__btn { position:absolute; inset:0; width:100%; height:100%; padding:0; border:0; background:none; cursor:pointer; display:block; }
+    .gallery-grid .ph__btn:focus-visible { outline:2px solid var(--teal, #1f9c8b); outline-offset:3px; }
+    .lightbox { position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center; gap:clamp(8px,3vw,28px); padding:clamp(12px,4vw,48px); background:rgba(8,12,14,.93); backdrop-filter:blur(4px); animation:lbFade .18s ease; }
+    .lightbox__stage { position:relative; margin:0; display:flex; flex-direction:column; align-items:center; max-width:92vw; }
+    .lightbox__img { max-width:92vw; max-height:82vh; width:auto; height:auto; object-fit:contain; display:block; cursor:pointer; border-radius:2px; box-shadow:0 24px 70px rgba(0,0,0,.55); }
+    .lightbox__cap { margin-top:14px; color:#cfd6d8; font:500 12px/1.4 'JetBrains Mono',ui-monospace,monospace; letter-spacing:.05em; text-align:center; }
+    .lightbox__nav, .lightbox__close { display:flex; align-items:center; justify-content:center; color:#fff; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18); cursor:pointer; transition:background .15s ease, transform .1s ease; }
+    .lightbox__nav { flex:0 0 auto; width:clamp(42px,7vw,56px); height:clamp(42px,7vw,56px); border-radius:50%; font-size:26px; line-height:1; }
+    .lightbox__nav:hover { background:rgba(255,255,255,.2); }
+    .lightbox__nav:active { transform:scale(.93); }
+    .lightbox__close { position:absolute; top:clamp(10px,3vw,22px); right:clamp(10px,3vw,22px); width:44px; height:44px; border-radius:50%; font-size:17px; z-index:2; }
+    .lightbox__close:hover { background:rgba(255,255,255,.2); }
+    @keyframes lbFade { from { opacity:0 } to { opacity:1 } }
+    @media (max-width:560px) {
+      .lightbox { padding:0; }
+      .lightbox__nav { position:absolute; bottom:18px; }
+      .lightbox__nav--prev { left:16px; }
+      .lightbox__nav--next { right:16px; }
+      .lightbox__img { max-height:86vh; }
+      .lightbox__cap { position:absolute; bottom:80px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,.4); padding:6px 12px; border-radius:20px; }
+    }
+  `],
 })
 export class ObraComponent implements OnInit, OnDestroy {
   private srv = inject(ObrasWebService);
@@ -109,6 +143,8 @@ export class ObraComponent implements OnInit, OnDestroy {
   prev: ObraWeb | null = null;
   next: ObraWeb | null = null;
   private sub?: Subscription;
+  lightboxOpen = false;
+  lightboxIndex = 0;
 
   ngOnInit(): void {
     this.srv.getObras().subscribe(list => {
@@ -116,7 +152,7 @@ export class ObraComponent implements OnInit, OnDestroy {
       this.sub = this.route.paramMap.subscribe(pm => this.select(pm.get('slug')));
     });
   }
-  ngOnDestroy(): void { this.sub?.unsubscribe(); }
+  ngOnDestroy(): void { this.sub?.unsubscribe(); this.setBodyScroll(true); }
 
   private select(slug: string | null): void {
     if (!this.obras.length) return;
@@ -160,5 +196,39 @@ export class ObraComponent implements OnInit, OnDestroy {
       `Tienda llave en mano construida por Kamak en ${o.localidad || 'Argentina'}. Obra civil, mobiliario de fabricación propia, equipamiento gastronómico, instalaciones e imagen de marca.`,
       'La tienda funcionando, entregada por una sola empresa.',
     ] : [];
+  }
+
+  // --- Visor de galería: clic/flechas para navegar (reemplaza abrir la foto en pestaña nueva) ---
+  openLightbox(i: number): void {
+    if (!this.galeria.length) return;
+    this.lightboxIndex = i;
+    this.lightboxOpen = true;
+    this.setBodyScroll(false);
+  }
+  closeLightbox(): void {
+    this.lightboxOpen = false;
+    this.setBodyScroll(true);
+  }
+  nextImg(): void {
+    if (!this.galeria.length) return;
+    this.lightboxIndex = (this.lightboxIndex + 1) % this.galeria.length;
+  }
+  prevImg(): void {
+    if (!this.galeria.length) return;
+    this.lightboxIndex = (this.lightboxIndex - 1 + this.galeria.length) % this.galeria.length;
+  }
+  @HostListener('document:keydown', ['$event'])
+  onKeydown(e: KeyboardEvent): void {
+    if (!this.lightboxOpen) return;
+    switch (e.key) {
+      case 'Escape': this.closeLightbox(); break;
+      case 'ArrowRight':
+      case ' ': e.preventDefault(); this.nextImg(); break;
+      case 'ArrowLeft': this.prevImg(); break;
+    }
+  }
+  private setBodyScroll(enabled: boolean): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+    document.body.style.overflow = enabled ? '' : 'hidden';
   }
 }
