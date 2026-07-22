@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { trackWhatsAppClick } from '../../pages/home/site-interactions';
 
 @Component({
   selector: 'app-header',
@@ -35,6 +36,9 @@ export class HeaderComponent implements OnInit {
     this.scrolled = window.scrollY > 50;
     this.pastLogo = window.scrollY > 100;
   }
+
+  // Evento GA4 `clic_whatsapp` — no bloquea la navegación (gtag es async).
+  trackWa(origen: string): void { trackWhatsAppClick(origen); }
 
   toggleMobileMenu() {
     if (this.isBrowser) {

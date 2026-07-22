@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { trackWhatsAppClick } from '../../pages/home/site-interactions';
 
 interface TeamMember {
   id: string;
@@ -18,6 +19,9 @@ interface TeamMember {
   templateUrl: './team.component.html'
 })
 export class TeamComponent {
+  // Evento GA4 `clic_whatsapp` — no bloquea la navegación (gtag es async).
+  trackWa(origen: string): void { trackWhatsAppClick(origen); }
+
   teamMembers: TeamMember[] = [
     {
       id: '1',
