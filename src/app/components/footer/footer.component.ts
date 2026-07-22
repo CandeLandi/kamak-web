@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { trackWhatsAppClick } from '../../pages/home/site-interactions';
 
 @Component({
   selector: 'app-footer',
@@ -9,6 +10,9 @@ import { RouterModule } from '@angular/router';
   templateUrl: './footer.component.html'
 })
 export class FooterComponent {
+  // Evento GA4 `clic_whatsapp` — no bloquea la navegación (gtag es async).
+  trackWa(origen: string): void { trackWhatsAppClick(origen); }
+
   services = [
     { title: 'Proyectos y Renders', link: '#' },
     { title: 'Soluciones Integrales', link: '#' },

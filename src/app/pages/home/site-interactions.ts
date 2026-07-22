@@ -4,6 +4,28 @@
 
 const WA_NUMBER = '5492262559474';
 
+// ── Tracking de clics a WhatsApp ─────────────────────────────────────────────
+// Dispara el evento GA4 `clic_whatsapp` (nombre EXACTO: el ERP lo consume vía
+// GA4 Data API para atribución de campañas) con { origen, ubicacion }.
+// gtag() solo pushea a dataLayer (asíncrono): NO bloquea ni demora la
+// navegación al link — por eso no se usa event_callback.
+// Si Clarity está cargado, deja un tag espejo con la API de custom tags.
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+    clarity?: (...args: unknown[]) => void;
+  }
+}
+
+export function trackWhatsAppClick(origen: string): void {
+  if (typeof window === 'undefined') return; // SSR: no-op
+  try {
+    const ubicacion = window.location?.pathname || '/';
+    window.gtag?.('event', 'clic_whatsapp', { origen, ubicacion });
+    window.clarity?.('set', 'clic_whatsapp', origen);
+  } catch { /* el tracking jamás debe romper el clic */ }
+}
+
 export function initSiteInteractions(): void {
   const d = document;
 

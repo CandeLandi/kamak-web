@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
 import { ObrasWebService } from '../../core/services/obras-web.service';
 import { ObraWeb } from '../../core/models/obra-web.interface';
-import { initSiteInteractions, renderKamakMap } from './site-interactions';
+import { initSiteInteractions, renderKamakMap, trackWhatsAppClick } from './site-interactions';
 import { KamakHeaderComponent } from '../kamak-shared/kamak-header.component';
 import { KamakFooterComponent } from '../kamak-shared/kamak-footer.component';
 import { ImgRetryDirective } from '../../core/directives/img-retry.directive';
@@ -64,6 +64,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return o.portada || o.imageAfter || (o.gallery && o.gallery[0]?.url) || null;
   }
 
+  // Evento GA4 `clic_whatsapp` — no bloquea la navegación (gtag es async).
+  trackWa(origen: string): void { trackWhatsAppClick(origen); }
+
   onSubmit(e: Event, form: HTMLFormElement): void {
     e.preventDefault();
     const fd = new FormData(form);
@@ -91,6 +94,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       if (s && k !== '_gotcha') msg += `*${k}:* ${s}\n`;
     }
     if (isPlatformBrowser(this.platformId)) {
+      trackWhatsAppClick('formulario-envio');
       window.open(`https://wa.me/5492262559474?text=${encodeURIComponent(msg)}`, '_blank');
     }
     this.formOk = true;
