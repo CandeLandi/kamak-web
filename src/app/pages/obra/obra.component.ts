@@ -8,11 +8,12 @@ import { ObraWeb } from '../../core/models/obra-web.interface';
 import { initSiteInteractions } from '../home/site-interactions';
 import { KamakHeaderComponent } from '../kamak-shared/kamak-header.component';
 import { KamakFooterComponent } from '../kamak-shared/kamak-footer.component';
+import { ImgRetryDirective } from '../../core/directives/img-retry.directive';
 
 @Component({
   selector: 'app-obra',
   standalone: true,
-  imports: [CommonModule, RouterModule, KamakHeaderComponent, KamakFooterComponent],
+  imports: [CommonModule, RouterModule, KamakHeaderComponent, KamakFooterComponent, ImgRetryDirective],
   template: `
 <kamak-header></kamak-header>
 <main id="obra" *ngIf="obra as o">
@@ -38,8 +39,8 @@ import { KamakFooterComponent } from '../kamak-shared/kamak-footer.component';
     <div class="wrap">
       <ng-container *ngIf="o.antes && o.imageBefore && o.imageAfter; else galHero">
         <div class="ba brackets">
-          <div class="ba__layer"><img class="ba__img" [src]="o.imageBefore" alt="Antes" style="width:100%;height:100%;object-fit:cover"></div>
-          <div class="ba__layer ba__after"><img class="ba__img" [src]="o.imageAfter" alt="Después" style="width:100%;height:100%;object-fit:cover"></div>
+          <div class="ba__layer"><img class="ba__img" kamakRetry [src]="o.imageBefore" alt="Antes" style="width:100%;height:100%;object-fit:cover"></div>
+          <div class="ba__layer ba__after"><img class="ba__img" kamakRetry [src]="o.imageAfter" alt="Después" style="width:100%;height:100%;object-fit:cover"></div>
           <span class="ba__label ba__label--before">Antes</span>
           <span class="ba__label ba__label--after">Después</span>
           <div class="ba__handle"><div class="ba__grip">⟷</div></div>
@@ -47,7 +48,7 @@ import { KamakFooterComponent } from '../kamak-shared/kamak-footer.component';
         <p class="obra-feature__cap"><span class="diamond diamond--sm"></span> Arrastrá para comparar el antes y el después<ng-container *ngIf="o.m2 && o.dias"> · {{ o.m2 }} m² en {{ o.dias }} días</ng-container></p>
       </ng-container>
       <ng-template #galHero>
-        <div class="gallery-hero brackets" *ngIf="cover(o) as c"><img [src]="c" [alt]="o.titulo" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+        <div class="gallery-hero brackets" *ngIf="cover(o) as c"><img kamakRetry [src]="c" [alt]="o.titulo" style="width:100%;height:100%;object-fit:cover;display:block"></div>
         <p class="obra-feature__cap"><span class="diamond diamond--sm"></span> Galería de obra terminada<ng-container *ngIf="o.m2 && o.dias"> · {{ o.m2 }} m² en {{ o.dias }} días</ng-container></p>
       </ng-template>
     </div>
@@ -80,7 +81,7 @@ import { KamakFooterComponent } from '../kamak-shared/kamak-footer.component';
       <div class="gallery-grid brackets reveal" data-d="1">
         <div *ngFor="let g of galeria; let k = index" class="ph" [class.wide]="k===0 || k===5">
           <button type="button" class="ph__btn" (click)="openLightbox(k)" [attr.aria-label]="'Ampliar foto ' + (k+1) + ' de ' + galeria.length">
-            <img [src]="g.url" [alt]="o.titulo + ' — foto ' + (k+1)" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+            <img kamakRetry [src]="g.url" [alt]="o.titulo + ' — foto ' + (k+1)" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
           </button>
         </div>
       </div>
@@ -100,7 +101,7 @@ import { KamakFooterComponent } from '../kamak-shared/kamak-footer.component';
   <button type="button" class="lightbox__close" (click)="closeLightbox(); $event.stopPropagation()" aria-label="Cerrar (Esc)">✕</button>
   <button type="button" class="lightbox__nav lightbox__nav--prev" *ngIf="galeria.length > 1" (click)="prevImg(); $event.stopPropagation()" aria-label="Foto anterior (←)">‹</button>
   <figure class="lightbox__stage" (click)="$event.stopPropagation()">
-    <img class="lightbox__img" [src]="galeria[lightboxIndex].url" [alt]="(obra?.titulo || 'Obra') + ' — foto ' + (lightboxIndex + 1)" (click)="nextImg()" draggable="false">
+    <img class="lightbox__img" kamakRetry [src]="galeria[lightboxIndex].url" [alt]="(obra?.titulo || 'Obra') + ' — foto ' + (lightboxIndex + 1)" (click)="nextImg()" draggable="false">
     <figcaption class="lightbox__cap" *ngIf="galeria.length > 1">{{ lightboxIndex + 1 }} / {{ galeria.length }} · tocá la foto o usá ← → para cambiar</figcaption>
   </figure>
   <button type="button" class="lightbox__nav lightbox__nav--next" *ngIf="galeria.length > 1" (click)="nextImg(); $event.stopPropagation()" aria-label="Foto siguiente (→)">›</button>

@@ -6,11 +6,12 @@ import { ObraWeb } from '../../core/models/obra-web.interface';
 import { initSiteInteractions } from '../home/site-interactions';
 import { KamakHeaderComponent } from '../kamak-shared/kamak-header.component';
 import { KamakFooterComponent } from '../kamak-shared/kamak-footer.component';
+import { ImgRetryDirective } from '../../core/directives/img-retry.directive';
 
 @Component({
   selector: 'app-obras',
   standalone: true,
-  imports: [CommonModule, RouterModule, KamakHeaderComponent, KamakFooterComponent],
+  imports: [CommonModule, RouterModule, KamakHeaderComponent, KamakFooterComponent, ImgRetryDirective],
   styles: [`
     .obras-head{position:relative;background:var(--carbon);color:var(--paper);padding-top:calc(var(--nav-h) + clamp(44px,6vw,88px));padding-bottom:clamp(40px,5vw,64px);overflow:hidden}
     .obras-head__stat{font-family:var(--mono);font-size:13px;letter-spacing:.08em;color:var(--gray);margin-top:18px}
@@ -61,7 +62,7 @@ import { KamakFooterComponent } from '../kamak-shared/kamak-footer.component';
     <div class="obras-list">
       <a class="ocard drop" *ngFor="let o of filtradas; let i = index; trackBy: trackSlug" [routerLink]="['/obras', o.slug]" [style.animationDelay.ms]="i*70">
         <div class="ocard__media">
-          <img *ngIf="cover(o) as c" [src]="c" [alt]="o.titulo" class="ocard__img" loading="lazy" decoding="async">
+          <img *ngIf="cover(o) as c" kamakRetry [src]="c" [alt]="o.titulo" class="ocard__img" loading="lazy" decoding="async">
           <div class="ph" *ngIf="!cover(o)"><div class="ph__tag"><span class="dia"></span>{{ o.localidad }}</div></div>
           <div class="ocard__badges"><span class="tag tag--solid">{{ o.categoria || 'Tiendas' }}</span></div>
           <span class="ba-mini" *ngIf="o.antes && o.imageBefore && o.imageAfter">Antes / Después</span>

@@ -7,11 +7,12 @@ import { ObraWeb } from '../../core/models/obra-web.interface';
 import { initSiteInteractions, renderKamakMap } from './site-interactions';
 import { KamakHeaderComponent } from '../kamak-shared/kamak-header.component';
 import { KamakFooterComponent } from '../kamak-shared/kamak-footer.component';
+import { ImgRetryDirective } from '../../core/directives/img-retry.directive';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, KamakHeaderComponent, KamakFooterComponent],
+  imports: [CommonModule, RouterModule, KamakHeaderComponent, KamakFooterComponent, ImgRetryDirective],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })

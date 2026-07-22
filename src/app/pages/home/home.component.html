@@ -139,7 +139,7 @@
     <div class="works-grid reveal" data-d="1">
       <a class="work" *ngFor="let o of destacadas" [routerLink]="['/obras', o.slug]">
         <div class="work__media">
-          <img *ngIf="cover(o) as c" [src]="c" [alt]="o.titulo" style="width:100%;height:100%;object-fit:cover;display:block">
+          <img *ngIf="cover(o) as c" kamakRetry [src]="c" [alt]="o.titulo" style="width:100%;height:100%;object-fit:cover;display:block">
           <div class="ph" *ngIf="!cover(o)"><div class="ph__tag"><span class="dia"></span>{{ o.localidad }}</div></div>
         </div>
         <span class="work__cat"><span class="tag tag--solid">{{ o.categoria || 'Tiendas' }}</span></span>
