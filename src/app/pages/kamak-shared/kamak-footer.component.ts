@@ -33,13 +33,12 @@ import { trackWhatsAppClick } from '../home/site-interactions';
     </div>
     <div class="footer__col">
       <h4>Empresa</h4>
-      <p class="mono">Conquies Soluciones<br>Constructivas S.A.</p>
       <p>Av. 42 N°3703<br>Necochea, Buenos Aires</p>
       <a class="footer__portal" href="https://app.kamak.com.ar" target="_blank" rel="noopener"><span class="diamond diamond--sm"></span> Portal del cliente</a>
     </div>
   </div>
   <div class="wrap footer__bottom">
-    <span>© {{ year }} Kamak Desarrollos · Conquies Soluciones Constructivas S.A.</span>
+    <span>© {{ year }} Kamak Desarrollos</span>
     <span>Necochea · Buenos Aires · Argentina</span>
   </div>
 </footer>
